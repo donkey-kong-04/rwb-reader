@@ -12,8 +12,10 @@ public class XML_PermissionSet extends XML_File {
 	
 	public String label;
 	
-	public XML_PermissionSet(String filename, boolean isHidden) {
-		super("PermissionSet", filename, "unpackaged\\permissionsets\\", isHidden);
+	
+	public XML_PermissionSet(String filename) {
+		
+		super("PermissionSet", filename, "unpackaged\\permissionsets\\");
 		
 		fieldPerms = new ArrayList<Node>();
 		objectPerms = new ArrayList<Node>();
@@ -24,6 +26,7 @@ public class XML_PermissionSet extends XML_File {
 	public void buildFile() {
 		Node lab = this.file.createElement("label");
 		
+		System.out.println("Label: " + label);
 		this.root.appendChild(lab).appendChild(file.createTextNode(label));
 		// TODO Auto-generated method stub
 		

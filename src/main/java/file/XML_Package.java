@@ -15,8 +15,8 @@ public class XML_Package extends XML_File {
 	public Set<String> p_pm;
 	public Set<String> p_listviews;
 	
-	public XML_Package(String filename, boolean isHidden) {
-		super("Package", filename, "unpackaged\\", isHidden);
+	public XML_Package(String filename) {
+		super("Package", filename, "unpackaged\\");
 		
 		
 		p_recordTypes = new TreeSet<String>();

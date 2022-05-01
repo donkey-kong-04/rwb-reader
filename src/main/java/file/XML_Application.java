@@ -9,8 +9,8 @@ public class XML_Application extends XML_File {
 	public ArrayList<Node> tabs;
 	public String appName;
 	
-	public XML_Application(String filename, boolean isHidden) {
-		super("CustomApplication", filename, "unpackaged\\applications\\", isHidden);
+	public XML_Application(String filename) {
+		super("CustomApplication", filename, "unpackaged\\applications\\");
 		
 		this.tabs = new ArrayList<Node>();
 	}

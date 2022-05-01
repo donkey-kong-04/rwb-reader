@@ -51,7 +51,7 @@ public class Step_ApexComponents extends Step {
 				if(isColumnHidden == false) {	
 					String currentId = IDS.get(i - index_start - numberOfHiddenColum);
 					
-					XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, currentId, isColumnHidden);
+					XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, currentId);
 					
 					String enable = PRUtil.getCell(w, i);
 					
@@ -97,7 +97,7 @@ public class Step_ApexComponents extends Step {
 				if(isColumnHidden == false) {	
 					String currentId = IDS.get(tabIndex);
 					
-					XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, currentId, isColumnHidden);
+					XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, currentId);
 					String enable = PRUtil.getCell(w, i);
 					
 					Node vfPerm = f.file.createElement("pageAccesses");

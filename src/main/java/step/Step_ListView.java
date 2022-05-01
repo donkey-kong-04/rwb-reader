@@ -56,7 +56,7 @@ public class Step_ListView extends Step {
 		if(!PRUtil.isBlank(objectName) && !PRUtil.isBlank(label) && !PRUtil.isBlank(apiName) && !PRUtil.isBlank(sharing) && !PRUtil.isBlank(fields)) {
 			w.fpackage.p_listviews.add(objectName + "." + apiName);
 			
-			XML_Object f = (XML_Object) w.getCorrectCorrectFile(XML_Object.class, objectName + ".object", false);
+			XML_Object f = (XML_Object) w.getCorrectCorrectFile(XML_Object.class, objectName + ".object");
 			
 			Node listView = f.file.createElement("listViews");
 			

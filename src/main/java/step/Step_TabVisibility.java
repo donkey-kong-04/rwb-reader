@@ -43,8 +43,8 @@ public class Step_TabVisibility extends Step {
 			appName = PRUtil.getCell(w, 3);
 			String appIDName = appName.replaceAll(" ", "_") + ".app";
 			
-			XML_PermissionSet pmF = (XML_PermissionSet) w.getCorrectCorrectFile(XML_PermissionSet.class, pmIDName, false);
-			XML_Application appF = (XML_Application) w.getCorrectCorrectFile(XML_Application.class, appIDName, false);
+			XML_PermissionSet pmF = (XML_PermissionSet) w.getCorrectCorrectFile(XML_PermissionSet.class, pmIDName);
+			XML_Application appF = (XML_Application) w.getCorrectCorrectFile(XML_Application.class, appIDName);
 			
 			appF.appName = appName;
 			pmF.label = pmName.replaceAll("_", " ");
@@ -94,7 +94,7 @@ public class Step_TabVisibility extends Step {
 		String value = PRUtil.getCell(w, 2);
 		
 		if(!PRUtil.isBlank(apiname) && !PRUtil.isBlank(value)) {
-			XML_PermissionSet pmF = (XML_PermissionSet) w.getCorrectCorrectFile(XML_PermissionSet.class, IDS.get(0), false);
+			XML_PermissionSet pmF = (XML_PermissionSet) w.getCorrectCorrectFile(XML_PermissionSet.class, IDS.get(0));
 			Node tabSettings = pmF.file.createElement("tabSettings");
 			
 			Node tab = pmF.file.createElement("tab"),
@@ -107,7 +107,7 @@ public class Step_TabVisibility extends Step {
 			
 			if(value.trim().equalsIgnoreCase("visible")) {
 				//System.out.println("==========================================================================================" + value);
-				XML_Application appF = (XML_Application) w.getCorrectCorrectFile(XML_Application.class, IDS.get(1), false);
+				XML_Application appF = (XML_Application) w.getCorrectCorrectFile(XML_Application.class, IDS.get(1));
 				
 				Node tabs = appF.file.createElement("tabs");
 				tabs.appendChild(appF.file.createTextNode(apiname.trim()));

@@ -64,7 +64,7 @@ public class Step_LayoutAssignment extends Step {
 			
 			if(!PRUtil.isBlank(profileName)) {
 				String profileID = profileName + ".profile";
-				XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, profileID, false);
+				XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, profileID);
 				
 				w.fpackage.p_profiles.add(profileName);
 				

@@ -59,7 +59,7 @@ public class PRWorkbook {
 		
 		
 		Allfiles = new ArrayList<XML_File>();
-		fpackage = new XML_Package("package.xml", false);
+		fpackage = new XML_Package("package.xml");
 		Allfiles.add(fpackage);
 		
 		try {
@@ -144,10 +144,8 @@ public class PRWorkbook {
 				if(f instanceof XML_Profile) {
 					profiles.add(f);
 				}
-				if(!f.isHidden) {
-					
-					f.write(f.filename, this.c.package_folder + f.location);
-				}
+				f.write(f.filename, this.c.package_folder + f.location);
+				
 			}
 		}
 		
@@ -167,7 +165,7 @@ public class PRWorkbook {
 		return doNotDeploy;
 	}
 	
-	public XML_File getCorrectCorrectFile(Class<?> type, String filename, boolean isColumnHidden) {
+	public XML_File getCorrectCorrectFile(Class<?> type, String filename) {
 		
 		for(int i=0; i<Allfiles.size(); i++) {
 			
@@ -177,36 +175,36 @@ public class PRWorkbook {
 				if(!f.filename.equals(filename)) {
 					System.out.println("WARNING - Filename '" + filename + "' & '" + f.filename + "' do not match on a sensitive level. It can create deployment issue.");
 				}
-				if(f.isHidden == false && isColumnHidden == true) {
-					f.isHidden = true;
-				}
+				
 				return f;
 			}
 		}
 		
 		XML_File f = null;
 		if(type == XML_Profile.class) {
-			f = new XML_Profile(filename, isColumnHidden);
+			f = new XML_Profile(filename);
 		} 
 		else if(type == XML_Application.class) {
-			f = new XML_Application(filename, isColumnHidden);
+			f = new XML_Application(filename);
 		} 
 		else if(type == XML_SharingRules.class) {
-			f = new XML_SharingRules(filename, isColumnHidden);
+			f = new XML_SharingRules(filename);
 		}
 		else if(type == XML_Layout.class) {
-			f = new XML_Layout(filename, isColumnHidden);
+			f = new XML_Layout(filename);
 		} 
 		else if(type == XML_Object.class) {
-			f = new XML_Object(filename, isColumnHidden);
+			f = new XML_Object(filename);
 		} 
 		else if(type == XML_PermissionSet.class) {
-			f = new XML_PermissionSet(filename, isColumnHidden);
+			f = new XML_PermissionSet(filename);
+			
 		} 
 		else {
 			PRUtil.fatal(this, "FILE TYPE unfound");
 		}
 		
+		PRUtil.info(this, "Adding in all files", filename);
 		this.Allfiles.add(f);
 		
 		return f;

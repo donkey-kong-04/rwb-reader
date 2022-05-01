@@ -29,7 +29,6 @@ public abstract class XML_File {
 	
 	public String location;
 	public String filename;
-	public boolean isHidden;
 	
 	public Document file;
 	protected Element root;
@@ -40,11 +39,11 @@ public abstract class XML_File {
 	}
 	
 	
-	public XML_File(String strRoot, String filename, String location, boolean isHidden) {
+	public XML_File(String strRoot, String filename, String location) {
 		
 		this.location = location;
 		this.filename = XML_File.parseForPackage(filename);
-		this.isHidden = isHidden;
+		
 		
 		DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder;
@@ -84,14 +83,11 @@ public abstract class XML_File {
 	}
 	public void write(String filename, String folder) throws TransformerException {
 		
-		if(this.filename.contentEquals("EUR GR On Trade User.profile") || 
-				this.filename.contentEquals("EUR GR Off Trade User.profile")) {
-			return;//quickbypass
-		}
 		this.buildFile();
 		
 		//System.out.println(folder + filename);
 		File f = new File(folder);
+		//System.out.println(folder);
 		//System.out.println(filename);
 		if(!f.exists()) {
 			f.mkdir();
@@ -105,6 +101,7 @@ public abstract class XML_File {
 		streamResult = new StreamResult(new File(folder + filename));
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+       
         transformer.transform(domSource, streamResult);
 		
 

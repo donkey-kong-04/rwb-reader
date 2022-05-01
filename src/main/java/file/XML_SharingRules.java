@@ -8,8 +8,8 @@ public class XML_SharingRules extends XML_File {
 	
 	public ArrayList<Node> n_sharingCriteriaRules;
 	
-	public XML_SharingRules(String filename, boolean isHidden) {
-		super("SharingRules", filename, "unpackaged\\sharingRules\\", isHidden);
+	public XML_SharingRules(String filename) {
+		super("SharingRules", filename, "unpackaged\\sharingRules\\");
 		
 		n_sharingCriteriaRules = new ArrayList<Node>();
 	}

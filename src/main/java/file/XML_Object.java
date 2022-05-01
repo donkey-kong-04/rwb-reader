@@ -9,8 +9,8 @@ public class XML_Object extends XML_File {
 	public ArrayList<Node> recordTypes;
 	public ArrayList<Node> listViews;
 	
-	public XML_Object(String filename, boolean isHidden) {
-		super("CustomObject", filename, "unpackaged\\objects\\", isHidden);
+	public XML_Object(String filename) {
+		super("CustomObject", filename, "unpackaged\\objects\\");
 		
 		listViews = new ArrayList<Node>();
 		recordTypes = new ArrayList<Node>();

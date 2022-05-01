@@ -128,7 +128,7 @@ public class Step_Profile extends Step {
 				if(isColumnHidden == false) {
 					String currentId = IDS.get(tabIndex);
 					
-					XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, currentId, isColumnHidden);
+					XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, currentId);
 					//System.out.println(index_start + " " + index_end);
 					String perm = w.currentRow.getCell(i).getStringCellValue();
 					
@@ -184,7 +184,7 @@ public class Step_Profile extends Step {
 					if(isColumnHidden == false) {
 						String currentId = IDS.get(i - index_start - numberOfHiddenColumn);
 						
-						XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, currentId, isColumnHidden);
+						XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, currentId);
 						
 						String perm = PRUtil.getCell(w, i);
 						

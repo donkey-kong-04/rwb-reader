@@ -13,7 +13,7 @@ public class Step_PM extends Step {
 	
 	@Override
 	public String[] getSteps() {
-		return new String[] {"INDEX", "POSITION", "READ_OBJ_PERM", "POSITION_AFTER_FIELDS", "READ", "END"};
+		return new String[] {"INDEX", "POSITION", "READ_OBJ_PERM", "POSITION_AFTER_FIELDS", "READ"};
 	}
 
 	@Override
@@ -32,8 +32,6 @@ public class Step_PM extends Step {
 			return runWAIT_FIELDS(w);
 		} else if(stp.equals("READ")) {
 			return runREAD(w);
-		} else if(stp.equals("END")) {
-			return Type.STOP;
 		}
 		
 		return Type.STOP;
@@ -46,14 +44,16 @@ public class Step_PM extends Step {
 		if(t0.equalsIgnoreCase("Object Permissions")) {
 			Integer numberOfColumnHidden = 0;
 			for(int i=index_start; i<=index_end; i++) {
+				Integer tabIndex = i - index_start - numberOfColumnHidden;
 				boolean isColumnHidden = w.currentSheet.isColumnHidden(i);
 				if(isColumnHidden == false) {
-					String currentId = IDS.get(i - index_start - numberOfColumnHidden);
+					String currentId = IDS.get(tabIndex);
 					String v = PRUtil.getCell(w, i);
 					
 					if(!PRUtil.isBlank(v)) {
 						//PRUtil.debug(w, currentId, false);
-						XML_PermissionSet f = (XML_PermissionSet) w.getCorrectCorrectFile(XML_PermissionSet.class, currentId, isColumnHidden);
+						XML_PermissionSet f = (XML_PermissionSet) w.getCorrectCorrectFile(XML_PermissionSet.class, currentId);
+						f.label = header_labels.get(tabIndex);
 						
 						Node objPerm = f.file.createElement("objectPermissions");
 						
@@ -92,8 +92,10 @@ public class Step_PM extends Step {
 		
 		if(t0.equalsIgnoreCase("Field") && t1.equalsIgnoreCase("Field API Name")) {
 			return Type.NEXT_STEP;
+		} else {
+			return Type.STAY_IN_SAME_STEP;
 		}
-		return Type.STAY_IN_SAME_STEP;
+		
 	}
 
 	private Type runINDEX(PRWorkbook w) {
@@ -103,10 +105,6 @@ public class Step_PM extends Step {
 		
 		boolean success = (this.index_start != -1 && this.index_end != -1);
 		
-		if(!success) {
-			//PRUtil.info(w, "MARKUP MISSING", "'Permission Sets' markup not found in object's sheet");
-		}
-
 		return success ? Type.NEXT_STEP : Type.STOP;
 	}
 
@@ -132,7 +130,7 @@ public class Step_PM extends Step {
 		//PRUtil.debug(w, "ENTER READ " + field, false);
 		if(field.equalsIgnoreCase("Related Data (Objects & Columns)")) {
 			//PRUtil.debug(w, "should stop", false);
-			return Type.NEXT_STEP;
+			return Type.STOP;
 		}
 		
 		
@@ -152,7 +150,8 @@ public class Step_PM extends Step {
 					
 					String v = PRUtil.getCell(w, i);
 					if(!PRUtil.isBlank(v)) {
-						XML_PermissionSet f = (XML_PermissionSet) w.getCorrectCorrectFile(XML_PermissionSet.class, currentId, isColumnHidden);
+						XML_PermissionSet f = (XML_PermissionSet) w.getCorrectCorrectFile(XML_PermissionSet.class, currentId);
+						f.label = header_labels.get(tabIndex);
 						
 						Node fieldPerm = f.file.createElement("fieldPermissions");
 						
@@ -162,7 +161,7 @@ public class Step_PM extends Step {
 						fieldPerm.appendChild(fieldNode).appendChild(f.file.createTextNode(object.trim() + "." + strField.trim()));
 						fieldPerm.appendChild(readP).appendChild(f.file.createTextNode(v.contains("R") ? "true" : "false"));
 						fieldPerm.appendChild(editP).appendChild(f.file.createTextNode(v.contains("E") ? "true" : "false"));
-						
+						System.out.println("PPPPPPPPPPPPPPPPPPMMMMMMMMMMMMMMMMMMMMMMMM - " + object.trim() + "." + strField.trim());
 						f.fieldPerms.add(fieldPerm);
 					}
 				} else {
@@ -193,16 +192,20 @@ public class Step_PM extends Step {
 			String header = PRUtil.getCell(w, i);
 			if(isColumnHidden == false) {
 				
+				String[] IDS_info = header.split("\n");
+				String api_name = null;
+				String label = null;
+				if(IDS_info.length == 1) {
+					api_name = header;
+					label = header.replaceAll("_", " ");
+				} else {
+					api_name = IDS_info[0];
+					label = IDS_info[1];
+				}
 				
-				
-				String filename = header + ".permissionset";
-				
-				XML_PermissionSet pmF = new XML_PermissionSet(filename, isColumnHidden);
-				pmF.label = header.replaceAll("_", " ");
-				
-				w.Allfiles.add(pmF);
-				IDS.add(filename);
-				headers.add(header);
+				IDS.add(api_name + ".permissionset");
+				headers.add(api_name);
+				header_labels.add(label);
 				w.fpackage.p_pm.add(header);
 			} else {
 				System.out.println("HIDDEN PERMISSION SET - " + header + " " + w.currentSheet.getSheetName());

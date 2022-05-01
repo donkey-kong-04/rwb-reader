@@ -66,7 +66,7 @@ public class Step_Layout extends Step {
 				
 				String currentId = IDS.get(tabIndex);
 				
-				XML_Layout f = (XML_Layout) w.getCorrectCorrectFile(XML_Layout.class, currentId, isColumnHidden);
+				XML_Layout f = (XML_Layout) w.getCorrectCorrectFile(XML_Layout.class, currentId);
 				
 				//New related list found
 				if(!PRUtil.isBlank(relatedAPIName)) 
@@ -153,7 +153,7 @@ public class Step_Layout extends Step {
 					
 					String currentId = IDS.get(i - index_start - numberOfColumnHidden);
 					
-					XML_Layout f = (XML_Layout) w.getCorrectCorrectFile(XML_Layout.class, currentId, isColumnHidden);
+					XML_Layout f = (XML_Layout) w.getCorrectCorrectFile(XML_Layout.class, currentId);
 					
 					//Section 
 					if(type.equalsIgnoreCase("section") || type.equalsIgnoreCase("section 1") || type.equalsIgnoreCase("section 2")) 

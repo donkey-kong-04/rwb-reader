@@ -19,8 +19,8 @@ public class XML_Profile extends XML_File {
 	public ArrayList<Node> layoutPerms = new ArrayList<Node>();
 	public ArrayList<Node> rtvPerms = new ArrayList<Node>();
 	
-	public XML_Profile(String filename, boolean isHidden) {
-		super("Profile", filename, "unpackaged\\profiles\\", isHidden);
+	public XML_Profile(String filename) {
+		super("Profile", filename, "unpackaged\\profiles\\");
 		
 	}
 	

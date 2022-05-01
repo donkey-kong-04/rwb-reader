@@ -14,9 +14,9 @@ public class XML_Layout extends XML_File {
 	public ArrayList<Node> relatedLists;
 	public Node currentRelatedList;
 	
-	public XML_Layout(String filename, boolean isHidden) {
+	public XML_Layout(String filename) {
 		
-		super("Layout", filename, "unpackaged\\layouts\\", isHidden);
+		super("Layout", filename, "unpackaged\\layouts\\");
 		
 		
 		this.sections = new ArrayList<Node>();

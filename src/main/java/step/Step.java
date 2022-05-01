@@ -29,7 +29,7 @@ public abstract class Step {
 	 * 		Cell index = Data of the header previously read
 	 */
 	ArrayList<String> headers = new ArrayList<String>();
-	
+	ArrayList<String> header_labels = new ArrayList<String>();
 	
 	protected String[] STEPS;
 	protected int STEP;
@@ -62,6 +62,7 @@ public abstract class Step {
 	}
 
 	public abstract void getSheetIDS(PRWorkbook w);
+	
 	public abstract String[] getSteps();
 	
 	public abstract Type runStep(PRWorkbook w);

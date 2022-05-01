@@ -12,7 +12,6 @@ public class Step_RecordType extends Step {
 	String object;
 	
 	ArrayList<Node> sheetRecordTypes = new ArrayList<Node>();
-	ArrayList<String> recordTypeLabels = new ArrayList<String>();
 	
 	@Override
 	public String[] getSteps() {
@@ -60,7 +59,7 @@ public class Step_RecordType extends Step {
 					}
 					
 					
-					XML_Object f = (XML_Object) w.getCorrectCorrectFile(XML_Object.class, IDS.get(tabIndex), isColumnHidden);
+					XML_Object f = (XML_Object) w.getCorrectCorrectFile(XML_Object.class, IDS.get(tabIndex));
 					
 					Node recordTypes = f.file.createElement("recordTypes");
 					Node fullname  = f.file.createElement("fullName");
@@ -69,7 +68,7 @@ public class Step_RecordType extends Step {
 					
 					recordTypes.appendChild(fullname).appendChild(f.file.createTextNode(headers.get(tabIndex).trim()));
 					recordTypes.appendChild(active).appendChild(f.file.createTextNode(isActive));
-					recordTypes.appendChild(label).appendChild(f.file.createTextNode(recordTypeLabels.get(tabIndex).trim()));
+					recordTypes.appendChild(label).appendChild(f.file.createTextNode(header_labels.get(tabIndex).trim()));
 					
 					sheetRecordTypes.add(recordTypes);
 					f.recordTypes.add(recordTypes);
@@ -130,7 +129,7 @@ public class Step_RecordType extends Step {
 				if(isColumnHidden == false) {
 					String currentId = IDS.get(tabIndex);
 					
-					XML_Object f = (XML_Object) w.getCorrectCorrectFile(XML_Object.class, currentId, isColumnHidden);
+					XML_Object f = (XML_Object) w.getCorrectCorrectFile(XML_Object.class, currentId);
 					String recordTypePicklistValues = PRUtil.getCell(w, i);
 					
 					//Created in previous step
@@ -244,11 +243,11 @@ public class Step_RecordType extends Step {
 				recordTypeLabel = recordTypeInfo[1];
 			}
 			
-			recordTypeLabels.add(recordTypeLabel);
 			String filename = object + ".object";
 			if(!isColumnHidden) {
 				IDS.add(filename);
 				headers.add(recordTypeApi);
+				header_labels.add(recordTypeLabel);
 				
 				w.recordTypes.add(recordTypeApi);
 				w.fpackage.p_recordTypes.add(object + "." + recordTypeApi);

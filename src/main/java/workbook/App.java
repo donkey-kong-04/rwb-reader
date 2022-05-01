@@ -7,6 +7,8 @@ import javax.xml.transform.TransformerException;
 public class App {
 
 	public static void main(String[] args) {
+		System.out.println("BEGIN");
+		
 		System.setProperty("line.separator", "\n");
 		
 		PRWorkbook w = new PRWorkbook();

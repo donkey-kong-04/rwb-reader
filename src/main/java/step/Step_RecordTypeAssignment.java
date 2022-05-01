@@ -62,7 +62,7 @@ public class Step_RecordTypeAssignment extends Step {
 			
 			if(!PRUtil.isBlank(profileName)) {
 				String profileID = profileName + ".profile";
-				XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, profileID, false);
+				XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, profileID);
 				
 				for(int i=0; i<recordTypes.size(); i++) {
 					
