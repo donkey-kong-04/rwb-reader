@@ -56,7 +56,7 @@ public class Step_RecordType extends Step {
 					String isActive = (PRUtil.getCell(w, i).equalsIgnoreCase("x") ? "true" : "false");
 					
 					if(isActive.equals("false")) {
-						PRUtil.info(w, "INFO", "Record type is set as inactive : " + headers.get(tabIndex));
+						System.out.println("INFO - Record type is set as inactive : " + headers.get(tabIndex));
 					}
 					
 					
@@ -138,7 +138,7 @@ public class Step_RecordType extends Step {
 					
 					if(!PRUtil.isBlank(recordTypePicklistValues)) {
 						if(!type.toLowerCase().contains("picklist")) {
-							PRUtil.info(w, "WARNING", fieldAPIName + " is not defined as a picklist but it has picklist values assigned.");
+							System.out.println("WARNING - " + fieldAPIName + " is not defined as a picklist but it has picklist values assigned.");
 						}
 						
 						
@@ -186,7 +186,7 @@ public class Step_RecordType extends Step {
 		boolean success = (this.index_start != -1 && this.index_end != -1);
 		
 		if(!success) {
-			PRUtil.info(w, "MARKUP MISSING", "'Record Types' markup not found in object sheet");
+			//PRUtil.info(w, "MARKUP MISSING", "'Record Types' markup not found in object sheet");
 		}
 		
 	

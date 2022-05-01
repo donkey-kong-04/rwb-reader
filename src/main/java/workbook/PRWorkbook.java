@@ -175,7 +175,7 @@ public class PRWorkbook {
 			
 			if(f.filename.equalsIgnoreCase(filename)) {
 				if(!f.filename.equals(filename)) {
-					PRUtil.info(this, "WARNING", "Filename '" + filename + "' & '" + f.filename + "' do not match on a sensitive level. It can create deployment issue");
+					System.out.println("WARNING - Filename '" + filename + "' & '" + f.filename + "' do not match on a sensitive level. It can create deployment issue.");
 				}
 				if(f.isHidden == false && isColumnHidden == true) {
 					f.isHidden = true;

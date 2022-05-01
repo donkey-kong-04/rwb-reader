@@ -104,7 +104,7 @@ public class Step_PM extends Step {
 		boolean success = (this.index_start != -1 && this.index_end != -1);
 		
 		if(!success) {
-			PRUtil.info(w, "MARKUP MISSING", "'Permission Sets' markup not found in object's sheet");
+			//PRUtil.info(w, "MARKUP MISSING", "'Permission Sets' markup not found in object's sheet");
 		}
 
 		return success ? Type.NEXT_STEP : Type.STOP;

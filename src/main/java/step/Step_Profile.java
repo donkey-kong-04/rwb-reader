@@ -50,7 +50,7 @@ public class Step_Profile extends Step {
 	
 	public void debugStepNotPassed(PRWorkbook w) {
 		if(this.STEPS[this.STEP].equals("OBJ_PERM")) {
-			PRUtil.info(w, "MARKUP MISSING", "'Object permissions' markup should be found in object's sheet");
+			System.out.println("MARKUP MISSING - 'Object permissions' markup should be found in object's sheet " + w.currentSheet.getSheetName());
 		}
 	}
 	
@@ -63,7 +63,7 @@ public class Step_Profile extends Step {
 		boolean success = (this.index_start != -1 && this.index_end != -1);
 		
 		if(!success) {
-			PRUtil.info(w, "MARKUP MISSING", "'Profiles' markup not found in object's sheet");
+			//PRUtil.info(w, "MARKUP MISSING", "'Profiles' markup not found in object's sheet");
 		}
 		
 		

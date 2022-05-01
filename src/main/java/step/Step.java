@@ -157,12 +157,12 @@ public abstract class Step {
 			//At least one or we consider the file in an incorrect format
 			if(PRUtil.isBlank(header) && i==index_start) {
 				index_end = index_start - 1;
-				PRUtil.info(w, "INFO", "Markup is present inside the sheet, but no associated member");
+				//PRUtil.info(w, "INFO", "Markup is present inside the sheet, but no associated member");
 			} 
 			//End earlier the loop
 			else if(PRUtil.isBlank(header)) {
 				index_end = i - 1;
-				PRUtil.info(w, "INFO", "Markup ends earlier. Total members in the sheet = " + (index_end - index_start + 1));
+				//PRUtil.info(w, "INFO", "Markup ends earlier. Total members in the sheet = " + (index_end - index_start + 1));
 			} 
 		}
 		//System.out.println("reviewing index start - end: " + index_start + " - " + index_end);

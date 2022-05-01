@@ -225,7 +225,7 @@ public class Step_Layout extends Step {
 							}
 							
 							if((isEdit || isRequired) && type.toLowerCase().contains("formul")) {
-								PRUtil.info(w, "WARNING", apiname + " should be read-only since it is a formula");
+								System.out.println("WARNING - " + apiname + " should be read-only since it is a formula");
 							}
 							
 							Node layoutItems = f.file.createElement("layoutItems");
@@ -264,7 +264,7 @@ public class Step_Layout extends Step {
 		boolean success = (index_start != -1 && index_end != -1);
 		
 		if(!success) {
-			PRUtil.info(w, "MARKUP MISSING", "'Page Layouts' markup not found in object's sheet");
+			//PRUtil.info(w, "MARKUP MISSING", "'Page Layouts' markup not found in object's sheet");
 		}
 
 
@@ -281,7 +281,7 @@ public class Step_Layout extends Step {
 		}
 		
 		else if(stp.equals("READ_FIELDS")) {
-			PRUtil.info(w, "MARKUP MISSING", "'Related Data (Objects & Columns)' markup not found");
+			//PRUtil.info(w, "MARKUP MISSING", "'Related Data (Objects & Columns)' markup not found");
 		}
 	}
 	
