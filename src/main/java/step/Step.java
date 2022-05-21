@@ -1,8 +1,11 @@
 package step;
 
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +35,8 @@ public abstract class Step {
 	ArrayList<String> header_labels = new ArrayList<String>();
 	
 	protected String[] STEPS;
+	protected Map<String, Method> STEPS2;
+	
 	protected int STEP;
 	
 	protected int index_start;
@@ -48,6 +53,9 @@ public abstract class Step {
 	}
 	
 	public Type run(PRWorkbook w) {
+		if(PRUtil.exit == true) {
+			return Type.STOP;
+		}
 		
 		if(this.isCorrectSheet(w, w.currentSheet.getSheetName())) {
 			Type t = runStep(w);
@@ -66,6 +74,15 @@ public abstract class Step {
 	public abstract String[] getSteps();
 	
 	public abstract Type runStep(PRWorkbook w);
+	
+	public Type runStep2(PRWorkbook w) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		if(STEP > (STEPS.length - 1) ) {
+			PRUtil.fatal(w, "ALGORITHM ERROR : Asking for a STEP that is not configured");
+		}
+		
+		Method m = STEPS2.get("2");
+		return (Type) m.invoke(this, w);
+	}
 	
 	public boolean isCorrectSheet(PRWorkbook w, String sheetName) {
 		boolean readSheet = true;

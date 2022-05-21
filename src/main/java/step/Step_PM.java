@@ -161,7 +161,7 @@ public class Step_PM extends Step {
 						fieldPerm.appendChild(fieldNode).appendChild(f.file.createTextNode(object.trim() + "." + strField.trim()));
 						fieldPerm.appendChild(readP).appendChild(f.file.createTextNode(v.contains("R") ? "true" : "false"));
 						fieldPerm.appendChild(editP).appendChild(f.file.createTextNode(v.contains("E") ? "true" : "false"));
-						System.out.println("PPPPPPPPPPPPPPPPPPMMMMMMMMMMMMMMMMMMMMMMMM - " + object.trim() + "." + strField.trim());
+
 						f.fieldPerms.add(fieldPerm);
 					}
 				} else {
@@ -208,7 +208,7 @@ public class Step_PM extends Step {
 				header_labels.add(label);
 				w.fpackage.p_pm.add(header);
 			} else {
-				System.out.println("HIDDEN PERMISSION SET - " + header + " " + w.currentSheet.getSheetName());
+				PRUtil.info(w, "HIDDEN PERMISSION SET", header + " " + w.currentSheet.getSheetName());
 			}
 		}
 	}

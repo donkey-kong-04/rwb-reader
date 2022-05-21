@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.TreeSet;
 
 import javax.xml.transform.TransformerException;
@@ -15,8 +14,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbookFactory;
 
-
+import app.Config;
+import app.ConfigManager;
 import file.XML_Application;
 import file.XML_File;
 import file.XML_Layout;
@@ -54,8 +55,8 @@ public class PRWorkbook {
 	public PRWorkbook() {
 		
 		//Loading properties file
-		c = Config.loadConfig();
-		
+		//c = Config.loadConfig();
+		c = ConfigManager.selected;
 		
 		
 		Allfiles = new ArrayList<XML_File>();
@@ -63,8 +64,7 @@ public class PRWorkbook {
 		Allfiles.add(fpackage);
 		
 		try {
-			FileInputStream excelFile = new FileInputStream(new File(c.filepath));
-			workbook = new XSSFWorkbook(excelFile);
+			workbook = XSSFWorkbookFactory.createWorkbook(new File(c.filepath), true);
 			
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -75,6 +75,9 @@ public class PRWorkbook {
 		for(int i=0; i<workbook.getNumberOfSheets(); i++) {
 			Sheet sheet = workbook.getSheetAt(i);
 			
+			if(PRUtil.exit == true) {
+				return;
+			}
 			//ignore hidden sheets
 			this.currentSheet = sheet;
 			
@@ -100,7 +103,7 @@ public class PRWorkbook {
 					}
 				}
 			} else {
-				System.out.println("HIDDEN SHEET - " + sheet.getSheetName());
+				PRUtil.info(null, "HIDDEN SHEET", sheet.getSheetName());
 			}
 		}
 	}
@@ -109,9 +112,14 @@ public class PRWorkbook {
 	private void readRows(Sheet s) {
 		Iterator<Row> rit = s.iterator();
 		
+		
 		row_index = 0;
 		while(rit.hasNext()) {
 			Row r = rit.next();
+			
+			if(PRUtil.exit == true) {
+				return;
+			}
 			
 			this.currentRow = r;
 			readRow(s, r);
@@ -122,6 +130,10 @@ public class PRWorkbook {
 	private void readRow(Sheet s, Row r) {
 		
 		for(int i=0; i<steps.size(); i++) {
+			
+			if(PRUtil.exit == true) {
+				return;
+			}
 			currentStep = steps.get(i);
 			
 			if(currentStep.status == Step.Type.STAY_IN_SAME_STEP || currentStep.status == Step.Type.NEXT_STEP) {
@@ -160,7 +172,7 @@ public class PRWorkbook {
 		
 		if(c.PROFILES_TO_IGNORE.contains(name.replace(".profile", ""))) {
 			doNotDeploy = true;
-			System.out.println("REMOVE FROM PACKAGE: " + name);
+			PRUtil.info(null, "REMOVE FROM PACKAGE", name);
 		}
 		return doNotDeploy;
 	}
@@ -173,7 +185,7 @@ public class PRWorkbook {
 			
 			if(f.filename.equalsIgnoreCase(filename)) {
 				if(!f.filename.equals(filename)) {
-					System.out.println("WARNING - Filename '" + filename + "' & '" + f.filename + "' do not match on a sensitive level. It can create deployment issue.");
+					PRUtil.info(null, "WARNING", "Filename - " + filename + "' & '" + f.filename + "' do not match on a sensitive level. It can create deployment issue.");
 				}
 				
 				return f;
@@ -221,7 +233,7 @@ public class PRWorkbook {
 	}
 	
 	public void postCheck() {
-		System.out.println("------------------------------------------------------------------------");
+		//System.out.println("------------------------------------------------------------------------");
 		TreeSet<String> sets = new TreeSet<String>();
 		for(String s : recordTypeLinks) {
 			boolean found = false;
@@ -232,7 +244,7 @@ public class PRWorkbook {
 			}
 			
 			if(found == false && sets.add(s)) {
-				System.out.println("Record Type definition not found : " + s);
+				PRUtil.info(null, "NOT FOUND", "Record Type definition not found : " + s);
 			}
 		}
 		sets = new TreeSet<String>();
@@ -244,7 +256,7 @@ public class PRWorkbook {
 				}
 			}
 			if(found == false && sets.add(s)) {
-				System.out.println("Layout definition not found : " + s);
+				PRUtil.info(null, "NOT FOUND", "Layout definition not found : " + s);
 			}
 		}
 	}

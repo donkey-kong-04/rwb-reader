@@ -1,11 +1,24 @@
 package utils;
 
+import java.awt.Color;
+
+import javax.swing.JTextPane;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
+
 import org.apache.poi.ss.usermodel.Cell;
 
+import app.UserInterface;
 import workbook.PRWorkbook;
 
 
 public class PRUtil {
+	public static boolean exit = false;
+	
 	public static boolean isBlank(String str) {
 		return (str == null || str.trim().equals(""));
 	}
@@ -13,25 +26,40 @@ public class PRUtil {
 	public static void info(PRWorkbook w, String subject, String msg) {
 		debug(w, subject, msg, false);
 	}
+	public static void fatal(PRWorkbook w, String msg) {
+		debug(w, "FATAL", msg, true);
+	}
 	
 	private static void debug(PRWorkbook w, String subject, String msg, boolean required) {
+		
+		appendToPane(UserInterface.debugInfos2,"======== " + subject + " : \n", required? Color.RED : Color.BLUE, Color.WHITE);
+		
 		if(required) {
-			System.err.println("------------------------------------------------------------------------");
-			System.err.println(w.currentSheet.getSheetName().trim() + " : " +   String.valueOf((char) (65 + w.currentCell)) + w.row_index +  (w.currentStep == null ? "" : " : " +  w.currentStep.getClass().toString().split("\\.")[1]));
-			
-			System.err.println(">> " + subject + " : " +  msg);
-			System.exit(0);
+			appendToPane(UserInterface.debugInfos2,">>>> " + msg + "\n", Color.RED, Color.WHITE);
+			exit = true;
 		} else {
-			System.out.println("------------------------------------------------------------------------");
-			System.out.println(w.currentSheet.getSheetName().trim() + " : " +   String.valueOf((char) (65 + w.currentCell)) + w.row_index +  (w.currentStep == null ? "" : " : " +  w.currentStep.getClass().toString().split("\\.")[1]));
-			
-			System.out.println("");
-			System.out.println(">> " + subject + " : " + msg);
+			appendToPane(UserInterface.debugInfos2,">>>> " + msg + "\n", Color.BLACK, Color.WHITE);
 		}
 		
-		
-		
 	}
+	
+	public static void appendToPane(JTextPane textPane, String text, Color foregroundColor, Color backgroundColor) {
+
+        StyledDocument doc = textPane.getStyledDocument();
+        
+    	SimpleAttributeSet keyWord = new SimpleAttributeSet();
+    	StyleConstants.setForeground(keyWord, foregroundColor);
+    	StyleConstants.setBold(keyWord, true);
+        
+        
+        try {
+			doc.insertString(doc.getLength(), text, keyWord );
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    }
 	
 	public static String getCell(PRWorkbook w, int i) {
 		
@@ -48,7 +76,5 @@ public class PRUtil {
 		return str;
 	}
 	
-	public static void fatal(PRWorkbook w, String msg) {
-		debug(w, "FATAL", msg, true);
-	}
+	
 }

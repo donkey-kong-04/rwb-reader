@@ -26,7 +26,6 @@ public class XML_PermissionSet extends XML_File {
 	public void buildFile() {
 		Node lab = this.file.createElement("label");
 		
-		System.out.println("Label: " + label);
 		this.root.appendChild(lab).appendChild(file.createTextNode(label));
 		// TODO Auto-generated method stub
 		

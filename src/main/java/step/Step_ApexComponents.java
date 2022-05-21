@@ -177,7 +177,7 @@ public class Step_ApexComponents extends Step {
 				headers.add(header);
 				IDS.add(filename);
 			} else {
-				System.out.println("HIDDEN PROFILE IN APEX COMPONENTS - " + header);
+				PRUtil.info(w, "HIDDEN PROFILE IN APEX COMPONENTS", header);
 			}
 			
 		}

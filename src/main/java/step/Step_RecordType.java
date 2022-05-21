@@ -55,7 +55,7 @@ public class Step_RecordType extends Step {
 					String isActive = (PRUtil.getCell(w, i).equalsIgnoreCase("x") ? "true" : "false");
 					
 					if(isActive.equals("false")) {
-						System.out.println("INFO - Record type is set as inactive : " + headers.get(tabIndex));
+						PRUtil.info(w, "INFO", "Record type is set as inactive : " + headers.get(tabIndex));
 					}
 					
 					
@@ -137,7 +137,7 @@ public class Step_RecordType extends Step {
 					
 					if(!PRUtil.isBlank(recordTypePicklistValues)) {
 						if(!type.toLowerCase().contains("picklist")) {
-							System.out.println("WARNING - " + fieldAPIName + " is not defined as a picklist but it has picklist values assigned.");
+							PRUtil.info(w, "WARNING", fieldAPIName + " is not defined as a picklist but it has picklist values assigned.");
 						}
 						
 						
@@ -252,7 +252,7 @@ public class Step_RecordType extends Step {
 				w.recordTypes.add(recordTypeApi);
 				w.fpackage.p_recordTypes.add(object + "." + recordTypeApi);
 			} else {
-				System.out.println("HIDDEN RECORD TYPE  - " + object + "." + recordTypeApi);
+				PRUtil.info(w, "HIDDEN RECORD TYPE", object + "." + recordTypeApi);
 			}
 		}
 	}

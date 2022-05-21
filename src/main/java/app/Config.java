@@ -1,4 +1,4 @@
-package workbook;
+package app;
 
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import utils.PRUtil;
 
 public class Config {
+	public String Name;
 	public String SHEET_APEX;
 	public String SHEET_TAB_VISIBILITY;
 	public String SHEET_LAYOUT_ASSIGNMENT;
@@ -23,6 +24,7 @@ public class Config {
 	
 	public static Config c;
 	
+	/*
 	public static Config loadConfig() {
 		if(c == null) {
 			c = new Config();
@@ -71,5 +73,5 @@ public class Config {
 			}
 		}
 		return c;
-	}
+	}*/
 }

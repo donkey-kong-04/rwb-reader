@@ -225,7 +225,7 @@ public class Step_Layout extends Step {
 							}
 							
 							if((isEdit || isRequired) && type.toLowerCase().contains("formul")) {
-								System.out.println("WARNING - " + apiname + " should be read-only since it is a formula");
+								PRUtil.info(w, "WARNING", apiname + " should be read-only since it is a formula");
 							}
 							
 							Node layoutItems = f.file.createElement("layoutItems");
@@ -338,7 +338,7 @@ public class Step_Layout extends Step {
 				w.layouts.add(header);
 				w.fpackage.p_layouts.add(object.trim() + "-" + header);
 			} else {
-				System.out.println("HIDDEN LAYOUT - " + header);
+				PRUtil.info(w, "HIDDEN LAYOUT", header);
 			}
 		}
 	}

@@ -2,7 +2,6 @@ package file;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
@@ -19,7 +18,8 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import workbook.PRWorkbook;
+import utils.PRUtil;
+
 
 
 
@@ -61,6 +61,7 @@ public abstract class XML_File {
 			this.file.appendChild(this.root);
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
+			PRUtil.info(null, "Exception: ", e.getMessage());
 			System.exit(1);
 		}
 	}
@@ -75,9 +76,11 @@ public abstract class XML_File {
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			PRUtil.info(null, "Exception: ", e.getMessage());
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			PRUtil.info(null, "Exception: ", e.getMessage());
 		}
 		
 	}
