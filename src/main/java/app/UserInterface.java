@@ -9,6 +9,8 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.xml.transform.TransformerException;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import utils.PRUtil;
 import workbook.PRWorkbook;
 
@@ -114,28 +116,29 @@ public class UserInterface {
 				PRUtil.exit = false;
 				
 				System.setProperty("line.separator", "\n");
-				
-				PRWorkbook w = new PRWorkbook();
-				debugInfos2.setText("");
-				PRUtil.info(null, "BEGIN", "");
-				
-				w.read();
-				
-				if(PRUtil.exit == true) {
-					w.end();
-					return;
-				}
-				
-				w.postCheck();
 				try {
+					PRWorkbook w = new PRWorkbook();
+					debugInfos2.setText("");
+					PRUtil.info(null, "BEGIN", "");
+					
+					w.read();
+					
+					if(PRUtil.exit == true) {
+						w.end();
+						return;
+					}
+					
+					w.postCheck();
 					w.writeFiles();
-				} catch (TransformerException ex) {
-					// TODO Auto-generated catch block
-					ex.printStackTrace();
+					
+					
+					w.end();
+					PRUtil.info(null, "END", "");
+				} catch(Exception e1) {
+					String stacktrace = ExceptionUtils.getStackTrace(e1);
+					
+					PRUtil.fatal(null, stacktrace);
 				}
-				
-				w.end();
-				PRUtil.info(null, "END", "");
 			}
 		});
 		btnNewButton_2.setBounds(181, 105, 250, 43);
