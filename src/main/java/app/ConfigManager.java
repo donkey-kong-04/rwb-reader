@@ -35,9 +35,10 @@ public class ConfigManager {
 				
 				Config c = new Config();
 				
-				
+				boolean _default = false;
 				c.Name = (String) j.get("name");
 				
+				c.selected = (Boolean) j.get("selected");
 				c.SHEET_APEX = (String) j.get("SHEET_APEX");
 				c.SHEET_TAB_VISIBILITY = (String) j.get("");
 				c.SHEET_LAYOUT_ASSIGNMENT = (String) j.get("SHEET_LAYOUT_ASSIGNMENT");
@@ -69,8 +70,7 @@ public class ConfigManager {
 				c.package_folder = (String) j.get("folder");
 				c.full_debug = (Boolean) j.get("full_debug");
 				
-				if(first) {
-					first = false;
+				if(c.selected) {
 					selected = c;
 				}
 				

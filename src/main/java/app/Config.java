@@ -21,7 +21,7 @@ public class Config {
 	public String filepath;
 	public String package_folder;
 	public boolean full_debug;
-	
+	public boolean selected;
 	public static Config c;
 	
 	/*

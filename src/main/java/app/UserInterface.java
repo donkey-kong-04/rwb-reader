@@ -15,6 +15,7 @@ import workbook.PRWorkbook;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JScrollPane;
@@ -39,6 +40,7 @@ public class UserInterface {
 	private JLabel config_name;
 	public static JTextPane debugInfos2;
 	
+	private JButton selected;
 	/**
 	 * Create the application.
 	 */
@@ -66,10 +68,20 @@ public class UserInterface {
 				
 				public void actionPerformed(ActionEvent e) {
 					JButton button = (JButton) e.getSource();
+					selected.setBackground(Color.WHITE);
+					
+					button.setBackground(Color.ORANGE);
+					selected = button;
 					loadConfig(button.getText());
 				}
 			});
 			btnNewButton.setBounds(0, i, 104, 31);
+			if(c.selected) {
+				btnNewButton.setBackground(Color.ORANGE);
+				selected = btnNewButton;
+			} else {
+				btnNewButton.setBackground(Color.WHITE);
+			}
 			frame.getContentPane().add(btnNewButton);
 			i += 32;
 		}
@@ -297,5 +309,6 @@ public class UserInterface {
 		tabvisibility.setText(c.SHEET_TAB_VISIBILITY);
 		
 		ConfigManager.selected = c;
+		
 	}
 }
