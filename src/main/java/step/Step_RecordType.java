@@ -185,7 +185,7 @@ public class Step_RecordType extends Step {
 		boolean success = (this.index_start != -1 && this.index_end != -1);
 		
 		if(!success) {
-			//PRUtil.info(w, "MARKUP MISSING", "'Record Types' markup not found in object sheet");
+			PRUtil.info(w, "MARKUP MISSING", "'Record Types' markup not found in object sheet");
 		}
 		
 	
