@@ -31,14 +31,17 @@ public class PRUtil {
 	}
 	
 	private static void debug(PRWorkbook w, String subject, String msg, boolean required) {
-		
-		appendToPane(UserInterface.debugInfos2,"======== " + subject + " : \n", required? Color.RED : Color.BLUE, Color.WHITE);
+		String additionalInfos = "";
+		if(w != null) {
+			additionalInfos += "Sheet - " + w.currentSheet.getSheetName();
+		}
+		appendToPane(UserInterface.debugInfos2,additionalInfos + " ======== " + subject + " : " + "\n", required? Color.RED : Color.BLUE, Color.WHITE);
 		
 		if(required) {
-			appendToPane(UserInterface.debugInfos2,">>>> " + msg + "\n", Color.RED, Color.WHITE);
+			appendToPane(UserInterface.debugInfos2, msg + "\n\n", Color.RED, Color.WHITE);
 			exit = true;
 		} else {
-			appendToPane(UserInterface.debugInfos2,">>>> " + msg + "\n", Color.BLACK, Color.WHITE);
+			appendToPane(UserInterface.debugInfos2, msg + "\n\n", Color.BLACK, Color.WHITE);
 		}
 		
 	}

@@ -27,15 +27,12 @@ public class ConfigManager {
 			
 			JSONArray jsonConfigs = (JSONArray) obj;
 			
-			boolean first = true;
-			
 			for(Object o : jsonConfigs) {
 				
 				JSONObject j = (JSONObject) o;
 				
 				Config c = new Config();
 				
-				boolean _default = false;
 				c.Name = (String) j.get("name");
 				
 				c.selected = (Boolean) j.get("selected");
@@ -43,12 +40,20 @@ public class ConfigManager {
 				c.SHEET_TAB_VISIBILITY = (String) j.get("");
 				c.SHEET_LAYOUT_ASSIGNMENT = (String) j.get("SHEET_LAYOUT_ASSIGNMENT");
 				c.SHEET_RECORD_TYPE_ASSIGNMENT = (String) j.get("SHEET_RECORD_TYPE_ASSIGNMENT");
+				c.SHEET_APEX = (String) j.get("SHEET_APEX");
+				
 				c.SHEET_LISTVIEW = (String) j.get("SHEET_LISTVIEW");
 				c.SHEET_SHARING_RULES = (String) j.get("SHEET_SHARING_RULES");
 				c.SHEET_TAB_VISIBILITY = (String) j.get("SHEET_TAB_VISIBILITY");
 				String[] toIgnores = ((String) j.get("SHEETS_TO_IGNORE")).split(",");
 			
 				c.SHEETS_TO_IGNORE = new ArrayList<String>();
+				c.SHEETS_TO_IGNORE.add(c.SHEET_APEX);
+				c.SHEETS_TO_IGNORE.add(c.SHEET_TAB_VISIBILITY);
+				c.SHEETS_TO_IGNORE.add(c.SHEET_LAYOUT_ASSIGNMENT);
+				c.SHEETS_TO_IGNORE.add(c.SHEET_RECORD_TYPE_ASSIGNMENT);
+				c.SHEETS_TO_IGNORE.add(c.SHEET_LISTVIEW);
+				c.SHEETS_TO_IGNORE.add(c.SHEET_SHARING_RULES);
 				for(String i : toIgnores) {
 					c.SHEETS_TO_IGNORE.add(i);
 				}
@@ -76,6 +81,7 @@ public class ConfigManager {
 				
 				configs.put(c.Name, c);
 			}
+			
 			reader.close();
 		
 	}

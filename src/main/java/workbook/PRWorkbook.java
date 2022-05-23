@@ -75,7 +75,7 @@ public class PRWorkbook {
 	public void read() {
 		for(int i=0; i<workbook.getNumberOfSheets(); i++) {
 			Sheet sheet = workbook.getSheetAt(i);
-			
+			System.out.println(sheet.getSheetName());
 			if(PRUtil.exit == true) {
 				return;
 			}

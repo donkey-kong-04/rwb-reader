@@ -62,12 +62,6 @@ public class Step_Profile extends Step {
 		
 		boolean success = (this.index_start != -1 && this.index_end != -1);
 		
-		if(!success) {
-			//PRUtil.info(w, "MARKUP MISSING", "'Profiles' markup not found in object's sheet");
-		}
-		
-		
-		
 		return success ? Type.NEXT_STEP : Type.STOP;
 	}
 	
