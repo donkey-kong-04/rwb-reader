@@ -145,7 +145,7 @@ public class UserInterface {
 				}
 			}
 		});
-		btnNewButton_2.setBounds(93, 105, 172, 43);
+		btnNewButton_2.setBounds(62, 105, 130, 43);
 		execution_panel2.add(btnNewButton_2);
 		
 		JLabel lblNewLabel_1 = new JLabel("Debug info:");
@@ -177,8 +177,22 @@ public class UserInterface {
 				}
 			}
 		});
-		btnNewButton_1.setBounds(334, 105, 172, 43);
+		btnNewButton_1.setBounds(233, 105, 143, 43);
 		execution_panel2.add(btnNewButton_1);
+		
+		JButton btnNewButton_3 = new JButton("Open config file");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Desktop.getDesktop().open(new File("./reader.json"));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton_3.setBounds(430, 105, 150, 43);
+		execution_panel2.add(btnNewButton_3);
 		
 		
 		
