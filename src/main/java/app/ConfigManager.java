@@ -48,12 +48,9 @@ public class ConfigManager {
 				String[] toIgnores = ((String) j.get("SHEETS_TO_IGNORE")).split(",");
 			
 				c.SHEETS_TO_IGNORE = new ArrayList<String>();
-				c.SHEETS_TO_IGNORE.add(c.SHEET_APEX);
-				c.SHEETS_TO_IGNORE.add(c.SHEET_TAB_VISIBILITY);
-				c.SHEETS_TO_IGNORE.add(c.SHEET_LAYOUT_ASSIGNMENT);
-				c.SHEETS_TO_IGNORE.add(c.SHEET_RECORD_TYPE_ASSIGNMENT);
-				c.SHEETS_TO_IGNORE.add(c.SHEET_LISTVIEW);
-				c.SHEETS_TO_IGNORE.add(c.SHEET_SHARING_RULES);
+				/*
+				
+				*/
 				for(String i : toIgnores) {
 					c.SHEETS_TO_IGNORE.add(i);
 				}

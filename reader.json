@@ -10,7 +10,7 @@
 		"SHEET_RECORD_TYPE_ASSIGNMENT":"Record Type Assignment",
 		"SHEET_LISTVIEW":"List Views",
 		"SHEET_SHARING_RULES": "Sharing Rules",
-		"SHEETS_TO_IGNORE":"List of actions,Offline objects,Standard Related List,Role Hierarchy,Revision History,Groups"
+		"SHEETS_TO_IGNORE":"List of actions,Offline objects,Standard Related List,Role Hierarchy,Revision History,Groups,Variable,Metadata,Role,Group"
 		"PROFILES_TO_IGNORE":"EUR System Admin,EUR EE On Trade User,EUR EE Off Trade User",
 		"KEEP_PROFILES_PERMISSIONS":"EUR System Admin",
 		"selected": true

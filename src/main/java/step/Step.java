@@ -84,15 +84,8 @@ public abstract class Step {
 		return (Type) m.invoke(this, w);
 	}
 	
-	public boolean isCorrectSheet(PRWorkbook w, String sheetName) {
-		boolean readSheet = true;
-		for(String s : w.c.SHEETS_TO_IGNORE) {
-			if(s.equalsIgnoreCase(sheetName)) {
-				readSheet = false;
-			}
-		}
-		return readSheet;
-	}
+	public abstract boolean isCorrectSheet(PRWorkbook w, String sheetName);
+	
 	
 	public abstract void debugStepNotPassed(PRWorkbook w);
 	

@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 import java.awt.Color;
+import java.awt.Desktop;
+
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
@@ -17,6 +19,8 @@ import workbook.PRWorkbook;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
@@ -141,7 +145,7 @@ public class UserInterface {
 				}
 			}
 		});
-		btnNewButton_2.setBounds(181, 105, 250, 43);
+		btnNewButton_2.setBounds(93, 105, 172, 43);
 		execution_panel2.add(btnNewButton_2);
 		
 		JLabel lblNewLabel_1 = new JLabel("Debug info:");
@@ -161,6 +165,20 @@ public class UserInterface {
 		debugInfos2.setEditable(false);
 		
 		scrollPane.setViewportView(debugInfos2);
+		
+		JButton btnNewButton_1 = new JButton("Open folder");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Desktop.getDesktop().open(new File(ConfigManager.selected.package_folder));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton_1.setBounds(334, 105, 172, 43);
+		execution_panel2.add(btnNewButton_1);
 		
 		
 		

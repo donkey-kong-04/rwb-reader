@@ -228,6 +228,26 @@ public class Step_Profile extends Step {
 		return Type.STAY_IN_SAME_STEP;
 	}
 
+
+
+	@Override
+	public boolean isCorrectSheet(PRWorkbook w, String sheetName) {
+		boolean readSheet = true;
+		for(String s : w.c.SHEETS_TO_IGNORE) {
+			if(s.equalsIgnoreCase(sheetName)) {
+				readSheet = false;
+			}
+		}
+		boolean isSpecificSheet = (w.c.SHEET_APEX.equalsIgnoreCase(sheetName) ||
+			w.c.SHEET_TAB_VISIBILITY.equalsIgnoreCase(sheetName) ||
+			w.c.SHEET_LAYOUT_ASSIGNMENT.equalsIgnoreCase(sheetName) ||
+			w.c.SHEET_RECORD_TYPE_ASSIGNMENT.equalsIgnoreCase(sheetName) ||
+			w.c.SHEET_LISTVIEW.equalsIgnoreCase(sheetName) ||
+			w.c.SHEET_SHARING_RULES.equalsIgnoreCase(sheetName));
+		
+		return readSheet && !isSpecificSheet;
+	}
+
 	
 	
 	
