@@ -1,5 +1,6 @@
 package step;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -50,7 +51,8 @@ public class Step_Profile extends Step {
 	
 	public void debugStepNotPassed(PRWorkbook w) {
 		if(this.STEPS[this.STEP].equals("OBJ_PERM")) {
-			PRUtil.info(w, "MARKUP MISSING", "'Object permissions' markup should be found in object's sheet " + w.currentSheet.getSheetName());
+			PRUtil.writeMsg("MARKUP MISSING 'Object permissions' markup should be found in object's sheet " + w.currentSheet.getSheetName(), Color.BLACK, false);
+			
 		}
 	}
 	
@@ -72,7 +74,8 @@ public class Step_Profile extends Step {
 		boolean success = !PRUtil.isBlank(this.object);
 		
 		if(!success) {
-			PRUtil.fatal(w, "Object API Name should be found in cell A2");
+			PRUtil.writeMsg("Object API Name should be found in cell A2" + w.currentSheet.getSheetName(), Color.RED, true);
+			
 		}
 		
 	}
@@ -95,7 +98,8 @@ public class Step_Profile extends Step {
 			
 				w.fpackage.p_profiles.add(header);
 			} else {
-				PRUtil.info(w, "HIDDEN PROFILE", header + " - " + w.currentSheet.getSheetName());
+				PRUtil.writeMsg("HIDDEN PROFILE " + header + " - "  + w.currentSheet.getSheetName(), Color.ORANGE, false);
+				
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package step;
 
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -112,12 +113,14 @@ public class Step_LayoutAssignment extends Step {
 				String isChangeObject = PRUtil.getCell(w, 0);
 				
 				if(!isChangeObject.equalsIgnoreCase("x")) {
-					PRUtil.fatal(w, "ALGORITHM ERROR : 'X' should have been found there in layout assignment");
+					PRUtil.writeMsg("ALGORITHM ERROR : 'X' should have been found there in layout assignment", Color.RED, true);
+					
 				}
 			} else if(index_cell == 1) {
 				object = PRUtil.getCell(w, index_cell);
 				if(PRUtil.isBlank(object)) {
-					PRUtil.fatal(w, "MISSING INFORMATION : Object API Name cannot be empty in column B when you declare new object using 'X' in column A");
+					PRUtil.writeMsg("MISSING INFORMATION : Object API Name cannot be empty in column B when you declare new object using 'X' in column A" + w.currentSheet.getSheetName(), Color.RED, true);
+					
 				}
 			} else {
 				String rt = PRUtil.getCell(w, index_cell);

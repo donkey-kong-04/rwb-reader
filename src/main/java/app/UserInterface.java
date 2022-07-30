@@ -9,7 +9,7 @@ import java.awt.Desktop;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.xml.transform.TransformerException;
+
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -21,7 +21,8 @@ import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JScrollPane;
@@ -123,7 +124,7 @@ public class UserInterface {
 				try {
 					PRWorkbook w = new PRWorkbook();
 					debugInfos2.setText("");
-					PRUtil.info(null, "BEGIN", "");
+					PRUtil.writeMsg("BEGIN", Color.BLUE, false);
 					
 					w.read();
 					
@@ -135,13 +136,14 @@ public class UserInterface {
 					w.postCheck();
 					w.writeFiles();
 					
-					
 					w.end();
-					PRUtil.info(null, "END", "");
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
+					LocalDateTime now = LocalDateTime.now();  
+					
+					PRUtil.writeMsg("END - " + dtf.format(now) + " for " + ConfigManager.selected.Name, Color.BLUE, false);
 				} catch(Exception e1) {
 					String stacktrace = ExceptionUtils.getStackTrace(e1);
-					
-					PRUtil.fatal(null, stacktrace);
+					PRUtil.writeMsg(stacktrace, Color.RED, true);
 				}
 			}
 		});

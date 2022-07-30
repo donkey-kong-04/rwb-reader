@@ -66,7 +66,7 @@ public class ConfigManager {
 				
 				c.PROFILES_TO_IGNORE = new ArrayList<String>();
 				for(String i : profilesRemove) {
-					c.PROFILES_TO_IGNORE.add(i.trim() + ".profile");
+					c.PROFILES_TO_IGNORE.add(i.trim().toLowerCase());
 				}
 				c.filepath = (String) j.get("file");
 				c.package_folder = (String) j.get("folder");

@@ -1,5 +1,6 @@
 package step;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import org.w3c.dom.Node;
@@ -92,7 +93,8 @@ public class Step_ListView extends Step {
 			
 			f.listViews.add(listView);
 		} else {
-			PRUtil.fatal(w, "Mandatory information missing in ListView: " + apiName);
+			PRUtil.writeMsg("Mandatory information missing in ListView: " + apiName, Color.RED, true);
+			
 		}
 		return Type.STAY_IN_SAME_STEP;
 	}
@@ -102,7 +104,8 @@ public class Step_ListView extends Step {
 		String stp = STEPS[STEP];
 		
 		if(stp.equals("POSITION")) {
-			PRUtil.fatal(w, "MARKUP MISSING : 'Object Name' in List views has not been found in column A");
+			PRUtil.writeMsg("MARKUP MISSING : 'Object Name' in List views has not been found in column A" + w.currentSheet.getSheetName(), Color.RED, true);
+			
 		}
 	}
 	

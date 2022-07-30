@@ -1,6 +1,7 @@
 package step;
 
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import org.w3c.dom.Node;
@@ -95,7 +96,7 @@ public class Step_Layout extends Step {
 					if(v.equalsIgnoreCase("x")) {
 						
 						if(f.currentRelatedList == null) {
-							PRUtil.fatal(w, "FILE CONSTRUCTION ERROR : Related List declaration expected before field of related list");
+							PRUtil.writeMsg("FILE CONSTRUCTION ERROR : Related List declaration expected before field of related list - " + relatedAPIName, Color.RED, true);
 						}
 						
 						Node fields = f.file.createElement("fields");
@@ -115,7 +116,7 @@ public class Step_Layout extends Step {
 		object = PRUtil.getCell(w, 0);
 		
 		if(PRUtil.isBlank(object)) {
-			PRUtil.fatal(w, "Object API Name should be found in cell A2");
+			PRUtil.writeMsg("Object API Name should be found in cell A2 - " + w.currentSheet.getSheetName(), Color.RED, true);
 		}
 		object = object.trim();
 	}
@@ -172,7 +173,7 @@ public class Step_Layout extends Step {
 					else if(type.toLowerCase().contains("vf page")) {
 						if(v.equalsIgnoreCase("x")) {
 							if(f.currentLayoutColumn == null) {
-								PRUtil.fatal(w, "FILE CONSTRUCTION ERROR : Section should be found before any layout element");
+								PRUtil.writeMsg("FILE CONSTRUCTION ERROR : Section should be found before any layout element - " + w.currentSheet.getSheetName(), Color.RED, true);
 							}
 							
 							Node layoutItems = f.file.createElement("layoutItems");
@@ -198,7 +199,8 @@ public class Step_Layout extends Step {
 						//System.out.println("=====>BLANK SPACE FOUND for : " + (f.currentLayoutColumn != null ? f.currentLayoutColumn.getChildNodes().item(0).getTextContent() : "null" ));
 						if(v.equalsIgnoreCase("x")) {
 							if(f.currentLayoutColumn == null) {
-								PRUtil.fatal(w, "FILE CONSTRUCTION ERROR : Section should be found before any layout element");
+								PRUtil.writeMsg("FILE CONSTRUCTION ERROR : Section should be found before any layout element - " + w.currentSheet.getSheetName(), Color.RED, true);
+								
 							}
 							
 							Node layoutItems = f.file.createElement("layoutItems");
@@ -221,11 +223,13 @@ public class Step_Layout extends Step {
 						if(isRead || isEdit ||isRequired) {
 							
 							if(f.currentLayoutColumn == null) {
-								PRUtil.fatal(w, "FILE CONSTRUCTION ERROR : Section should be found before any layout element");
+								PRUtil.writeMsg("FILE CONSTRUCTION ERROR : Section should be found before any layout element - " + w.currentSheet.getSheetName(), Color.RED, true);
+								
 							}
 							
 							if((isEdit || isRequired) && type.toLowerCase().contains("formul")) {
-								PRUtil.info(w, "WARNING", apiname + " should be read-only since it is a formula");
+								PRUtil.writeMsg("WARNING "+ apiname + " should be read-only since it is a formula", Color.ORANGE, false);
+								
 							}
 							
 							Node layoutItems = f.file.createElement("layoutItems");
@@ -264,7 +268,8 @@ public class Step_Layout extends Step {
 		boolean success = (index_start != -1 && index_end != -1);
 		
 		if(!success) {
-			PRUtil.info(w, "MARKUP MISSING", "'Page Layouts' markup not found in object's sheet");
+			PRUtil.writeMsg("MARKUP MISSING 'Page Layouts' markup not found in " + w.currentSheet.getSheetName(), Color.BLACK, false);
+		
 		}
 
 
@@ -277,11 +282,13 @@ public class Step_Layout extends Step {
 		String stp = STEPS[STEP];
 		
 		if(stp.equals("POSITIONATE_FIELD")) {
-			PRUtil.fatal(w, "MARKUP MISSING : 'Field' and 'Field API Name' should be found before fields declaration");
+			PRUtil.writeMsg("MARKUP MISSING : 'Field' and 'Field API Name' should be found before fields declaration" + w.currentSheet.getSheetName(), Color.RED, true);
+			
 		}
 		
 		else if(stp.equals("READ_FIELDS")) {
-			PRUtil.info(w, "MARKUP MISSING", "'Related Data (Objects & Columns)' markup not found");
+			PRUtil.writeMsg("MARKUP MISSING 'Related Data (Objects & Columns)' markup not found " + w.currentSheet.getSheetName(), Color.BLACK, false);
+			
 		}
 	}
 	
@@ -338,7 +345,8 @@ public class Step_Layout extends Step {
 				w.layouts.add(header);
 				w.fpackage.p_layouts.add(object.trim() + "-" + header);
 			} else {
-				PRUtil.info(w, "HIDDEN LAYOUT", header);
+				PRUtil.writeMsg("HIDDEN LAYOUT - " + header, Color.BLACK, false);
+			
 			}
 		}
 	}
@@ -347,7 +355,7 @@ public class Step_Layout extends Step {
 	private void addLayoutItemsToLayoutColumn(PRWorkbook w, XML_Layout f, boolean rightColumn, Node layoutItems) {
 		if(rightColumn) {
 			if(f.currentLayoutColumn2 == null) {
-				PRUtil.fatal(w, "Cannot add an element on the right column if you have only one column");
+				PRUtil.writeMsg("Cannot add an element on the right column if you have only one column" + w.currentSheet.getSheetName(), Color.RED, true);
 			}
 			
 			f.currentLayoutColumn2.appendChild(layoutItems);

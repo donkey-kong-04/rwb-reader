@@ -1,6 +1,7 @@
 package step;
 
 
+import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -77,7 +78,8 @@ public abstract class Step {
 	
 	public Type runStep2(PRWorkbook w) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if(STEP > (STEPS.length - 1) ) {
-			PRUtil.fatal(w, "ALGORITHM ERROR : Asking for a STEP that is not configured");
+			PRUtil.writeMsg("ALGORITHM ERROR : Asking for a STEP that is not configured" + w.currentSheet.getSheetName(), Color.RED, true);
+			
 		}
 		
 		Method m = STEPS2.get("2");
@@ -122,7 +124,8 @@ public abstract class Step {
 					}
 				}
 			} else if(CellType.BLANK != c.getCellType()){
-				PRUtil.info(w, "WARNING", "Wrong cell type " + i + ", content is ignored: " + c.getCellType());
+				PRUtil.writeMsg("WARNING Wrong cell type " + i + ", content is ignored: " + c.getCellType() + w.currentSheet.getSheetName(), Color.BLACK, false);
+				
 			}
 		}
 		
@@ -154,7 +157,8 @@ public abstract class Step {
 	
 	protected void doesStepExist(PRWorkbook w) {
 		if(STEP > (STEPS.length - 1) ) {
-			PRUtil.fatal(w, "ALGORITHM ERROR : Step does not exist");
+			PRUtil.writeMsg("ALGORITHM ERROR : Step does not exist" + w.currentSheet.getSheetName(), Color.RED, true);
+			
 		}
 	}
 	
@@ -168,12 +172,14 @@ public abstract class Step {
 			//At least one or we consider the file in an incorrect format
 			if(PRUtil.isBlank(header) && i==index_start) {
 				index_end = index_start - 1;
-				PRUtil.info(w, "INFO", "Markup is present inside the sheet, but no associated member");
+				PRUtil.writeMsg("Markup is present inside the sheet, but no associated member" + w.currentSheet.getSheetName(), Color.BLACK, false);
+				
 			} 
 			//End earlier the loop
 			else if(PRUtil.isBlank(header)) {
 				index_end = i - 1;
-				PRUtil.info(w, "INFO", "Markup ends earlier. Total members in the sheet = " + (index_end - index_start + 1));
+				PRUtil.writeMsg("INFO Markup ends earlier. Total members in the sheet = " + (index_end - index_start + 1) + w.currentSheet.getSheetName(), Color.BLACK, false);
+				
 			} 
 		}
 		//System.out.println("reviewing index start - end: " + index_start + " - " + index_end);

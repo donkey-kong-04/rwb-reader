@@ -1,6 +1,8 @@
 package step;
 
 
+import java.awt.Color;
+
 import org.w3c.dom.Node;
 
 import file.XML_Application;
@@ -56,10 +58,12 @@ public class Step_TabVisibility extends Step {
 			w.fpackage.p_pm.add(pmName.replaceAll(" ", "_"));
 			
 			if(PRUtil.isBlank(appIDName)) {
-				PRUtil.fatal(w, "MISSING INFORMATION : Application Name in Tab Visibility cannot be null in column D");
+				PRUtil.writeMsg("MISSING INFORMATION : Application Name in Tab Visibility cannot be null in column D" + w.currentSheet.getSheetName(), Color.RED, true);
+				
 			}
 			if(PRUtil.isBlank(pmIDName)) {
-				PRUtil.fatal(w, "MISSING INFORMATION : Permission Name in Tab Visibility cannot be null in column C");
+				PRUtil.writeMsg("MISSING INFORMATION : Permission Name in Tab Visibility cannot be null in column C" + w.currentSheet.getSheetName(), Color.RED, true);
+				
 			}
 			
 			for(int i=0; i<w.Allfiles.size(); i++) {
@@ -129,7 +133,8 @@ public class Step_TabVisibility extends Step {
 		String theStep = STEPS[STEP];
 		
 		if(theStep.equals("POSITION")) {
-			PRUtil.fatal(w, "MARKUP MISSING : 'Base Object Settings' markup not found");
+			PRUtil.writeMsg("MARKUP MISSING : 'Base Object Settings' markup not found" + w.currentSheet.getSheetName(), Color.RED, true);
+			
 		}
 	}
 

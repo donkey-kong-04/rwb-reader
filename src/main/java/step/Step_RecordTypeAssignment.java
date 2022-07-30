@@ -1,6 +1,7 @@
 package step;
 
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -129,12 +130,14 @@ public class Step_RecordTypeAssignment extends Step {
 				String isObjectLine = PRUtil.getCell(w, 0);
 				
 				if(!isObjectLine.equalsIgnoreCase("x")) {
-					PRUtil.fatal(w, "'X' should have been found there in record type assignment");
+					PRUtil.writeMsg("'X' should have been found there in record type assignment" + w.currentSheet.getSheetName(), Color.RED, true);
+					
 				}
 			} else if(index_cell == 1) {
 				object = PRUtil.getCell(w, index_cell);
 				if(PRUtil.isBlank(object)) {
-					PRUtil.fatal(w, "Object API Name cannot be empty in column B when you declare new object using 'X' in column A");
+					PRUtil.writeMsg("Object API Name cannot be empty in column B when you declare new object using 'X' in column A" + w.currentSheet.getSheetName(), Color.RED, true);
+					
 				}
 			} else {
 				String rt = PRUtil.getCell(w, index_cell);

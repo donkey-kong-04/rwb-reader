@@ -1,5 +1,6 @@
 package step;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import org.w3c.dom.Node;
@@ -133,7 +134,7 @@ public class Step_ApexComponents extends Step {
 		boolean success = (this.index_start != -1 && this.index_end != -1);
 		
 		if(!success) {
-			PRUtil.fatal(w, "MARKUP MISSING : 'Profiles' markup should be found in apex component's sheet");
+			PRUtil.writeMsg("MARKUP MISSING : 'Profiles' markup should be found in apex component's sheet", Color.RED, true);
 		}
 		
 		//PRUtil.debug(s, index_start + " " + index_end, false);
@@ -177,7 +178,8 @@ public class Step_ApexComponents extends Step {
 				headers.add(header);
 				IDS.add(filename);
 			} else {
-				PRUtil.info(w, "HIDDEN PROFILE IN APEX COMPONENTS", header);
+				
+				PRUtil.writeMsg("HIDDEN PROFILE IN APEX COMPONENTS - " + header, Color.BLACK, false);
 			}
 			
 		}

@@ -8,6 +8,8 @@ import java.util.Set;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import utils.PRUtil;
+
 
 public class XML_Profile extends XML_File {
 	
@@ -40,13 +42,14 @@ public class XML_Profile extends XML_File {
 		String SEP = ",";
 		String json = "[";
 		ArrayList<String> jsonRepresentation = new ArrayList<String>();
-		String csv = "t" + SEP + "n" + SEP + "s" + SEP + "r" + SEP + "b" + SEP + "d" + SEP + "cb" + SEP + "cd" + "\n";
 		
 		for(int i=0; i<profiles.size(); i++) {
 			String filename = profiles.get(i).filename;
-			jsonRepresentation.add("{\"t\":\"Profile\",\"n\":\"" + filename.substring(0, filename.length() - ".profile".length()) + "\",\"s\":true,\"r\":false,\"b\":\"\",\"d\":\"\",\"cb\":\"\",\"cd\":\"\"}");
-			
-			csv += "Profile" + SEP + filename.substring(0, filename.length() - ".profile".length()) + SEP + "true" + SEP + "false" + SEP + SEP + SEP + SEP + "\n";
+			//The profiles to ignore contains only the name of the profile, so we need to remove before comparing
+			if(PRUtil.doNotDeploy(filename.replace(".profile", ""), "copado") == false) {
+				jsonRepresentation.add("{\"t\":\"Profile\",\"n\":\"" + filename.replace(".profile", "") + "\",\"s\":true,\"r\":false,\"b\":\"\",\"d\":\"\",\"cb\":\"\",\"cd\":\"\"}");
+				
+			}
 		}
 		
 		for(int j=0; j<profiles.size(); j++) {
@@ -55,45 +58,45 @@ public class XML_Profile extends XML_File {
 			for(int i=0; i<p.appPerms.size(); i++) {
 				Element e = (Element) p.appPerms.get(i);
 				
-				csv += addPermissionToCopadoFile(components, "CustomApplication", e.getElementsByTagName("application").item(0).getTextContent().trim(), SEP, jsonRepresentation);
+				addPermissionToCopadoFile(components, "CustomApplication", e.getElementsByTagName("application").item(0).getTextContent().trim(), SEP, jsonRepresentation);
 				
 			}
 			
 			
 			for(int i=0; i<p.fieldPerms.size(); i++) {
 				Element e = (Element) p.fieldPerms.get(i);
-				csv += addPermissionToCopadoFile(components, "CustomField", e.getElementsByTagName("field").item(0).getTextContent().trim(), SEP, jsonRepresentation);
+				addPermissionToCopadoFile(components, "CustomField", e.getElementsByTagName("field").item(0).getTextContent().trim(), SEP, jsonRepresentation);
 				
 			}
 			
 			for(int i=0; i<p.layoutPerms.size(); i++) {
 				Element e = (Element) p.layoutPerms.get(i);
-				csv += addPermissionToCopadoFile(components, "Layout", e.getElementsByTagName("layout").item(0).getTextContent().trim(), SEP, jsonRepresentation);
-				csv += addPermissionToCopadoFile(components, "RecordType", e.getElementsByTagName("recordType").item(0).getTextContent().trim(), SEP, jsonRepresentation);
+				addPermissionToCopadoFile(components, "Layout", e.getElementsByTagName("layout").item(0).getTextContent().trim(), SEP, jsonRepresentation);
+				addPermissionToCopadoFile(components, "RecordType", e.getElementsByTagName("recordType").item(0).getTextContent().trim(), SEP, jsonRepresentation);
 				
 			}
 			
 			for(int i=0; i<p.objectPerms.size(); i++) {
 				Element e = (Element) p.objectPerms.get(i);
-				csv += addPermissionToCopadoFile(components, "CustomObject", e.getElementsByTagName("object").item(0).getTextContent().trim(), SEP, jsonRepresentation);
+				addPermissionToCopadoFile(components, "CustomObject", e.getElementsByTagName("object").item(0).getTextContent().trim(), SEP, jsonRepresentation);
 				
 			}
 			
 			for(int i=0; i<p.vfPerms.size(); i++) {
 				Element e = (Element) p.vfPerms.get(i);
-				csv += addPermissionToCopadoFile(components, "ApexPage", e.getElementsByTagName("apexPage").item(0).getTextContent().trim(), SEP, jsonRepresentation);
+				addPermissionToCopadoFile(components, "ApexPage", e.getElementsByTagName("apexPage").item(0).getTextContent().trim(), SEP, jsonRepresentation);
 				
 			}
 			
 			for(int i=0; i<p.rtvPerms.size(); i++) {
 				Element e = (Element) p.rtvPerms.get(i);
-				csv += addPermissionToCopadoFile(components, "RecordType", e.getElementsByTagName("recordType").item(0).getTextContent().trim(), SEP, jsonRepresentation);
+				addPermissionToCopadoFile(components, "RecordType", e.getElementsByTagName("recordType").item(0).getTextContent().trim(), SEP, jsonRepresentation);
 				
 			}
 			
 			for(int i=0; i<p.apexPerms.size(); i++) {
 				Element e = (Element) p.apexPerms.get(i);
-				csv += addPermissionToCopadoFile(components, "ApexClass", e.getElementsByTagName("apexClass").item(0).getTextContent().trim(), SEP, jsonRepresentation);
+				addPermissionToCopadoFile(components, "ApexClass", e.getElementsByTagName("apexClass").item(0).getTextContent().trim(), SEP, jsonRepresentation);
 				
 			}
 		}
@@ -182,16 +185,14 @@ public class XML_Profile extends XML_File {
 		this.root.appendChild(platform);
 	}
 	
-	private static String addPermissionToCopadoFile(Set<String> components, String type, String component, String SEP, ArrayList<String> jsonList) {
+	private static void addPermissionToCopadoFile(Set<String> components, String type, String component, String SEP, ArrayList<String> jsonList) {
 		String key = type + "-" + component;
 		
 		if(!components.contains(key)) {
 			components.add(key);
 			
 			jsonList.add("{\"t\":\"" + type + "\",\"n\":\"" + component.replaceAll("\\(", "%28").replaceAll("\\)", "%29") + "\",\"s\":true,\"r\":true,\"b\":\"\",\"d\":\"\",\"cb\":\"\",\"cd\":\"\"}");
-			return type + SEP + component.replaceAll("\\(", "%28").replaceAll("\\)", "%29") + SEP + "true" + SEP + "true" + SEP + SEP + SEP + SEP + "\n";
 		}
-		return "";
 	}
 	
 }

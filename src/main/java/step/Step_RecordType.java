@@ -1,5 +1,6 @@
 package step;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import org.w3c.dom.Node;
@@ -55,7 +56,8 @@ public class Step_RecordType extends Step {
 					String isActive = (PRUtil.getCell(w, i).equalsIgnoreCase("x") ? "true" : "false");
 					
 					if(isActive.equals("false")) {
-						PRUtil.info(w, "INFO", "Record type is set as inactive : " + headers.get(tabIndex));
+						PRUtil.writeMsg( "INFO Record type is set as inactive : " + headers.get(tabIndex) + " " + w.currentSheet.getSheetName(), Color.BLACK, false);
+						
 					}
 					
 					
@@ -100,7 +102,8 @@ public class Step_RecordType extends Step {
 		
 		
 		if(PRUtil.isBlank(object)) {
-			PRUtil.fatal(w, "Object API Name should be found in cell A2");
+			PRUtil.writeMsg("Object API Name should be found in cell A2 - " + w.currentSheet.getSheetName(), Color.RED, true);
+			
 		}
 		
 		this.getSheetIDS(w);
@@ -137,7 +140,8 @@ public class Step_RecordType extends Step {
 					
 					if(!PRUtil.isBlank(recordTypePicklistValues)) {
 						if(!type.toLowerCase().contains("picklist")) {
-							PRUtil.info(w, "WARNING", fieldAPIName + " is not defined as a picklist but it has picklist values assigned.");
+							PRUtil.writeMsg("WARNING " + fieldAPIName + " is not defined as a picklist but it has picklist values assigned." + w.currentSheet.getSheetName(), Color.BLACK, false);
+							
 						}
 						
 						
@@ -185,7 +189,8 @@ public class Step_RecordType extends Step {
 		boolean success = (this.index_start != -1 && this.index_end != -1);
 		
 		if(!success) {
-			PRUtil.info(w, "MARKUP MISSING", "'Record Types' markup not found in object sheet");
+			PRUtil.writeMsg("MARKUP MISSING 'Record Types' markup not found in object sheet" + w.currentSheet.getSheetName(), Color.BLACK, false);
+			
 		}
 		
 	
@@ -252,7 +257,8 @@ public class Step_RecordType extends Step {
 				w.recordTypes.add(recordTypeApi);
 				w.fpackage.p_recordTypes.add(object + "." + recordTypeApi);
 			} else {
-				PRUtil.info(w, "HIDDEN RECORD TYPE", object + "." + recordTypeApi);
+				PRUtil.writeMsg("HIDDEN RECORD TYPE " + object + "." + recordTypeApi, Color.BLACK, false);
+				
 			}
 		}
 	}

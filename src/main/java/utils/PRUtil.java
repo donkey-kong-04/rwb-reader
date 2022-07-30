@@ -3,15 +3,14 @@ package utils;
 import java.awt.Color;
 
 import javax.swing.JTextPane;
-import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
 import org.apache.poi.ss.usermodel.Cell;
 
+import app.ConfigManager;
 import app.UserInterface;
 import workbook.PRWorkbook;
 
@@ -23,27 +22,13 @@ public class PRUtil {
 		return (str == null || str.trim().equals(""));
 	}
 	
-	public static void info(PRWorkbook w, String subject, String msg) {
-		debug(w, subject, msg, false);
-	}
-	public static void fatal(PRWorkbook w, String msg) {
-		debug(w, "FATAL", msg, true);
-	}
 	
-	private static void debug(PRWorkbook w, String subject, String msg, boolean required) {
-		String additionalInfos = "";
-		if(w != null) {
-			additionalInfos += "Sheet - " + w.currentSheet.getSheetName();
-		}
-		appendToPane(UserInterface.debugInfos2,additionalInfos + " ======== " + subject + " : " + "\n", required? Color.RED : Color.BLUE, Color.WHITE);
-		
-		if(required) {
-			appendToPane(UserInterface.debugInfos2, msg + "\n\n", Color.RED, Color.WHITE);
-			exit = true;
-		} else {
-			appendToPane(UserInterface.debugInfos2, msg + "\n\n", Color.BLACK, Color.WHITE);
-		}
-		
+	
+	
+	
+	public static void writeMsg(String msg, Color c, boolean stopExecution) {
+		appendToPane(UserInterface.debugInfos2, msg + "\n", c, Color.WHITE);
+		if(stopExecution) exit = true;
 	}
 	
 	public static void appendToPane(JTextPane textPane, String text, Color foregroundColor, Color backgroundColor) {
@@ -79,5 +64,14 @@ public class PRUtil {
 		return str;
 	}
 	
+	public static boolean doNotDeploy(String name, String why) {
+		boolean doNotDeploy = false;
+		
+		if(ConfigManager.selected.PROFILES_TO_IGNORE.contains(name.toLowerCase()) == true) {
+			doNotDeploy = true;
+			PRUtil.writeMsg("DO NOT DEPLOY - " + name + "(" + why + ")", Color.ORANGE, false);
+		}
+		return doNotDeploy;
+	}
 	
 }

@@ -1,5 +1,6 @@
 package file;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -61,7 +62,7 @@ public abstract class XML_File {
 			this.file.appendChild(this.root);
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
-			PRUtil.info(null, "Exception: ", e.getMessage());
+			PRUtil.writeMsg("Exception: " + e.getMessage(), Color.RED, true);
 			System.exit(1);
 		}
 	}
@@ -76,11 +77,11 @@ public abstract class XML_File {
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			PRUtil.info(null, "Exception: ", e.getMessage());
+			PRUtil.writeMsg("Exception: " + e.getMessage(), Color.RED, true);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			PRUtil.info(null, "Exception: ", e.getMessage());
+			PRUtil.writeMsg("Exception: " + e.getMessage(), Color.RED, true);
 		}
 		
 	}

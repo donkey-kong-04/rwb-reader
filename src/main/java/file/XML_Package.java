@@ -1,13 +1,13 @@
 package file;
 
 import java.util.Set;
+
 import java.util.TreeSet;
 
 import org.w3c.dom.Node;
 
-import app.Config;
-import app.ConfigManager;
 import utils.PRUtil;
+import java.awt.Color;
 
 public class XML_Package extends XML_File {
 	public Set<String> p_recordTypes;
@@ -56,15 +56,12 @@ public class XML_Package extends XML_File {
 	private Node buildType(String name, Set<String> members) {
 		Node n = this.file.createElement("types");
 		
-		//Config c = Config.loadConfig();
-		Config c = ConfigManager.selected;
-		
 		for(String m : members) {
 			Node member = this.file.createElement("members");
-			if(c.PROFILES_TO_IGNORE.contains(m) == false) {
+			System.out.println("Compare : " + m);
+			
+			if(PRUtil.doNotDeploy(m, "package.xml") == false) {
 				n.appendChild(member).appendChild(this.file.createTextNode(m.replaceAll("/", "%2F")));
-			} else {
-				PRUtil.info(null, "REMOVE FROM Package", "package.xml - " + m);
 			}
 			
 		}

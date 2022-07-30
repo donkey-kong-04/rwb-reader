@@ -1,5 +1,6 @@
 package step;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import org.w3c.dom.Node;
@@ -112,7 +113,8 @@ public class Step_PM extends Step {
 		object = PRUtil.getCell(w, 0);
 		
 		if(PRUtil.isBlank(object)) {
-			PRUtil.fatal(w, "Object API Name should be found in cell A2");
+			PRUtil.writeMsg("Object API Name should be found in cell A2 " + w.currentSheet.getSheetName(), Color.RED, true);
+			
 		}
 		
 		this.getSheetIDS(w);
@@ -208,7 +210,8 @@ public class Step_PM extends Step {
 				header_labels.add(label);
 				w.fpackage.p_pm.add(header);
 			} else {
-				PRUtil.info(w, "HIDDEN PERMISSION SET", header + " " + w.currentSheet.getSheetName());
+				PRUtil.writeMsg("HIDDEN PERMISSION SET " + header + " "  + w.currentSheet.getSheetName(), Color.ORANGE, false);
+				
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package step;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import org.w3c.dom.Node;
@@ -74,7 +75,8 @@ public class Step_SharingRule extends Step {
 			Node shareTo = f.file.createElement("shareTo");
 			ArrayList<ArrayList<String>> shareToParsed = this.parse(w, sharingTo);
 			if(shareToParsed.size() != 1) {
-				PRUtil.fatal(w, "sharedTo should have only one element");
+				PRUtil.writeMsg("sharedTo should have only one element" + w.currentSheet.getSheetName(), Color.RED, true);
+				
 			}
 			ArrayList<String> stp = shareToParsed.get(0);
 			Node sharedTo = f.file.createElement("sharedTo");

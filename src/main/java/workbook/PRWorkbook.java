@@ -1,7 +1,7 @@
 package workbook;
 
+import java.awt.Color;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,7 +13,6 @@ import javax.xml.transform.TransformerException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbookFactory;
 
 import app.Config;
@@ -104,7 +103,8 @@ public class PRWorkbook {
 					}
 				}
 			} else {
-				PRUtil.info(null, "HIDDEN SHEET", sheet.getSheetName());
+				PRUtil.writeMsg("HIDDEN SHEET - " + sheet.getSheetName(), Color.ORANGE, false);
+				
 			}
 		}
 	}
@@ -152,7 +152,8 @@ public class PRWorkbook {
 		for(int i=0; i<Allfiles.size(); i++) {
 			XML_File f = Allfiles.get(i);
 			
-			if(doNotDeploy(f.filename) == false) {
+			//The name of the profile file contains .profile, but we initialize the list to ignore without it
+			if(PRUtil.doNotDeploy(f.filename.replace(".profile", ""), "profile file") == false) {
 			
 				if(f instanceof XML_Profile) {
 					profiles.add(f);
@@ -168,15 +169,7 @@ public class PRWorkbook {
 		
 	}
 	
-	private boolean doNotDeploy(String name) {
-		boolean doNotDeploy = false;
-		
-		if(c.PROFILES_TO_IGNORE.contains(name.replace(".profile", ""))) {
-			doNotDeploy = true;
-			PRUtil.info(null, "REMOVE FROM PACKAGE", name);
-		}
-		return doNotDeploy;
-	}
+	
 	
 	public XML_File getCorrectCorrectFile(Class<?> type, String filename) {
 		
@@ -186,7 +179,8 @@ public class PRWorkbook {
 			
 			if(f.filename.equalsIgnoreCase(filename)) {
 				if(!f.filename.equals(filename)) {
-					PRUtil.info(null, "WARNING", "Filename - " + filename + "' & '" + f.filename + "' do not match on a sensitive level. It can create deployment issue.");
+					PRUtil.writeMsg("WARNING - Filename - " + filename + "' & '" + f.filename + "' do not match on a sensitive level. It can create deployment issue.", Color.ORANGE, false);
+				
 				}
 				
 				return f;
@@ -214,10 +208,12 @@ public class PRWorkbook {
 			
 		} 
 		else {
-			PRUtil.fatal(this, "FILE TYPE unfound");
+			PRUtil.writeMsg("FILE TYPE unfound", Color.RED, true);
+			
 		}
 		
-		PRUtil.info(this, "Adding in all files", filename);
+		PRUtil.writeMsg("Adding in all files " + filename, Color.BLACK, false);
+		
 		this.Allfiles.add(f);
 		
 		return f;
@@ -245,7 +241,8 @@ public class PRWorkbook {
 			}
 			
 			if(found == false && sets.add(s)) {
-				PRUtil.info(null, "NOT FOUND", "Record Type definition not found : " + s);
+				PRUtil.writeMsg("Record Type definition not found : " + s, Color.ORANGE, false);
+				
 			}
 		}
 		sets = new TreeSet<String>();
@@ -257,7 +254,7 @@ public class PRWorkbook {
 				}
 			}
 			if(found == false && sets.add(s)) {
-				PRUtil.info(null, "NOT FOUND", "Layout definition not found : " + s);
+				PRUtil.writeMsg("Layout definition not found : " + s, Color.BLACK, false);
 			}
 		}
 	}
