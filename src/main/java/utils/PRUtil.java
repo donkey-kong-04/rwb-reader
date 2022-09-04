@@ -3,6 +3,7 @@ package utils;
 import java.awt.Color;
 
 import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -28,6 +29,7 @@ public class PRUtil {
 	
 	public static void writeMsg(String msg, Color c, boolean stopExecution) {
 		appendToPane(UserInterface.debugInfos2, msg + "\n", c, Color.WHITE);
+		
 		if(stopExecution) exit = true;
 	}
 	

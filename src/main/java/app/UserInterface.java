@@ -1,5 +1,6 @@
 package app;
 
+
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
@@ -9,27 +10,34 @@ import java.awt.Desktop;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 
-
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import utils.PRUtil;
 import workbook.PRWorkbook;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JScrollPane;
+import javax.swing.JCheckBox;
+import javax.swing.ScrollPaneConstants;
 
 public class UserInterface {
 
-	JFrame frame;
+	public static JFrame frame;
 	private JTextField filepath;
 	private JTextField folderpath;
 	private JTextField apex;
@@ -54,14 +62,23 @@ public class UserInterface {
 	public UserInterface() {
 		initialize();
 	}
-
+	
+	public static void reloadFullPage() {
+		ConfigManager.configs = new HashMap<String, Config>();
+		ConfigManager.selected = null;
+		
+		frame.setVisible(false);
+		frame.dispose();
+		App.run();
+	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(255, 255, 255));
-		frame.setBounds(100, 100, 772, 632);
+		frame.setBounds(100, 100, 871, 704);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -95,7 +112,7 @@ public class UserInterface {
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBackground(Color.ORANGE);
-		tabbedPane.setBounds(110, 0, 646, 593);
+		tabbedPane.setBounds(110, 0, 735, 611);
 		frame.getContentPane().add(tabbedPane);
 		
 		JPanel execution_panel2 = new JPanel();
@@ -114,56 +131,72 @@ public class UserInterface {
 		label_folder.setBounds(10, 76, 621, 18);
 		execution_panel2.add(label_folder);
 		
-		JButton btnNewButton_2 = new JButton("RUN");
+		JButton btnNewButton_2 = new JButton("Create Package");
 		btnNewButton_2.setBackground(Color.GREEN);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PRUtil.exit = false;
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
+				LocalDateTime now = LocalDateTime.now();  
+				debugInfos2.setText("");
+				PRUtil.writeMsg("BEGIN - " + dtf.format(now) + " for " + ConfigManager.selected.Name, Color.BLUE, false);
 				
-				System.setProperty("line.separator", "\n");
-				try {
-					PRWorkbook w = new PRWorkbook();
-					debugInfos2.setText("");
-					PRUtil.writeMsg("BEGIN", Color.BLUE, false);
-					
-					w.read();
-					
-					if(PRUtil.exit == true) {
-						w.end();
-						return;
-					}
-					
-					w.postCheck();
-					w.writeFiles();
-					
-					w.end();
-					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
-					LocalDateTime now = LocalDateTime.now();  
-					
-					PRUtil.writeMsg("END - " + dtf.format(now) + " for " + ConfigManager.selected.Name, Color.BLUE, false);
-				} catch(Exception e1) {
-					String stacktrace = ExceptionUtils.getStackTrace(e1);
-					PRUtil.writeMsg(stacktrace, Color.RED, true);
+				
+				
+				String unpackageFolderPath = ConfigManager.selected.package_folder + "unpackaged";
+				File file = new File(unpackageFolderPath);
+				
+				int input = 0;
+				
+				if(file.exists()) {
+					input = JOptionPane.showConfirmDialog(null, "Careful the 'unpackaged/' folder hasn't been removed.\nIf you have remove components from your workbook they will not be removed from this folder 'unpackaged/'.\n\nAre you sure you want to proceed?");
 				}
+				
+				if(input == 0) {
+					PRUtil.exit = false;
+					
+					System.setProperty("line.separator", "\n");
+					try {
+						PRWorkbook w = new PRWorkbook();
+						
+						w.read();
+						
+						if(PRUtil.exit == true) {
+							w.end();
+							return;
+						}
+						
+						w.postCheck();
+						w.writeFiles();
+						
+						w.end();
+						dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
+						now = LocalDateTime.now();  
+						
+						PRUtil.writeMsg("END - " + dtf.format(now) + " for " + ConfigManager.selected.Name, Color.BLUE, false);
+					} catch(Exception e1) {
+						String stacktrace = ExceptionUtils.getStackTrace(e1);
+						PRUtil.writeMsg(stacktrace, Color.RED, true);
+					}
+				}
+				
+				
 			}
 		});
-		btnNewButton_2.setBounds(62, 105, 130, 43);
+		btnNewButton_2.setBounds(10, 105, 119, 43);
 		execution_panel2.add(btnNewButton_2);
 		
-		JLabel lblNewLabel_1 = new JLabel("Debug info:");
-		lblNewLabel_1.setBounds(10, 161, 116, 14);
-		execution_panel2.add(lblNewLabel_1);
-		
 		JPanel debug_scroll_panel = new JPanel();
-		debug_scroll_panel.setBounds(10, 186, 621, 368);
+		debug_scroll_panel.setBounds(10, 186, 705, 390);
 		execution_panel2.add(debug_scroll_panel);
 		debug_scroll_panel.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 621, 368);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setBounds(0, 0, 695, 393);
 		debug_scroll_panel.add(scrollPane);
 		
 		debugInfos2 = new JTextPane();
+		debugInfos2.setBackground(Color.WHITE);
 		debugInfos2.setEditable(false);
 		
 		scrollPane.setViewportView(debugInfos2);
@@ -179,10 +212,10 @@ public class UserInterface {
 				}
 			}
 		});
-		btnNewButton_1.setBounds(233, 105, 143, 43);
+		btnNewButton_1.setBounds(468, 105, 108, 43);
 		execution_panel2.add(btnNewButton_1);
 		
-		JButton btnNewButton_3 = new JButton("Open config file");
+		JButton btnNewButton_3 = new JButton("Edit config");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -193,8 +226,73 @@ public class UserInterface {
 				}
 			}
 		});
-		btnNewButton_3.setBounds(430, 105, 150, 43);
+		btnNewButton_3.setBounds(581, 105, 119, 43);
 		execution_panel2.add(btnNewButton_3);
+		
+		JButton BTN_DELETE_PACKAGE = new JButton("Delete package");
+		BTN_DELETE_PACKAGE.setBackground(Color.RED);
+		BTN_DELETE_PACKAGE.setForeground(Color.BLACK);
+		BTN_DELETE_PACKAGE.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				debugInfos2.setText("");
+				String unpackageFolderPath = ConfigManager.selected.package_folder + "unpackaged";
+				String zipFilePath = ConfigManager.selected.package_folder + "unpackaged.zip";
+				ArrayList<File> fileToDelete = new ArrayList<File>();
+				
+				
+				File folder = new File(unpackageFolderPath);
+				if(folder.exists()) {
+					fileToDelete.add(folder);
+				}
+				File zip = new File(zipFilePath);
+				if(zip.exists()) {
+					fileToDelete.add(zip);
+				}
+				
+				String message = "";
+				if(fileToDelete.size() > 0) {
+					message = "This will remove from your directory:\n";
+					for(File f : fileToDelete) {
+						message += f.getPath() + "\n";
+					}
+					
+					message += "\nAre you sure you want to proceed?";
+					int input = JOptionPane.showConfirmDialog(null, message);
+				
+					if(input == 0) {
+						try {
+							FileUtils.deleteDirectory(folder);
+							zip.delete();
+							debugInfos2.setText("Package deleted");
+						} catch(Exception ex) {
+							ex.printStackTrace();
+						}
+					}
+				} else {
+					debugInfos2.setText("No file found to delete");
+				}
+			}
+			
+		});
+		BTN_DELETE_PACKAGE.setBounds(139, 105, 136, 43);
+		execution_panel2.add(BTN_DELETE_PACKAGE);
+		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("Please make sure your workbook is closed before creating/deleting a package, it can make the app crash.");
+		
+		chckbxNewCheckBox.setForeground(Color.BLACK);
+		chckbxNewCheckBox.setEnabled(false);
+		chckbxNewCheckBox.setSelected(true);
+		chckbxNewCheckBox.setBounds(10, 155, 690, 23);
+		execution_panel2.add(chckbxNewCheckBox);
+		
+		JButton BTN_RELOAD_CONFIG = new JButton("Reload config");
+		BTN_RELOAD_CONFIG.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				reloadFullPage();
+			}
+		});
+		BTN_RELOAD_CONFIG.setBounds(327, 105, 136, 43);
+		execution_panel2.add(BTN_RELOAD_CONFIG);
 		
 		
 		
@@ -322,6 +420,15 @@ public class UserInterface {
 		name.setBounds(78, 0, 553, 31);
 		config_panel.add(name);
 		
+		JButton BTN_RELOAD_CONFIG_1 = new JButton("Clear log");
+		BTN_RELOAD_CONFIG_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				debugInfos2.setText("");
+			}
+		});
+		BTN_RELOAD_CONFIG_1.setBounds(110, 615, 735, 43);
+		frame.getContentPane().add(BTN_RELOAD_CONFIG_1);
+		
 		loadConfig(ConfigManager.selected.Name);
 	}
 	
@@ -346,6 +453,7 @@ public class UserInterface {
 		tabvisibility.setText(c.SHEET_TAB_VISIBILITY);
 		
 		ConfigManager.selected = c;
+		
 		
 	}
 }

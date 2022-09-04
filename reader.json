@@ -1,8 +1,40 @@
 [
 	{
-		"name": "NAV CAN Model",
-		"file": "C:\\Users\\Martin Chalot\\Desktop\\Pernod Ricard\\Rollout\\CAN NAV\\RWB GR.xlsx",
-		"folder":"C:\\Users\\Martin Chalot\\Desktop\\Pernod Ricard\\Rollout\\CAN NAV\\",
+		"name": "Greece",
+		"file": "C:\\Users\\Martin Chalot\\Documents\\Travail\\Pernod Ricard\\Rollout\\Greece\\RWB GR.xlsx",
+		"folder":"C:\\Users\\Martin Chalot\\Documents\\Travail\\Pernod Ricard\\Rollout\\Greece\\",
+		"full_debug" : false,
+		"SHEET_APEX":"Apex Components",
+		"SHEET_TAB_VISIBILITY":"Tab Visibility",
+		"SHEET_LAYOUT_ASSIGNMENT":"Page Layout assignment",
+		"SHEET_RECORD_TYPE_ASSIGNMENT":"Record Type Assignment",
+		"SHEET_LISTVIEW":"List Views",
+		"SHEET_SHARING_RULES": "Sharing Rules",
+		"SHEETS_TO_IGNORE":"List of actions,Offline objects,Standard Related List,Role Hierarchy,Revision History,Groups,Variable,Metadata"
+		"PROFILES_TO_IGNORE":"EUR System Admin,EUR EE On Trade User,EUR EE Off Trade User",
+		"KEEP_PROFILES_PERMISSIONS":"EUR System Admin",
+		"selected": false
+	},
+	{
+		"name": "Greece 2",
+		"file": "C:\\Users\\Martin Chalot\\Documents\\Travail\\Pernod Ricard\\Rollout\\Greece2\\RWB GR.xlsx",
+		"folder":"C:\\Users\\Martin Chalot\\Documents\\Travail\\Pernod Ricard\\Rollout\\Greece2\\",
+		"full_debug" : false,
+		"SHEET_APEX":"Apex Components",
+		"SHEET_TAB_VISIBILITY":"Tab Visibility",
+		"SHEET_LAYOUT_ASSIGNMENT":"Page Layout assignment",
+		"SHEET_RECORD_TYPE_ASSIGNMENT":"Record Type Assignment",
+		"SHEET_LISTVIEW":"List Views",
+		"SHEET_SHARING_RULES": "Sharing Rules",
+		"SHEETS_TO_IGNORE":"List of actions,Offline objects,Standard Related List,Role Hierarchy,Revision History,Groups,Variable,Metadata"
+		"PROFILES_TO_IGNORE":"EUR System Admin,EUR EE On Trade User,EUR EE Off Trade User",
+		"KEEP_PROFILES_PERMISSIONS":"EUR System Admin",
+		"selected": false
+	},
+	{
+		"name": "Greece B",
+		"file": "C:\\Users\\Martin Chalot\\Documents\\Travail\\Pernod Ricard\\Rollout\\Greece2\\RWB GR.xlsx",
+		"folder":"C:\\Users\\Martin Chalot\\Documents\\Travail\\Pernod Ricard\\Rollout\\Greece2\\",
 		"full_debug" : false,
 		"SHEET_APEX":"Apex Components",
 		"SHEET_TAB_VISIBILITY":"Tab Visibility",
@@ -16,9 +48,9 @@
 		"selected": true
 	},
 	{
-		"name": "Estonia",
-		"file": "C:\\Users\\Martin Chalot\\Desktop\\Pernod Ricard\\Rollout\\Estonia\\RWB EE.xlsx",
-		"folder":"C:\\Users\\Martin Chalot\\Desktop\\Pernod Ricard\\Rollout\\Estonia\\",
+		"name": "Greece 3",
+		"file": "C:\\Users\\Martin Chalot\\Documents\\Travail\\Pernod Ricard\\Rollout\\Greece2\\RWB GR.xlsx",
+		"folder":"C:\\Users\\Martin Chalot\\Documents\\Travail\\Pernod Ricard\\Rollout\\Greece2\\",
 		"full_debug" : false,
 		"SHEET_APEX":"Apex Components",
 		"SHEET_TAB_VISIBILITY":"Tab Visibility",
@@ -26,39 +58,7 @@
 		"SHEET_RECORD_TYPE_ASSIGNMENT":"Record Type Assignment",
 		"SHEET_LISTVIEW":"List Views",
 		"SHEET_SHARING_RULES": "Sharing Rules",
-		"SHEETS_TO_IGNORE":"List of actions,Offline objects,Standard Related List,Role Hierarchy,Revision History,Groups"
-		"PROFILES_TO_IGNORE":"EUR System Admin,EUR EE On Trade User,EUR EE Off Trade User",
-		"KEEP_PROFILES_PERMISSIONS":"EUR System Admin",
-		"selected": false
-	},
-	{
-		"name": "Lithuania",
-		"file": "C:\\Users\\Martin Chalot\\Desktop\\Pernod Ricard\\Rollout\\Lithuania\\RWB LT.xlsx",
-		"folder":"C:\\Users\\Martin Chalot\\Desktop\\Pernod Ricard\\Rollout\\Lithuania\\",
-		"full_debug" : false,
-		"SHEET_APEX":"Apex Components",
-		"SHEET_TAB_VISIBILITY":"Tab Visibility",
-		"SHEET_LAYOUT_ASSIGNMENT":"Page Layout assignment",
-		"SHEET_RECORD_TYPE_ASSIGNMENT":"Record Type Assignment",
-		"SHEET_LISTVIEW":"List Views",
-		"SHEET_SHARING_RULES": "Sharing Rules",
-		"SHEETS_TO_IGNORE":"List of actions,Offline objects,Standard Related List,Role Hierarchy,Revision History,Groups"
-		"PROFILES_TO_IGNORE":"EUR System Admin,EUR LT On Trade User,EUR LT Off Trade User",
-		"KEEP_PROFILES_PERMISSIONS":"EUR System Admin",
-		"selected": false
-	},
-	{
-		"name": "Toto",
-		"file": "C:\\Users\\Martin Chalot\\Desktop\\Pernod Ricard\\Rollout\\CAN NAV\\MX.xlsx",
-		"folder":"C:\\Users\\Martin Chalot\\Desktop\\Pernod Ricard\\Rollout\\CAN NAV\\",
-		"full_debug" : false,
-		"SHEET_APEX":"Apex Components",
-		"SHEET_TAB_VISIBILITY":"Tab Visibility",
-		"SHEET_LAYOUT_ASSIGNMENT":"Page Layout assignment",
-		"SHEET_RECORD_TYPE_ASSIGNMENT":"Record Type Assignment",
-		"SHEET_LISTVIEW":"List Views",
-		"SHEET_SHARING_RULES": "Sharing Rules",
-		"SHEETS_TO_IGNORE":"List of actions,Offline objects,Standard Related List,Role Hierarchy,Revision History,Groups"
+		"SHEETS_TO_IGNORE":"List of actions,Offline objects,Standard Related List,Role Hierarchy,Revision History,Groups,Variable,Metadata"
 		"PROFILES_TO_IGNORE":"EUR System Admin,EUR EE On Trade User,EUR EE Off Trade User",
 		"KEEP_PROFILES_PERMISSIONS":"EUR System Admin",
 		"selected": false
