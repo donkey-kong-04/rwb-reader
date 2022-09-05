@@ -3,7 +3,12 @@ package app;
 
 import java.awt.EventQueue;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.swing.JOptionPane;
 
@@ -14,10 +19,10 @@ import org.json.simple.parser.ParseException;
 
 public class App {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		
 		if(!lock()) {
-			JOptionPane.showConfirmDialog(null, "Only one version of the program can be opened at once. The program will close");
+			JOptionPane.showConfirmDialog(null, "You already have one reader opened", "Error", JOptionPane.PLAIN_MESSAGE);
 			throw new InternalError("Multiple instance detected");
 		}
 		

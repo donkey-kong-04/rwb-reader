@@ -16,6 +16,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import utils.PRUtil;
+import utils.ZipDirectory;
 import workbook.PRWorkbook;
 
 import javax.swing.JLabel;
@@ -78,7 +79,7 @@ public class UserInterface {
 		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(255, 255, 255));
-		frame.setBounds(100, 100, 871, 704);
+		frame.setBounds(100, 100, 871, 738);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -112,7 +113,7 @@ public class UserInterface {
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBackground(Color.ORANGE);
-		tabbedPane.setBounds(110, 0, 735, 611);
+		tabbedPane.setBounds(110, 0, 735, 698);
 		frame.getContentPane().add(tabbedPane);
 		
 		JPanel execution_panel2 = new JPanel();
@@ -148,7 +149,7 @@ public class UserInterface {
 				int input = 0;
 				
 				if(file.exists()) {
-					input = JOptionPane.showConfirmDialog(null, "Careful the 'unpackaged/' folder hasn't been removed.\nIf you have remove components from your workbook they will not be removed from this folder 'unpackaged/'.\n\nAre you sure you want to proceed?");
+					input = JOptionPane.showConfirmDialog(null, "Careful the 'unpackaged/' folder hasn't been removed.\nIf you have remove components from your workbook they will not be removed from this folder 'unpackaged/'.\n\nAre you sure you want to proceed?", "Warning", JOptionPane.YES_NO_OPTION);
 				}
 				
 				if(input == 0) {
@@ -169,6 +170,11 @@ public class UserInterface {
 						w.writeFiles();
 						
 						w.end();
+						
+						ZipDirectory zd = new ZipDirectory();
+						
+						zd.zip(ConfigManager.selected.package_folder);
+				        
 						dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
 						now = LocalDateTime.now();  
 						
@@ -186,13 +192,13 @@ public class UserInterface {
 		execution_panel2.add(btnNewButton_2);
 		
 		JPanel debug_scroll_panel = new JPanel();
-		debug_scroll_panel.setBounds(10, 186, 705, 390);
+		debug_scroll_panel.setBounds(10, 239, 705, 421);
 		execution_panel2.add(debug_scroll_panel);
 		debug_scroll_panel.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(0, 0, 695, 393);
+		scrollPane.setBounds(0, 11, 695, 410);
 		debug_scroll_panel.add(scrollPane);
 		
 		debugInfos2 = new JTextPane();
@@ -257,7 +263,7 @@ public class UserInterface {
 					}
 					
 					message += "\nAre you sure you want to proceed?";
-					int input = JOptionPane.showConfirmDialog(null, message);
+					int input = JOptionPane.showConfirmDialog(null, message, "Warning", JOptionPane.YES_NO_OPTION);
 				
 					if(input == 0) {
 						try {
@@ -282,7 +288,7 @@ public class UserInterface {
 		chckbxNewCheckBox.setForeground(Color.BLACK);
 		chckbxNewCheckBox.setEnabled(false);
 		chckbxNewCheckBox.setSelected(true);
-		chckbxNewCheckBox.setBounds(10, 155, 690, 23);
+		chckbxNewCheckBox.setBounds(6, 209, 690, 23);
 		execution_panel2.add(chckbxNewCheckBox);
 		
 		JButton BTN_RELOAD_CONFIG = new JButton("Reload config");
@@ -293,6 +299,29 @@ public class UserInterface {
 		});
 		BTN_RELOAD_CONFIG.setBounds(327, 105, 136, 43);
 		execution_panel2.add(BTN_RELOAD_CONFIG);
+		
+		JButton BTN_RELOAD_CONFIG_1 = new JButton("Clear log");
+		BTN_RELOAD_CONFIG_1.setBounds(581, 159, 119, 43);
+		execution_panel2.add(BTN_RELOAD_CONFIG_1);
+		
+		JButton BTN_RELOAD_CONFIG_1_1 = new JButton("Open RWB");
+		BTN_RELOAD_CONFIG_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Desktop.getDesktop().open(new File(ConfigManager.selected.filepath));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		BTN_RELOAD_CONFIG_1_1.setBounds(454, 159, 119, 43);
+		execution_panel2.add(BTN_RELOAD_CONFIG_1_1);
+		BTN_RELOAD_CONFIG_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				debugInfos2.setText("");
+			}
+		});
 		
 		
 		
@@ -419,15 +448,6 @@ public class UserInterface {
 		name.setColumns(10);
 		name.setBounds(78, 0, 553, 31);
 		config_panel.add(name);
-		
-		JButton BTN_RELOAD_CONFIG_1 = new JButton("Clear log");
-		BTN_RELOAD_CONFIG_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				debugInfos2.setText("");
-			}
-		});
-		BTN_RELOAD_CONFIG_1.setBounds(110, 615, 735, 43);
-		frame.getContentPane().add(BTN_RELOAD_CONFIG_1);
 		
 		loadConfig(ConfigManager.selected.Name);
 	}

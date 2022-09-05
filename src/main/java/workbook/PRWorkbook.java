@@ -2,11 +2,13 @@ package workbook;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.zip.ZipOutputStream;
 
 import javax.xml.transform.TransformerException;
 
@@ -27,6 +29,7 @@ import file.XML_Profile;
 import file.XML_SharingRules;
 import step.*;
 import utils.PRUtil;
+import utils.ZipDirectory;
 
 
 public class PRWorkbook {
@@ -147,7 +150,7 @@ public class PRWorkbook {
 	/*
 	 * Write XML to files
 	 */
-	public void writeFiles() throws TransformerException {
+	public void writeFiles() throws TransformerException, IOException {
 		List<XML_File> profiles = new ArrayList<XML_File>();
 		for(int i=0; i<Allfiles.size(); i++) {
 			XML_File f = Allfiles.get(i);
@@ -162,6 +165,7 @@ public class PRWorkbook {
 				
 			}
 		}
+		
 		
 		String csv = XML_Profile.buildCopadoFile(profiles);
 		XML_File.writeCSV(this.c.package_folder + "unpackaged\\copado_JSON_File.json", csv);
