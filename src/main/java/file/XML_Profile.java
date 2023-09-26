@@ -13,14 +13,8 @@ import utils.PRUtil;
 
 public class XML_Profile extends XML_File {
 	
-	public ArrayList<Node> objectPerms = new ArrayList<Node>();
-	public ArrayList<Node> fieldPerms = new ArrayList<Node>();
-	public ArrayList<Node> apexPerms = new ArrayList<Node>();
-	public ArrayList<Node> vfPerms = new ArrayList<Node>();
-	public ArrayList<Node> appPerms = new ArrayList<Node>();
 	public ArrayList<Node> layoutPerms = new ArrayList<Node>();
-	public ArrayList<Node> rtvPerms = new ArrayList<Node>();
-	
+	public String license;
 	public XML_Profile(String filename) {
 		super("Profile", filename, "unpackaged\\profiles\\");
 		
@@ -145,44 +139,12 @@ public class XML_Profile extends XML_File {
 		for(int i=0; i<rtvPerms.size(); i++) {
 			this.root.appendChild(rtvPerms.get(i));
 		}
-		
-		Node platform = file.createElement("userLicense");
-		ArrayList<String> salesforce = new ArrayList<String>();
-		salesforce.add("eur system admin.profile".toLowerCase());
-		salesforce.add("EUR TR Trade Tool Admin.profile".toLowerCase());
-		salesforce.add("EUR System Read only.profile".toLowerCase());
-		salesforce.add("EUR IDL On Trade User.profile".toLowerCase());
-		salesforce.add("EUR NIM GB Service Cloud User.profile".toLowerCase());
-		salesforce.add("EUR NIM ZA Service Cloud User.profile".toLowerCase());
-		salesforce.add("EUR NIM IDL Service Cloud User.profile".toLowerCase());
-		salesforce.add("EUR NIM DE Service Cloud User.profile".toLowerCase());
-		salesforce.add("EUR ISP Admin.profile".toLowerCase());
-		salesforce.add("EUR CTMobile SERVICE.profile".toLowerCase());
-		salesforce.add("EUR NIM DB Service Cloud User.profile".toLowerCase());
-		
-		ArrayList<String> guestUser = new ArrayList<String>();
-		guestUser.add("EUR_CTY_B2B_IDL Profile.profile".toLowerCase());
-		guestUser.add("EUR_CRM_Webhooks Profile.profile".toLowerCase());
-		guestUser.add("EUR_CTY_B2B_DB Profile.profile".toLowerCase());
-		
-		ArrayList<String> community = new ArrayList<String>();
-		community.add("EUR CTY B2B IDL User.profile".toLowerCase());
-		community.add("EUR CTY B2B DB User.profile".toLowerCase());
-		
-		if(salesforce.contains(filename.toLowerCase())) {
-			platform.appendChild(file.createTextNode("Salesforce"));
-			
-		} else if(community.contains(filename.toLowerCase())) {
-			platform.appendChild(file.createTextNode("Customer Community"));
-		} else if(guestUser.contains(filename.toLowerCase())) {
-			platform.appendChild(file.createTextNode("Guest User License"));
-			
-		} else {
-			platform.appendChild(file.createTextNode("Salesforce Platform"));
-			
-		}
-		
-		this.root.appendChild(platform);
+		/*
+		if(!PRUtil.isBlank(this.license)) {
+			Node platform = file.createElement("userLicense");
+			platform.appendChild(file.createTextNode(this.license));
+			this.root.appendChild(platform);
+		}*/
 	}
 	
 	private static void addPermissionToCopadoFile(Set<String> components, String type, String component, String SEP, ArrayList<String> jsonList) {

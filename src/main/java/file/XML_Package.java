@@ -58,7 +58,7 @@ public class XML_Package extends XML_File {
 		
 		for(String m : members) {
 			Node member = this.file.createElement("members");
-			System.out.println("Compare : " + m);
+			//System.out.println("Compare : " + m);
 			
 			if(PRUtil.doNotDeploy(m, "package.xml") == false) {
 				n.appendChild(member).appendChild(this.file.createTextNode(m.replaceAll("/", "%2F")));

@@ -35,7 +35,7 @@ public class ZipDirectory {
             }
             File[] children = fileToZip.listFiles();
             for (File childFile : children) {
-            	System.out.println("call child - " + childFile.getName());
+            	//System.out.println("call child - " + childFile.getName());
                 zipFile(childFile, fileName + "/" + childFile.getName(), zipOut);
             }
             return;

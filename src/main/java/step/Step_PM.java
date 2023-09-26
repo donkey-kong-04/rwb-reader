@@ -76,6 +76,7 @@ public class Step_PM extends Step {
 				        objPerm.appendChild(readAll).appendChild(f.file.createTextNode(v.contains("V") ? "true" : "false"));
 				        
 				        f.objectPerms.add(objPerm);
+				        //System.out.println(f.objectPerms);
 					}
 				} else {
 					numberOfColumnHidden ++;

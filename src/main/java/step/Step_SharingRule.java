@@ -44,19 +44,19 @@ public class Step_SharingRule extends Step {
 	private Type runPOSITION(PRWorkbook w) {
 		String markup = PRUtil.getCell(w, 0);
 		
-		return markup.equalsIgnoreCase("Base Object Settings") ? Type.NEXT_STEP : Type.STAY_IN_SAME_STEP;
+		return markup.equalsIgnoreCase("Object API Name") ? Type.NEXT_STEP : Type.STAY_IN_SAME_STEP;
 	}
 
 	private Type runREAD(PRWorkbook w) {
-		String objectApiName = PRUtil.getCell(w, 1);
+		String objectApiName = PRUtil.getCell(w, 0);
 		String sharingRuleName = PRUtil.getCell(w, 2);
-		String sharingRuleApiName = sharingRuleName.replaceAll(" ", "_");
-		String sharingCriteria = PRUtil.getCell(w, 3);
-		String sharingTo = PRUtil.getCell(w, 4);
-		String accessType = PRUtil.getCell(w, 5);
+		String sharingRuleApiName = PRUtil.getCell(w, 3);
+		String sharingCriteria = PRUtil.getCell(w, 4);
+		String sharingTo = PRUtil.getCell(w, 5);
+		String accessType = PRUtil.getCell(w, 6);
 		
 		if(!PRUtil.isBlank(objectApiName) && !PRUtil.isBlank(sharingRuleApiName) && !PRUtil.isBlank(sharingCriteria) && !PRUtil.isBlank(sharingTo)) {
-			XML_SharingRules f = (XML_SharingRules) w.getCorrectCorrectFile(XML_SharingRules.class, sharingRuleApiName + ".sharingRules");
+			XML_SharingRules f = (XML_SharingRules) w.getCorrectCorrectFile(XML_SharingRules.class, objectApiName + ".sharingRules");
 			
 			Node sharingCriteriaRule = f.file.createElement("sharingCriteriaRules");
 			

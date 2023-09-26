@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,6 +19,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import utils.PRUtil;
 
@@ -32,7 +34,17 @@ public abstract class XML_File {
 	public String filename;
 	
 	public Document file;
-	protected Element root;
+	public Element root;
+	
+	
+	
+	public ArrayList<Node> rtvPerms = new ArrayList<Node>();
+	public ArrayList<Node> objectPerms = new ArrayList<Node>();
+	public ArrayList<Node> fieldPerms = new ArrayList<Node>();
+	public ArrayList<Node> apexPerms = new ArrayList<Node>();
+	public ArrayList<Node> vfPerms = new ArrayList<Node>();
+	public ArrayList<Node> appPerms = new ArrayList<Node>();
+	public ArrayList<Node> tabSettings = new ArrayList<Node>();
 	
 	
 	public static String parseForPackage(String str) {
@@ -45,7 +57,7 @@ public abstract class XML_File {
 		this.location = location;
 		this.filename = XML_File.parseForPackage(filename);
 		
-		
+		System.out.println(filename);
 		DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder;
 		try {
@@ -62,6 +74,7 @@ public abstract class XML_File {
 			this.file.appendChild(this.root);
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
+			
 			PRUtil.writeMsg("Exception: " + e.getMessage(), Color.RED, true);
 			System.exit(1);
 		}
@@ -99,13 +112,15 @@ public abstract class XML_File {
 		//System.out.println("Try to write : " + path);
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
+        System.out.println(this.file.getTextContent());
         DOMSource domSource = new DOMSource(this.file);
         StreamResult streamResult;
 	
 		streamResult = new StreamResult(new File(folder + filename));
+		System.out.println(folder + filename);
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-       
+        
         transformer.transform(domSource, streamResult);
 		
 

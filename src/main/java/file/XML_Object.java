@@ -6,14 +6,12 @@ import org.w3c.dom.Node;
 
 public class XML_Object extends XML_File {
 	
-	public ArrayList<Node> recordTypes;
-	public ArrayList<Node> listViews;
+	public ArrayList<Node> listViews = new ArrayList<Node>();
+	public ArrayList<Node> recordTypes = new ArrayList<Node>();
 	
 	public XML_Object(String filename) {
 		super("CustomObject", filename, "unpackaged\\objects\\");
 		
-		listViews = new ArrayList<Node>();
-		recordTypes = new ArrayList<Node>();
 	}
 
 	@Override

@@ -6,9 +6,7 @@ import org.w3c.dom.Node;
 
 public class XML_PermissionSet extends XML_File {
 	
-	public ArrayList<Node> objectPerms;
-	public ArrayList<Node> fieldPerms;
-	public ArrayList<Node> tabSettings;
+	
 	
 	public String label;
 	
@@ -16,31 +14,40 @@ public class XML_PermissionSet extends XML_File {
 	public XML_PermissionSet(String filename) {
 		
 		super("PermissionSet", filename, "unpackaged\\permissionsets\\");
-		
-		fieldPerms = new ArrayList<Node>();
-		objectPerms = new ArrayList<Node>();
-		tabSettings = new ArrayList<Node>();
+		this.label = filename.replaceAll("\\.permissionset", "").replaceAll("_", " ");
 	}
 
 	@Override
 	public void buildFile() {
-		Node lab = this.file.createElement("label");
+		//System.out.println("BEGIN");
+		Node nodeLabel = this.file.createElement("label");
 		
-		this.root.appendChild(lab).appendChild(file.createTextNode(label));
+		this.root.appendChild(nodeLabel).appendChild(file.createTextNode(label));
 		// TODO Auto-generated method stub
 		
-		
+		//System.out.println("Label:" + label);
 		for(int i=0; i<fieldPerms.size(); i++) {
 			this.root.appendChild(fieldPerms.get(i));
+			//System.out.println("fieldPerms:" + fieldPerms.get(i).getTextContent());
 		}
 		
 		for(int i=0; i<tabSettings.size(); i++) {
 			this.root.appendChild(tabSettings.get(i));
+			//System.out.println("tabSettings:" + tabSettings.get(i).getTextContent());
 		}
 		
 		for(int i=0; i<objectPerms.size(); i++) {
 			this.root.appendChild(objectPerms.get(i));
+			//System.out.println("objectPerms:" + objectPerms.get(i).getTextContent());
 		}
+		
+		for(int i=0; i<rtvPerms.size(); i++) {
+			
+			this.root.appendChild(rtvPerms.get(i));
+			//System.out.println("rtvPerms:" + rtvPerms.get(i).getTextContent());
+		}
+		//System.out.println("END");
+		
 	}
 
 }

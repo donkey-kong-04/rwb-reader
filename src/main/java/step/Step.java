@@ -172,13 +172,13 @@ public abstract class Step {
 			//At least one or we consider the file in an incorrect format
 			if(PRUtil.isBlank(header) && i==index_start) {
 				index_end = index_start - 1;
-				PRUtil.writeMsg("Markup is present inside the sheet, but no associated member" + w.currentSheet.getSheetName(), Color.BLACK, false);
+				//PRUtil.writeMsg("Markup is present inside the sheet, but no associated member" + w.currentSheet.getSheetName(), Color.BLACK, false);
 				
 			} 
 			//End earlier the loop
 			else if(PRUtil.isBlank(header)) {
 				index_end = i - 1;
-				PRUtil.writeMsg("INFO Markup ends earlier. Total members in the sheet = " + (index_end - index_start + 1) + w.currentSheet.getSheetName(), Color.BLACK, false);
+				//PRUtil.writeMsg("INFO Markup ends earlier. Total members in the sheet = " + (index_end - index_start + 1) + w.currentSheet.getSheetName(), Color.BLACK, false);
 				
 			} 
 		}
@@ -194,6 +194,7 @@ public abstract class Step {
 			Matcher m = p.matcher(line);
 			
 			if(m.matches()) {
+				System.out.println("Maaaatch");
 				ArrayList<String> arrayLine = new ArrayList<String>();
 				arrayLine.add(m.group(1));
 				for(String el : m.group(2).split(",")) {
@@ -203,6 +204,8 @@ public abstract class Step {
 				parsedResult.add(arrayLine);
 			}
 		}
+		
+		System.out.println(parsedResult);
 		
 		return parsedResult;
 	}

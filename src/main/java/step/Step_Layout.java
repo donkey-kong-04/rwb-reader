@@ -268,7 +268,7 @@ public class Step_Layout extends Step {
 		boolean success = (index_start != -1 && index_end != -1);
 		
 		if(!success) {
-			PRUtil.writeMsg("MARKUP MISSING 'Page Layouts' markup not found in " + w.currentSheet.getSheetName(), Color.BLACK, false);
+			//PRUtil.writeMsg("MARKUP MISSING 'Page Layouts' markup not found in " + w.currentSheet.getSheetName(), Color.BLACK, false);
 		
 		}
 

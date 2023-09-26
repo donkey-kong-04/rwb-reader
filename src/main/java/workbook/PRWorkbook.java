@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbookFactory;
+import org.w3c.dom.Node;
 
 import app.Config;
 import app.ConfigManager;
@@ -89,14 +90,43 @@ public class PRWorkbook {
 				steps = new ArrayList<Step>();
 				
 				steps.add(new Step_Profile());//NEED TO BE FIRST !!!
-				steps.add(new Step_ApexComponents());
-				steps.add(new Step_TabVisibility());
+				
+				if(c.DEPLOY_APEX == true) {
+					
+					steps.add(new Step_ApexComponents());
+				}
+
+				if(c.DEPLOY_TAB_VISIBILITY == true) {
+					steps.add(new Step_TabVisibility());
+				}
+				
 				steps.add(new Step_Layout());
 				steps.add(new Step_RecordType());
 				steps.add(new Step_PM());
-				steps.add(new Step_LayoutAssignment());
-				steps.add(new Step_RecordTypeAssignment());
-				//steps.add(new Step_ListView());
+				
+				steps.add(new Step_ProfileLicense());
+				
+				if(c.DEPLOY_LAYOUT_ASSIGNMENT == true) {
+					steps.add(new Step_LayoutAssignment());
+				}
+				
+				
+				if(c.DEPLOY_RECORD_TYPE_ASSIGNMENT == true) {
+					steps.add(new Step_RecordTypeAssignment());
+				}
+				
+				
+				
+				/* Not properly tested
+				if(c.DEPLOY_LISTVIEW == true) {
+					steps.add(new Step_ListView());
+				}*/
+				
+				/* Not properly tested
+				if(c.DEPLOY_SHARING_RULES == true) {
+					steps.add(new Step_SharingRule());
+				}*/
+				
 				readRows(sheet);
 				
 				for(int j=0; j<steps.size(); j++) {
@@ -152,15 +182,23 @@ public class PRWorkbook {
 	 */
 	public void writeFiles() throws TransformerException, IOException {
 		List<XML_File> profiles = new ArrayList<XML_File>();
+		
+		System.out.println("WriteFiles");
 		for(int i=0; i<Allfiles.size(); i++) {
 			XML_File f = Allfiles.get(i);
-			
+			System.out.println("Write: " + f.filename);
+			for(Node n : f.rtvPerms) {
+				System.out.println(n.getTextContent());
+			}
 			//The name of the profile file contains .profile, but we initialize the list to ignore without it
 			if(PRUtil.doNotDeploy(f.filename.replace(".profile", ""), "profile file") == false) {
 			
 				if(f instanceof XML_Profile) {
 					profiles.add(f);
 				}
+				//System.out.println(f.filename);
+				//System.out.println(this.c.package_folder);
+				//System.out.println(f.location);
 				f.write(f.filename, this.c.package_folder + f.location);
 				
 			}
@@ -180,8 +218,9 @@ public class PRWorkbook {
 		for(int i=0; i<Allfiles.size(); i++) {
 			
 			XML_File f = Allfiles.get(i);
-			
+			//System.out.println("Compare with existing file:" + f.filename);
 			if(f.filename.equalsIgnoreCase(filename)) {
+				//System.out.println("Found");
 				if(!f.filename.equals(filename)) {
 					PRUtil.writeMsg("WARNING - Filename - " + filename + "' & '" + f.filename + "' do not match on a sensitive level. It can create deployment issue.", Color.ORANGE, false);
 				
@@ -208,6 +247,7 @@ public class PRWorkbook {
 			f = new XML_Object(filename);
 		} 
 		else if(type == XML_PermissionSet.class) {
+			
 			f = new XML_PermissionSet(filename);
 			
 		} 
@@ -216,7 +256,7 @@ public class PRWorkbook {
 			
 		}
 		
-		PRUtil.writeMsg("Adding in all files " + filename, Color.BLACK, false);
+		//PRUtil.writeMsg("Adding in all files " + filename, Color.BLACK, false);
 		
 		this.Allfiles.add(f);
 		

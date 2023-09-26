@@ -42,17 +42,24 @@ public class Step_ListView extends Step {
 	private Type runPOSITION(PRWorkbook w) {
 		String markup = PRUtil.getCell(w, 0);
 		
-		return markup.equalsIgnoreCase("Object Name") ? Type.NEXT_STEP : Type.STAY_IN_SAME_STEP;
+		return markup.equalsIgnoreCase("Object API Name") ? Type.NEXT_STEP : Type.STAY_IN_SAME_STEP;
 	}
 
 	private Type runREAD(PRWorkbook w) {
 		
-		String objectName = PRUtil.getCell(w, 1);
-		String apiName = PRUtil.getCell(w, 3);
-		String label = PRUtil.getCell(w, 2);
-		String sharing = PRUtil.getCell(w, 6);
-		String filters = PRUtil.getCell(w, 7);
-		String fields = PRUtil.getCell(w, 8);
+		String objectName = PRUtil.getCell(w, 0);
+		String label = PRUtil.getCell(w, 1);
+		String apiName = PRUtil.getCell(w, 2);
+		String sharing = PRUtil.getCell(w, 3);
+		String filters = PRUtil.getCell(w, 4);
+		String fields = PRUtil.getCell(w, 5);
+		
+		System.out.println(objectName);
+		System.out.println(apiName);
+		System.out.println(label);
+		System.out.println(filters);
+		System.out.println(sharing);
+		System.out.println(filters);
 		
 		if(!PRUtil.isBlank(objectName) && !PRUtil.isBlank(label) && !PRUtil.isBlank(apiName) && !PRUtil.isBlank(sharing) && !PRUtil.isBlank(fields)) {
 			w.fpackage.p_listviews.add(objectName + "." + apiName);
@@ -61,12 +68,17 @@ public class Step_ListView extends Step {
 			
 			Node listView = f.file.createElement("listViews");
 			
+			
+			
 			listView.appendChild(f.file.createElement("fullName")).appendChild(f.file.createTextNode(apiName));
 			ArrayList<Node> nfilters = null;
 			if(!PRUtil.isBlank(filters)) {
 				Node logic = null;
 				nfilters = buildFilter(w, f, filters, logic);
-				listView.appendChild(logic);
+				
+				if(logic != null) {
+					listView.appendChild(logic);
+				} 
 			}
 			for(String s : fields.split(",")) {
 				listView.appendChild(f.file.createElement("columns")).appendChild(f.file.createTextNode(s.trim()));
@@ -104,7 +116,7 @@ public class Step_ListView extends Step {
 		String stp = STEPS[STEP];
 		
 		if(stp.equals("POSITION")) {
-			PRUtil.writeMsg("MARKUP MISSING : 'Object Name' in List views has not been found in column A" + w.currentSheet.getSheetName(), Color.RED, true);
+			PRUtil.writeMsg("MARKUP MISSING : 'Object API Name' in List views has not been found in column A - " + w.currentSheet.getSheetName(), Color.RED, true);
 			
 		}
 	}
@@ -118,6 +130,7 @@ public class Step_ListView extends Step {
 	public ArrayList<Node> buildFilter(PRWorkbook w, XML_Object f, String filters, Node logic) {
 		ArrayList<Node> nfilters = new ArrayList<Node>();
 		
+		System.out.println(this.parse(w, filters));
 		
 		
 		for(ArrayList<String> filter : this.parse(w, filters)) {
