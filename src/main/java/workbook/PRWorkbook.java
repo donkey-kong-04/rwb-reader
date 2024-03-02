@@ -29,7 +29,7 @@ import file.XML_PermissionSet;
 import file.XML_Profile;
 import file.XML_SharingRules;
 import step.*;
-import utils.PRUtil;
+import utils.U;
 import utils.ZipDirectory;
 
 
@@ -79,7 +79,7 @@ public class PRWorkbook {
 		for(int i=0; i<workbook.getNumberOfSheets(); i++) {
 			Sheet sheet = workbook.getSheetAt(i);
 			System.out.println(sheet.getSheetName());
-			if(PRUtil.exit == true) {
+			if(U.exit == true) {
 				return;
 			}
 			//ignore hidden sheets
@@ -89,12 +89,10 @@ public class PRWorkbook {
 				
 				steps = new ArrayList<Step>();
 				
-				steps.add(new Step_ProfileOther());
-				steps.add(new Step_PermissionSetOther());
-				steps.add(new Step_Profile());//NEED TO BE FIRST !!! - not sure why
+				steps.add(new Step_ProfileObject());//NEED TO BE FIRST !!! - not sure why
 				steps.add(new Step_Layout());
 				steps.add(new Step_RecordType());
-				steps.add(new Step_PM());
+				steps.add(new Step_PermissionSetObject());
 				steps.add(new Step_ProfileOther());
 				steps.add(new Step_PermissionSetOther());
 				steps.add(new Step_LayoutAssignment());
@@ -115,7 +113,7 @@ public class PRWorkbook {
 					}
 				}
 			} else {
-				PRUtil.writeMsg("HIDDEN SHEET - " + sheet.getSheetName(), Color.ORANGE, false);
+				U.writeMsg("HIDDEN SHEET - " + sheet.getSheetName(), Color.ORANGE, false);
 				
 			}
 		}
@@ -130,7 +128,7 @@ public class PRWorkbook {
 		while(rit.hasNext()) {
 			Row r = rit.next();
 			
-			if(PRUtil.exit == true) {
+			if(U.exit == true) {
 				return;
 			}
 			
@@ -144,7 +142,7 @@ public class PRWorkbook {
 		
 		for(int i=0; i<steps.size(); i++) {
 			
-			if(PRUtil.exit == true) {
+			if(U.exit == true) {
 				return;
 			}
 			currentStep = steps.get(i);
@@ -170,7 +168,7 @@ public class PRWorkbook {
 				System.out.println(n.getTextContent());
 			}
 			//The name of the profile file contains .profile, but we initialize the list to ignore without it
-			if(PRUtil.doNotDeploy(f.filename.replace(".profile", ""), "profile file") == false) {
+			if(U.doNotDeploy(f.filename.replace(".profile", ""), "profile file") == false) {
 			
 				if(f instanceof XML_Profile) {
 					profiles.add(f);
@@ -201,7 +199,7 @@ public class PRWorkbook {
 			if(f.filename.equalsIgnoreCase(filename)) {
 				//System.out.println("Found");
 				if(!f.filename.equals(filename)) {
-					PRUtil.writeMsg("WARNING - Filename - " + filename + "' & '" + f.filename + "' do not match on a sensitive level. It can create deployment issue.", Color.ORANGE, false);
+					U.writeMsg("WARNING - Filename - " + filename + "' & '" + f.filename + "' do not match on a sensitive level. It can create deployment issue.", Color.ORANGE, false);
 				
 				}
 				
@@ -231,11 +229,11 @@ public class PRWorkbook {
 			
 		} 
 		else {
-			PRUtil.writeMsg("FILE TYPE unfound", Color.RED, true);
+			U.writeMsg("FILE TYPE unfound", Color.RED, true);
 			
 		}
 		
-		//PRUtil.writeMsg("Adding in all files " + filename, Color.BLACK, false);
+		//U.writeMsg("Adding in all files " + filename, Color.BLACK, false);
 		
 		this.Allfiles.add(f);
 		
@@ -264,7 +262,7 @@ public class PRWorkbook {
 			}
 			
 			if(found == false && sets.add(s)) {
-				PRUtil.writeMsg("Record Type definition not found : " + s, Color.ORANGE, false);
+				U.writeMsg("Record Type definition not found : " + s, Color.ORANGE, false);
 				
 			}
 		}
@@ -277,7 +275,7 @@ public class PRWorkbook {
 				}
 			}
 			if(found == false && sets.add(s)) {
-				PRUtil.writeMsg("Layout definition not found : " + s, Color.BLACK, false);
+				U.writeMsg("Layout definition not found : " + s, Color.BLACK, false);
 			}
 		}
 	}

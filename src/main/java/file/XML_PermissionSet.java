@@ -9,7 +9,7 @@ public class XML_PermissionSet extends XML_File {
 	
 	
 	public String label;
-	
+	public Node license;
 	
 	public XML_PermissionSet(String filename) {
 		
@@ -36,6 +36,12 @@ public class XML_PermissionSet extends XML_File {
 			//System.out.println("tabSettings:" + tabSettings.get(i).getTextContent());
 		}
 		
+		System.out.println("SIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIZE : " + applicationVisibilities.size());
+		for(int i=0; i<applicationVisibilities.size(); i++) {
+			this.root.appendChild(applicationVisibilities.get(i));
+			
+		}
+		
 		for(int i=0; i<objectPerms.size(); i++) {
 			this.root.appendChild(objectPerms.get(i));
 			//System.out.println("objectPerms:" + objectPerms.get(i).getTextContent());
@@ -45,6 +51,16 @@ public class XML_PermissionSet extends XML_File {
 			
 			this.root.appendChild(rtvPerms.get(i));
 			//System.out.println("rtvPerms:" + rtvPerms.get(i).getTextContent());
+		}
+		
+		if(license != null) {
+			this.root.appendChild(license);
+		}
+		
+
+		for(int i=0; i<userPermissions.size(); i++) {
+			this.root.appendChild(this.userPermissions.get(i));
+			
 		}
 		//System.out.println("END");
 		

@@ -8,7 +8,7 @@ import org.w3c.dom.Node;
 
 import file.XML_File;
 import file.XML_Layout;
-import utils.PRUtil;
+import utils.U;
 import workbook.PRWorkbook;
 
 public class Step_Layout extends Step {
@@ -32,7 +32,7 @@ public class Step_Layout extends Step {
 			return Type.STAY_IN_SAME_STEP;
 		}
 		String stp = STEPS[STEP];
-		//PRUtil.debug(s,  "RUN STEP", false);
+		//U.debug(s,  "RUN STEP", false);
 		if(stp.equals("INDEX_LAYOUT")) {
 			return runINDEX(w);
 		} else if(stp.equals("OBJECT_AND_LAYOUT_POSITION")) {
@@ -52,8 +52,8 @@ public class Step_Layout extends Step {
 
 	private Type runRELATED(PRWorkbook w) {
 		
-		String fieldAPIName = PRUtil.getCell(w, 1);
-		String relatedAPIName = PRUtil.getCell(w, 2);
+		String fieldAPIName = U.getCell(w, 1);
+		String relatedAPIName = U.getCell(w, 2);
 		
 		Integer numberOfColumnHidden = 0;
 		for(int i=index_start; i<=index_end; i++) {
@@ -62,7 +62,7 @@ public class Step_Layout extends Step {
 			boolean isColumnHidden = w.currentSheet.isColumnHidden(i);
 			
 			if(isColumnHidden == false) {
-				String v = PRUtil.getCell(w, i);
+				String v = U.getCell(w, i);
 				//Section
 				
 				String currentId = IDS.get(tabIndex);
@@ -70,14 +70,14 @@ public class Step_Layout extends Step {
 				XML_Layout f = (XML_Layout) w.getCorrectCorrectFile(XML_Layout.class, currentId);
 				
 				//New related list found
-				if(!PRUtil.isBlank(relatedAPIName)) 
+				if(!U.isBlank(relatedAPIName)) 
 				{
 					if(v.equalsIgnoreCase("x")) {
 						Node relatedLists = f.file.createElement("relatedLists");
 						
 						
 						String relatedListName  = null;
-						if(!PRUtil.isBlank(fieldAPIName)) {
+						if(!U.isBlank(fieldAPIName)) {
 							relatedListName = fieldAPIName.trim() + "." + relatedAPIName.trim();
 						} else {
 							relatedListName  = relatedAPIName.trim();
@@ -91,12 +91,12 @@ public class Step_Layout extends Step {
 					}
 				} 
 				//Field of relatedList
-				else if(!PRUtil.isBlank(fieldAPIName)) 
+				else if(!U.isBlank(fieldAPIName)) 
 				{
 					if(v.equalsIgnoreCase("x")) {
 						
 						if(f.currentRelatedList == null) {
-							PRUtil.writeMsg("FILE CONSTRUCTION ERROR : Related List declaration expected before field of related list - " + relatedAPIName, Color.RED, true);
+							U.writeMsg("FILE CONSTRUCTION ERROR : Related List declaration expected before field of related list - " + relatedAPIName, Color.RED, true);
 						}
 						
 						Node fields = f.file.createElement("fields");
@@ -113,17 +113,17 @@ public class Step_Layout extends Step {
 	}
 
 	private void runOBJECT(PRWorkbook w) {
-		object = PRUtil.getCell(w, 0);
+		object = U.getCell(w, 0);
 		
-		if(PRUtil.isBlank(object)) {
-			PRUtil.writeMsg("Object API Name should be found in cell A2 - " + w.currentSheet.getSheetName(), Color.RED, true);
+		if(U.isBlank(object)) {
+			U.writeMsg("Object API Name should be found in cell A2 - " + w.currentSheet.getSheetName(), Color.RED, true);
 		}
 		object = object.trim();
 	}
 
 	private Type runPOSITION_ON_FIELDS(PRWorkbook w) {
-		String field = PRUtil.getCell(w, 0);
-		String apiName = PRUtil.getCell(w, 1);
+		String field = U.getCell(w, 0);
+		String apiName = U.getCell(w, 1);
 		if(field.trim().equalsIgnoreCase("Field") && apiName.trim().equalsIgnoreCase("Field API Name")) {
 			return Type.NEXT_STEP;
 		}
@@ -133,23 +133,23 @@ public class Step_Layout extends Step {
 
 	private Type runREAD_FIELDS(PRWorkbook w) {
 		
-		String label = PRUtil.getCell(w, 0);
-		String apiname = PRUtil.getCell(w, 1);
-		String type = PRUtil.getCell(w, 2);
+		String label = U.getCell(w, 0);
+		String apiname = U.getCell(w, 1);
+		String type = U.getCell(w, 2);
 		
-		//PRUtil.debug(s, "Read field", false);
+		//U.debug(s, "Read field", false);
 		if(label.equalsIgnoreCase("Related Data (Objects & Columns)")) {
-			//PRUtil.debug(s,  "NEXT STEP RELATED LIST", false);
+			//U.debug(s,  "NEXT STEP RELATED LIST", false);
 			return Type.NEXT_STEP;
 		} else {
-			//PRUtil.debug(s, t1 + " " + t2, false);
+			//U.debug(s, t1 + " " + t2, false);
 			Integer numberOfColumnHidden = 0;
 			for(int i=index_start; i<=index_end; i++) {
 				boolean isColumnHidden = w.currentSheet.isColumnHidden(i);
 				
 				if(isColumnHidden == false) {
 				
-					String v = PRUtil.getCell(w, i);
+					String v = U.getCell(w, i);
 					
 					
 					String currentId = IDS.get(i - index_start - numberOfColumnHidden);
@@ -173,7 +173,7 @@ public class Step_Layout extends Step {
 					else if(type.toLowerCase().contains("vf page")) {
 						if(v.equalsIgnoreCase("x")) {
 							if(f.currentLayoutColumn == null) {
-								PRUtil.writeMsg("FILE CONSTRUCTION ERROR : Section should be found before any layout element - " + w.currentSheet.getSheetName(), Color.RED, true);
+								U.writeMsg("FILE CONSTRUCTION ERROR : Section should be found before any layout element - " + w.currentSheet.getSheetName(), Color.RED, true);
 							}
 							
 							Node layoutItems = f.file.createElement("layoutItems");
@@ -199,7 +199,7 @@ public class Step_Layout extends Step {
 						//System.out.println("=====>BLANK SPACE FOUND for : " + (f.currentLayoutColumn != null ? f.currentLayoutColumn.getChildNodes().item(0).getTextContent() : "null" ));
 						if(v.equalsIgnoreCase("x")) {
 							if(f.currentLayoutColumn == null) {
-								PRUtil.writeMsg("FILE CONSTRUCTION ERROR : Section should be found before any layout element - " + w.currentSheet.getSheetName(), Color.RED, true);
+								U.writeMsg("FILE CONSTRUCTION ERROR : Section should be found before any layout element - " + w.currentSheet.getSheetName(), Color.RED, true);
 								
 							}
 							
@@ -211,7 +211,7 @@ public class Step_Layout extends Step {
 						}
 					} 
 					//Display field
-					else if(!PRUtil.isBlank(label) && !PRUtil.isBlank(apiname)) 
+					else if(!U.isBlank(label) && !U.isBlank(apiname)) 
 					{
 						
 						
@@ -223,12 +223,12 @@ public class Step_Layout extends Step {
 						if(isRead || isEdit ||isRequired) {
 							
 							if(f.currentLayoutColumn == null) {
-								PRUtil.writeMsg("FILE CONSTRUCTION ERROR : Section should be found before any layout element - " + w.currentSheet.getSheetName(), Color.RED, true);
+								U.writeMsg("FILE CONSTRUCTION ERROR : Section should be found before any layout element - " + w.currentSheet.getSheetName(), Color.RED, true);
 								
 							}
 							
 							if((isEdit || isRequired) && type.toLowerCase().contains("formul")) {
-								PRUtil.writeMsg("WARNING "+ apiname + " should be read-only since it is a formula", Color.ORANGE, false);
+								U.writeMsg("WARNING "+ apiname + " should be read-only since it is a formula", Color.ORANGE, false);
 								
 							}
 							
@@ -268,7 +268,7 @@ public class Step_Layout extends Step {
 		boolean success = (index_start != -1 && index_end != -1);
 		
 		if(!success) {
-			//PRUtil.writeMsg("MARKUP MISSING 'Page Layouts' markup not found in " + w.currentSheet.getSheetName(), Color.BLACK, false);
+			//U.writeMsg("MARKUP MISSING 'Page Layouts' markup not found in " + w.currentSheet.getSheetName(), Color.BLACK, false);
 		
 		}
 
@@ -282,12 +282,12 @@ public class Step_Layout extends Step {
 		String stp = STEPS[STEP];
 		
 		if(stp.equals("POSITIONATE_FIELD")) {
-			PRUtil.writeMsg("MARKUP MISSING : 'Field' and 'Field API Name' should be found before fields declaration" + w.currentSheet.getSheetName(), Color.RED, true);
+			U.writeMsg("MARKUP MISSING : 'Field' and 'Field API Name' should be found before fields declaration" + w.currentSheet.getSheetName(), Color.RED, true);
 			
 		}
 		
 		else if(stp.equals("READ_FIELDS")) {
-			PRUtil.writeMsg("MARKUP MISSING 'Related Data (Objects & Columns)' markup not found " + w.currentSheet.getSheetName(), Color.BLACK, false);
+			U.writeMsg("MARKUP MISSING 'Related Data (Objects & Columns)' markup not found " + w.currentSheet.getSheetName(), Color.BLACK, false);
 			
 		}
 	}
@@ -334,7 +334,7 @@ public class Step_Layout extends Step {
 		
 		for(int i=index_start; i<=index_end; i++) {
 			boolean isColumnHidden = w.currentSheet.isColumnHidden(i);
-			String header = XML_File.parseForPackage(PRUtil.getCell(w, i));
+			String header = XML_File.parseForPackage(U.getCell(w, i));
 			if(isColumnHidden == false) {
 				
 				
@@ -345,7 +345,7 @@ public class Step_Layout extends Step {
 				w.layouts.add(header);
 				w.fpackage.p_layouts.add(object.trim() + "-" + header);
 			} else {
-				PRUtil.writeMsg("HIDDEN LAYOUT - " + header, Color.BLACK, false);
+				U.writeMsg("HIDDEN LAYOUT - " + header, Color.BLACK, false);
 			
 			}
 		}
@@ -355,7 +355,7 @@ public class Step_Layout extends Step {
 	private void addLayoutItemsToLayoutColumn(PRWorkbook w, XML_Layout f, boolean rightColumn, Node layoutItems) {
 		if(rightColumn) {
 			if(f.currentLayoutColumn2 == null) {
-				PRUtil.writeMsg("Cannot add an element on the right column if you have only one column" + w.currentSheet.getSheetName(), Color.RED, true);
+				U.writeMsg("Cannot add an element on the right column if you have only one column" + w.currentSheet.getSheetName(), Color.RED, true);
 			}
 			
 			f.currentLayoutColumn2.appendChild(layoutItems);
@@ -366,18 +366,6 @@ public class Step_Layout extends Step {
 
 	@Override
 	public boolean isCorrectSheet(PRWorkbook w, String sheetName) {
-		boolean readSheet = true;
-		for(String s : w.c.SHEETS_TO_IGNORE) {
-			if(s.equalsIgnoreCase(sheetName)) {
-				readSheet = false;
-			}
-		}
-		boolean isSpecificSheet = (
-			w.c.SHEET_LAYOUT_ASSIGNMENT.equalsIgnoreCase(sheetName) ||
-			w.c.SHEET_RECORD_TYPE_ASSIGNMENT.equalsIgnoreCase(sheetName) ||
-			w.c.SHEET_LISTVIEW.equalsIgnoreCase(sheetName) ||
-			w.c.SHEET_SHARING_RULES.equalsIgnoreCase(sheetName));
-		
-		return readSheet && !isSpecificSheet;
+		return !U.isSpecialSheet(w, sheetName);
 	}
 }

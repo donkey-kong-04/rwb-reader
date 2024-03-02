@@ -8,13 +8,14 @@ import java.util.Set;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import utils.PRUtil;
+import utils.U;
 
 
 public class XML_Profile extends XML_File {
 	
 	public ArrayList<Node> layoutPerms = new ArrayList<Node>();
 	public Node userLicense;
+	public Node custom;
 	public XML_Profile(String filename) {
 		super("Profile", filename, "unpackaged\\profiles\\");
 		
@@ -40,7 +41,7 @@ public class XML_Profile extends XML_File {
 		for(int i=0; i<profiles.size(); i++) {
 			String filename = profiles.get(i).filename;
 			//The profiles to ignore contains only the name of the profile, so we need to remove before comparing
-			if(PRUtil.doNotDeploy(filename.replace(".profile", ""), "copado") == false) {
+			if(U.doNotDeploy(filename.replace(".profile", ""), "copado") == false) {
 				jsonRepresentation.add("{\"t\":\"Profile\",\"n\":\"" + filename.replace(".profile", "") + "\",\"s\":true,\"r\":false,\"b\":\"\",\"d\":\"\",\"cb\":\"\",\"cd\":\"\"}");
 				
 			}
@@ -49,8 +50,8 @@ public class XML_Profile extends XML_File {
 		for(int j=0; j<profiles.size(); j++) {
 			XML_Profile p = (XML_Profile) profiles.get(j);
 			
-			for(int i=0; i<p.appPerms.size(); i++) {
-				Element e = (Element) p.appPerms.get(i);
+			for(int i=0; i<p.applicationVisibilities.size(); i++) {
+				Element e = (Element) p.applicationVisibilities.get(i);
 				
 				addPermissionToCopadoFile(components, "CustomApplication", e.getElementsByTagName("application").item(0).getTextContent().trim(), SEP, jsonRepresentation);
 				
@@ -103,9 +104,21 @@ public class XML_Profile extends XML_File {
 	@Override
 	public void buildFile() {
 		
+		if(custom != null) {
+			this.root.appendChild(custom);
+		}
 		
-		for(int i=0; i<appPerms.size(); i++) {
-			this.root.appendChild(this.appPerms.get(i));
+		if(userLicense != null) {
+			this.root.appendChild(userLicense);
+		}
+		
+		for(int i=0; i<applicationVisibilities.size(); i++) {
+			this.root.appendChild(this.applicationVisibilities.get(i));
+			
+		}
+		
+		for(int i=0; i<userPermissions.size(); i++) {
+			this.root.appendChild(this.userPermissions.get(i));
 			
 		}
 		
@@ -113,8 +126,7 @@ public class XML_Profile extends XML_File {
 			this.root.appendChild(this.apexPerms.get(i));
 		}
 		
-		Node custom = this.file.createElement("custom");
-		this.root.appendChild(custom).appendChild(this.file.createTextNode("true"));
+		
 		/*
 		Node description = this.file.createElement("description");
 		this.root.appendChild(description).appendChild(this.file.createTextNode(""));
@@ -140,7 +152,10 @@ public class XML_Profile extends XML_File {
 			this.root.appendChild(rtvPerms.get(i));
 		}
 		
-		this.root.appendChild(userLicense);
+		
+		
+		
+		
 	}
 	
 	private static void addPermissionToCopadoFile(Set<String> components, String type, String component, String SEP, ArrayList<String> jsonList) {

@@ -7,10 +7,10 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.w3c.dom.Node;
 
 import file.XML_Profile;
-import utils.PRUtil;
+import utils.U;
 import workbook.PRWorkbook;
 
-public class Step_Profile extends Step {
+public class Step_ProfileObject extends Step {
 	
 	private String object;
 	
@@ -51,7 +51,7 @@ public class Step_Profile extends Step {
 	
 	public void debugStepNotPassed(PRWorkbook w) {
 		if(this.STEPS[this.STEP].equals("OBJ_PERM")) {
-			PRUtil.writeMsg("MARKUP MISSING 'Object permissions' markup should be found in object's sheet " + w.currentSheet.getSheetName(), Color.BLACK, false);
+			U.writeMsg("MARKUP MISSING 'Object permissions' markup should be found in object's sheet " + w.currentSheet.getSheetName(), Color.BLACK, false);
 			
 		}
 	}
@@ -69,12 +69,12 @@ public class Step_Profile extends Step {
 	
 	private void runOBJ_API_NAME(PRWorkbook w) 
 	{
-		this.object = PRUtil.getCell(w, 0);
+		this.object = U.getCell(w, 0);
 				
-		boolean success = !PRUtil.isBlank(this.object);
+		boolean success = !U.isBlank(this.object);
 		
 		if(!success) {
-			PRUtil.writeMsg("Object API Name should be found in cell A2" + w.currentSheet.getSheetName(), Color.RED, true);
+			U.writeMsg("Object API Name should be found in cell A2" + w.currentSheet.getSheetName(), Color.RED, true);
 			
 		}
 		
@@ -89,7 +89,7 @@ public class Step_Profile extends Step {
 		for(int i=index_start; i<=index_end; i++) {
 			boolean isColumnHidden = w.currentSheet.isColumnHidden(i);
 			
-			String header = PRUtil.getCell(w, i);
+			String header = U.getCell(w, i);
 			if(isColumnHidden == false) {	
 				String filename = header + ".profile";
 				IDS.add(filename);
@@ -98,7 +98,7 @@ public class Step_Profile extends Step {
 			
 				w.fpackage.p_profiles.add(header);
 			} else {
-				PRUtil.writeMsg("HIDDEN PROFILE " + header + " - "  + w.currentSheet.getSheetName(), Color.ORANGE, false);
+				U.writeMsg("HIDDEN PROFILE " + header + " - "  + w.currentSheet.getSheetName(), Color.ORANGE, false);
 				
 			}
 		}
@@ -124,9 +124,12 @@ public class Step_Profile extends Step {
 				
 				boolean isColumnHidden = w.currentSheet.isColumnHidden(i);
 				if(isColumnHidden == false) {
-					String currentId = IDS.get(tabIndex);
+					String FullFileName = IDS.get(tabIndex);
+					String apiName = headers.get(tabIndex);
 					
-					XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, currentId);
+					XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, FullFileName);
+					w.fpackage.p_profiles.add(apiName);
+					
 					//System.out.println(index_start + " " + index_end);
 					String perm = w.currentRow.getCell(i).getStringCellValue();
 					
@@ -163,15 +166,15 @@ public class Step_Profile extends Step {
 	}
 	
 	private Type runREAD_FIELDS(PRWorkbook w) {
-		String label = PRUtil.getCell(w, 0);
-		String strField = PRUtil.getCell(w, 1);
-		String strType = PRUtil.getCell(w, 2);
+		String label = U.getCell(w, 0);
+		String strField = U.getCell(w, 1);
+		String strType = U.getCell(w, 2);
 		
 		if(label.equalsIgnoreCase("Related Data (Objects & Columns)")) {
 			return Type.NEXT_STEP;
 		}
 		
-		if(!PRUtil.isBlank(strField) && !PRUtil.isBlank(strType) && !(strType.equalsIgnoreCase("Blank Space") || strType.equalsIgnoreCase("VF Page") || strType.equalsIgnoreCase("Section"))) {
+		if(!U.isBlank(strField) && !U.isBlank(strType) && !(strType.equalsIgnoreCase("Blank Space") || strType.equalsIgnoreCase("VF Page") || strType.equalsIgnoreCase("Section"))) {
 			
 			boolean isHidden = w.currentRow.getZeroHeight();
 			boolean isIgnore = this.ignoreField(strField, strType);
@@ -184,7 +187,7 @@ public class Step_Profile extends Step {
 						
 						XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, currentId);
 						
-						String perm = PRUtil.getCell(w, i);
+						String perm = U.getCell(w, i);
 						
 						Node fieldPerm = f.file.createElement("fieldPermissions");
 						
@@ -223,9 +226,9 @@ public class Step_Profile extends Step {
 			}
 			
 			if(isIgnore) {
-				//PRUtil.debug(s, "Field remove from package : " + strField, false);
+				//U.debug(s, "Field remove from package : " + strField, false);
 			} else if(isHidden) {
-				//PRUtil.debug(s, "FIELD is hidden : " + strField, false);
+				//U.debug(s, "FIELD is hidden : " + strField, false);
 			}
 		}
 		
@@ -236,19 +239,8 @@ public class Step_Profile extends Step {
 
 	@Override
 	public boolean isCorrectSheet(PRWorkbook w, String sheetName) {
-		boolean readSheet = true;
-		for(String s : w.c.SHEETS_TO_IGNORE) {
-			if(s.equalsIgnoreCase(sheetName)) {
-				readSheet = false;
-			}
-		}
-		boolean isSpecificSheet = (
-			w.c.SHEET_LAYOUT_ASSIGNMENT.equalsIgnoreCase(sheetName) ||
-			w.c.SHEET_RECORD_TYPE_ASSIGNMENT.equalsIgnoreCase(sheetName) ||
-			w.c.SHEET_LISTVIEW.equalsIgnoreCase(sheetName) ||
-			w.c.SHEET_SHARING_RULES.equalsIgnoreCase(sheetName));
 		
-		return readSheet && !isSpecificSheet;
+		return !U.isSpecialSheet(w, sheetName);
 	}
 
 	

@@ -6,7 +6,7 @@ import java.util.TreeSet;
 
 import org.w3c.dom.Node;
 
-import utils.PRUtil;
+import utils.U;
 import java.awt.Color;
 
 public class XML_Package extends XML_File {
@@ -33,7 +33,7 @@ public class XML_Package extends XML_File {
 	public void buildFile() {
 		Node version = this.file.createElement("version");
 		
-		this.root.appendChild(version).appendChild(this.file.createTextNode("46.0"));
+		this.root.appendChild(version).appendChild(this.file.createTextNode("58.0"));
 		if(p_application.size() > 0)
 			this.root.appendChild(buildType("CustomApplication", p_application));
 		if(p_layouts.size() > 0)
@@ -60,7 +60,7 @@ public class XML_Package extends XML_File {
 			Node member = this.file.createElement("members");
 			//System.out.println("Compare : " + m);
 			
-			if(PRUtil.doNotDeploy(m, "package.xml") == false) {
+			if(U.doNotDeploy(m, "package.xml") == false) {
 				n.appendChild(member).appendChild(this.file.createTextNode(m.replaceAll("/", "%2F")));
 			}
 			

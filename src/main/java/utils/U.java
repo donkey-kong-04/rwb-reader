@@ -22,11 +22,37 @@ import app.UserInterface;
 import workbook.PRWorkbook;
 
 
-public class PRUtil {
+public class U {
 	public static boolean exit = false;
 	
 	public static boolean isBlank(String str) {
 		return (str == null || str.trim().equals(""));
+	}
+	
+	/*
+	 * Basically there are 2 types of sheet:
+	 * - Specific sheet in a specific format (Record type assignment, layout assignment, etc.)
+	 * - The rest: objects definition that contains: field permission, layout definition, record type definition, etc.
+	 * 
+	 * When reading objects, by default we read the sheet, unless it's a specific one (or it's highlighted as to be ignored in the configuration)
+	 */
+	public static boolean isSpecialSheet(PRWorkbook w, String sheetName) {
+		boolean isSpecificSheet = (w.c.SHEET_PS.equalsIgnoreCase(sheetName) ||
+				w.c.SHEET_LAYOUT_ASSIGNMENT.equalsIgnoreCase(sheetName) ||
+				w.c.SHEET_RECORD_TYPE_ASSIGNMENT.equalsIgnoreCase(sheetName) ||
+				w.c.SHEET_PS.equalsIgnoreCase(sheetName) ||
+				w.c.SHEET_PROFILE.equalsIgnoreCase(sheetName)/* ||
+				w.c.SHEET_LISTVIEW.equalsIgnoreCase(sheetName) ||
+				w.c.SHEET_SHARING_RULES.equalsIgnoreCase(sheetName)*/);
+		
+		boolean isToIgnore = false;
+		for(String toIgnore : w.c.SHEETS_TO_IGNORE) {
+			if(sheetName.equalsIgnoreCase(toIgnore)) {
+				isToIgnore = true;
+			}
+		}
+		
+		return isSpecificSheet || isToIgnore;
 	}
 	
 	
@@ -77,7 +103,7 @@ public class PRUtil {
 		
 		if(ConfigManager.selected.PROFILES_TO_IGNORE.contains(name.toLowerCase()) == true) {
 			doNotDeploy = true;
-			PRUtil.writeMsg("DO NOT DEPLOY - " + name + "(" + why + ")", Color.ORANGE, false);
+			U.writeMsg("DO NOT DEPLOY - " + name + "(" + why + ")", Color.ORANGE, false);
 		}
 		return doNotDeploy;
 	}

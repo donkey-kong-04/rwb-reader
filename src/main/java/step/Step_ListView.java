@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import org.w3c.dom.Node;
 
 import file.XML_Object;
-import utils.PRUtil;
+import utils.U;
 import workbook.PRWorkbook;
 
 public class Step_ListView extends Step {
@@ -40,19 +40,19 @@ public class Step_ListView extends Step {
 	}
 
 	private Type runPOSITION(PRWorkbook w) {
-		String markup = PRUtil.getCell(w, 0);
+		String markup = U.getCell(w, 0);
 		
 		return markup.equalsIgnoreCase("Object API Name") ? Type.NEXT_STEP : Type.STAY_IN_SAME_STEP;
 	}
 
 	private Type runREAD(PRWorkbook w) {
 		
-		String objectName = PRUtil.getCell(w, 0);
-		String label = PRUtil.getCell(w, 1);
-		String apiName = PRUtil.getCell(w, 2);
-		String sharing = PRUtil.getCell(w, 3);
-		String filters = PRUtil.getCell(w, 4);
-		String fields = PRUtil.getCell(w, 5);
+		String objectName = U.getCell(w, 0);
+		String label = U.getCell(w, 1);
+		String apiName = U.getCell(w, 2);
+		String sharing = U.getCell(w, 3);
+		String filters = U.getCell(w, 4);
+		String fields = U.getCell(w, 5);
 		
 		System.out.println(objectName);
 		System.out.println(apiName);
@@ -61,7 +61,7 @@ public class Step_ListView extends Step {
 		System.out.println(sharing);
 		System.out.println(filters);
 		
-		if(!PRUtil.isBlank(objectName) && !PRUtil.isBlank(label) && !PRUtil.isBlank(apiName) && !PRUtil.isBlank(sharing) && !PRUtil.isBlank(fields)) {
+		if(!U.isBlank(objectName) && !U.isBlank(label) && !U.isBlank(apiName) && !U.isBlank(sharing) && !U.isBlank(fields)) {
 			w.fpackage.p_listviews.add(objectName + "." + apiName);
 			
 			XML_Object f = (XML_Object) w.getCorrectCorrectFile(XML_Object.class, objectName + ".object");
@@ -72,7 +72,7 @@ public class Step_ListView extends Step {
 			
 			listView.appendChild(f.file.createElement("fullName")).appendChild(f.file.createTextNode(apiName));
 			ArrayList<Node> nfilters = null;
-			if(!PRUtil.isBlank(filters)) {
+			if(!U.isBlank(filters)) {
 				Node logic = null;
 				nfilters = buildFilter(w, f, filters, logic);
 				
@@ -84,7 +84,7 @@ public class Step_ListView extends Step {
 				listView.appendChild(f.file.createElement("columns")).appendChild(f.file.createTextNode(s.trim()));
 			}
 			listView.appendChild(f.file.createElement("filterScope")).appendChild(f.file.createTextNode("Everything"));
-			if(!PRUtil.isBlank(filters)) {
+			if(!U.isBlank(filters)) {
 				for(Node n : nfilters) {
 					listView.appendChild(n);
 				}
@@ -93,7 +93,7 @@ public class Step_ListView extends Step {
 			listView.appendChild(f.file.createElement("language")).appendChild(f.file.createTextNode("en_US"));
 			
 			//Add sharing logic and filters logics
-			if(!PRUtil.isBlank(sharing)) {
+			if(!U.isBlank(sharing)) {
 				Node shareTo = f.file.createElement("sharedTo");
 				for(ArrayList<String> share : this.parse(w, sharing)) {
 					
@@ -105,7 +105,7 @@ public class Step_ListView extends Step {
 			
 			f.listViews.add(listView);
 		} else {
-			PRUtil.writeMsg("Mandatory information missing in ListView: " + apiName, Color.RED, true);
+			U.writeMsg("Mandatory information missing in ListView: " + apiName, Color.RED, true);
 			
 		}
 		return Type.STAY_IN_SAME_STEP;
@@ -116,7 +116,7 @@ public class Step_ListView extends Step {
 		String stp = STEPS[STEP];
 		
 		if(stp.equals("POSITION")) {
-			PRUtil.writeMsg("MARKUP MISSING : 'Object API Name' in List views has not been found in column A - " + w.currentSheet.getSheetName(), Color.RED, true);
+			U.writeMsg("MARKUP MISSING : 'Object API Name' in List views has not been found in column A - " + w.currentSheet.getSheetName(), Color.RED, true);
 			
 		}
 	}

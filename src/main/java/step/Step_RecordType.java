@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import org.w3c.dom.Node;
 
 import file.XML_Object;
-import utils.PRUtil;
+import utils.U;
 import workbook.PRWorkbook;
 
 public class Step_RecordType extends Step {
@@ -44,7 +44,7 @@ public class Step_RecordType extends Step {
 
 	private Type runRT_ACTIVE(PRWorkbook w) {
 		
-		String objectPermissionPosition = PRUtil.getCell(w, 0);
+		String objectPermissionPosition = U.getCell(w, 0);
 		
 		if(objectPermissionPosition.equalsIgnoreCase("Object Permissions")) {
 			Integer numberOfHiddenColumn = 0;
@@ -53,10 +53,10 @@ public class Step_RecordType extends Step {
 				boolean isColumnHidden = w.currentSheet.isColumnHidden(i);
 				
 				if(isColumnHidden == false) {
-					String isActive = (PRUtil.getCell(w, i).equalsIgnoreCase("x") ? "true" : "false");
+					String isActive = (U.getCell(w, i).equalsIgnoreCase("x") ? "true" : "false");
 					
 					if(isActive.equals("false")) {
-						PRUtil.writeMsg( "INFO Record type is set as inactive : " + headers.get(tabIndex) + " " + w.currentSheet.getSheetName(), Color.BLACK, false);
+						U.writeMsg( "INFO Record type is set as inactive : " + headers.get(tabIndex) + " " + w.currentSheet.getSheetName(), Color.BLACK, false);
 						
 					}
 					
@@ -70,7 +70,7 @@ public class Step_RecordType extends Step {
 					
 					recordTypes.appendChild(fullname).appendChild(f.file.createTextNode(headers.get(tabIndex).trim()));
 					recordTypes.appendChild(active).appendChild(f.file.createTextNode(isActive));
-					recordTypes.appendChild(label).appendChild(f.file.createTextNode(header_labels.get(tabIndex).trim()));
+					recordTypes.appendChild(label).appendChild(f.file.createTextNode(headers.get(tabIndex).replaceAll("_", " ").trim()));
 					
 					sheetRecordTypes.add(recordTypes);
 					f.recordTypes.add(recordTypes);
@@ -88,8 +88,8 @@ public class Step_RecordType extends Step {
 	}
 
 	private Type runPOSITIONATE_AFTER_FIELD(PRWorkbook w) {
-		String t0 = PRUtil.getCell(w, 0);
-		String t1 = PRUtil.getCell(w, 1);
+		String t0 = U.getCell(w, 0);
+		String t1 = U.getCell(w, 1);
 		
 		if(t0.equalsIgnoreCase("Field") && t1.equalsIgnoreCase("Field API Name")) {
 			return Type.NEXT_STEP;
@@ -98,11 +98,11 @@ public class Step_RecordType extends Step {
 	}
 
 	private Type runOBJECT_NAME_AND_RT(PRWorkbook w) {
-		object = PRUtil.getCell(w, 0);
+		object = U.getCell(w, 0);
 		
 		
-		if(PRUtil.isBlank(object)) {
-			PRUtil.writeMsg("Object API Name should be found in cell A2 - " + w.currentSheet.getSheetName(), Color.RED, true);
+		if(U.isBlank(object)) {
+			U.writeMsg("Object API Name should be found in cell A2 - " + w.currentSheet.getSheetName(), Color.RED, true);
 			
 		}
 		
@@ -120,8 +120,8 @@ public class Step_RecordType extends Step {
 	}*/
 	
 	private Type runREAD(PRWorkbook w) {
-		String fieldAPIName = PRUtil.getCell(w, 1);
-		String type = PRUtil.getCell(w, 2);
+		String fieldAPIName = U.getCell(w, 1);
+		String type = U.getCell(w, 2);
 		
 		Integer numberOfHiddenColumn = 0;
 		if(!w.currentRow.getZeroHeight()) {
@@ -133,14 +133,14 @@ public class Step_RecordType extends Step {
 					String currentId = IDS.get(tabIndex);
 					
 					XML_Object f = (XML_Object) w.getCorrectCorrectFile(XML_Object.class, currentId);
-					String recordTypePicklistValues = PRUtil.getCell(w, i);
+					String recordTypePicklistValues = U.getCell(w, i);
 					
 					//Created in previous step
 					Node recordTypes = sheetRecordTypes.get(tabIndex);
 					
-					if(!PRUtil.isBlank(recordTypePicklistValues)) {
+					if(!U.isBlank(recordTypePicklistValues)) {
 						if(!type.toLowerCase().contains("picklist")) {
-							PRUtil.writeMsg("WARNING " + fieldAPIName + " is not defined as a picklist but it has picklist values assigned." + w.currentSheet.getSheetName(), Color.BLACK, false);
+							U.writeMsg("WARNING " + fieldAPIName + " is not defined as a picklist but it has picklist values assigned." + w.currentSheet.getSheetName(), Color.BLACK, false);
 							
 						}
 						
@@ -180,7 +180,7 @@ public class Step_RecordType extends Step {
 	private Type runINDEX(PRWorkbook w) {
 		this.getIndexes(w, "Record Types");
 		
-		//PRUtil.debug(w.currentSheet, "INDEX : " + index_start + " " + index_end, false);
+		//U.debug(w.currentSheet, "INDEX : " + index_start + " " + index_end, false);
 		
 		if(index_start == -1) {//It is okay here, all object do not have record types, so we never go next step
 			return Type.STOP;
@@ -189,7 +189,7 @@ public class Step_RecordType extends Step {
 		boolean success = (this.index_start != -1 && this.index_end != -1);
 		
 		if(!success) {
-			PRUtil.writeMsg("MARKUP MISSING 'Record Types' markup not found in object sheet" + w.currentSheet.getSheetName(), Color.BLACK, false);
+			U.writeMsg("MARKUP MISSING 'Record Types' markup not found in object sheet" + w.currentSheet.getSheetName(), Color.BLACK, false);
 			
 		}
 		
@@ -198,24 +198,8 @@ public class Step_RecordType extends Step {
 	}
 
 	@Override
-	public boolean isCorrectSheet(PRWorkbook w, String sheetName) {
-		String name = sheetName;
-		return !(
-				name.equalsIgnoreCase("Apex Components") ||
-				name.equalsIgnoreCase("Revision History") ||
-				name.equalsIgnoreCase("Sharing Rules") ||
-				name.equalsIgnoreCase("Groups") ||
-				name.equalsIgnoreCase("Email Template") ||
-				name.equalsIgnoreCase("Tab Visibility") ||
-				name.equalsIgnoreCase("List Views") ||
-				name.equalsIgnoreCase("Documents") ||
-				name.equalsIgnoreCase("Tab Visibility") ||
-				name.equalsIgnoreCase("Role Hierarchy") ||
-				name.equalsIgnoreCase("User") ||
-				name.equalsIgnoreCase("Page Layout assignment") ||
-				name.equalsIgnoreCase("Brand Security Picklist Value") ||
-				name.equalsIgnoreCase("Record Type assignment")
-				);
+	public boolean isCorrectSheet(PRWorkbook w, String sheetName) {		
+		return !U.isSpecialSheet(w, sheetName);
 	}
 
 	@Override
@@ -235,29 +219,21 @@ public class Step_RecordType extends Step {
 		for(int i=index_start; i<=index_end; i++) {
 			boolean isColumnHidden = w.currentSheet.isColumnHidden(i);
 			
-			String header = PRUtil.getCell(w, i);
+			String header = U.getCell(w, i);
 			
-			String[] recordTypeInfo = header.split("\n");
-			String recordTypeApi = null;
-			String recordTypeLabel = null;
-			if(recordTypeInfo.length == 1) {
-				recordTypeApi = header;
-				recordTypeLabel = header.replaceAll("_", " ");
-			} else {
-				recordTypeApi = recordTypeInfo[0];
-				recordTypeLabel = recordTypeInfo[1];
-			}
+			
+			String recordTypeApi = header;
+			
 			
 			String filename = object + ".object";
 			if(!isColumnHidden) {
 				IDS.add(filename);
 				headers.add(recordTypeApi);
-				header_labels.add(recordTypeLabel);
 				
 				w.recordTypes.add(recordTypeApi);
 				w.fpackage.p_recordTypes.add(object + "." + recordTypeApi);
 			} else {
-				PRUtil.writeMsg("HIDDEN RECORD TYPE " + object + "." + recordTypeApi, Color.BLACK, false);
+				U.writeMsg("HIDDEN RECORD TYPE " + object + "." + recordTypeApi, Color.BLACK, false);
 				
 			}
 		}

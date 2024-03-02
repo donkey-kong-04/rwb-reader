@@ -10,7 +10,7 @@ import org.w3c.dom.Node;
 
 import file.XML_File;
 import file.XML_Profile;
-import utils.PRUtil;
+import utils.U;
 import workbook.PRWorkbook;
 
 public class Step_LayoutAssignment extends Step {
@@ -52,7 +52,7 @@ public class Step_LayoutAssignment extends Step {
 
 	private Type runREAD(PRWorkbook w) {
 		
-		String nextObject = PRUtil.getCell(w, 0);
+		String nextObject = U.getCell(w, 0);
 		
 		
 		if(nextObject.equalsIgnoreCase("x")) {
@@ -60,21 +60,21 @@ public class Step_LayoutAssignment extends Step {
 			object = null;
 			return runReadObjectAndRT(w);
 		} else {
-			String profileName = PRUtil.getCell(w, 1);
+			String profileName = U.getCell(w, 1);
 			
 			
-			if(!PRUtil.isBlank(profileName)) {
-				String profileID = profileName + ".profile";
-				XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, profileID);
+			if(!U.isBlank(profileName)) {
+				String FullFileName = profileName + ".profile";
+				XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, FullFileName);
 				
 				w.fpackage.p_profiles.add(profileName);
 				
 				for(int i=0; i<recordTypes.size(); i++) {
-					String layout = PRUtil.getCell(w, i+2);
+					String layout = U.getCell(w, i+2);
 					
 					
 					String RT_ID = object + "." + recordTypes.get(i);
-					if(!PRUtil.isBlank(layout)) {
+					if(!U.isBlank(layout)) {
 						
 						Node layoutPerm = f.file.createElement("layoutAssignments");
 							Node nlayout = f.file.createElement("layout");
@@ -110,22 +110,22 @@ public class Step_LayoutAssignment extends Step {
 			w.currentCell = index_cell;
 			
 			if(index_cell == 0) {
-				String isChangeObject = PRUtil.getCell(w, 0);
+				String isChangeObject = U.getCell(w, 0);
 				
 				if(!isChangeObject.equalsIgnoreCase("x")) {
-					PRUtil.writeMsg("ALGORITHM ERROR : 'X' should have been found there in layout assignment", Color.RED, true);
+					U.writeMsg("ALGORITHM ERROR : 'X' should have been found there in layout assignment", Color.RED, true);
 					
 				}
 			} else if(index_cell == 1) {
-				object = PRUtil.getCell(w, index_cell);
-				if(PRUtil.isBlank(object)) {
-					PRUtil.writeMsg("MISSING INFORMATION : Object API Name cannot be empty in column B when you declare new object using 'X' in column A" + w.currentSheet.getSheetName(), Color.RED, true);
+				object = U.getCell(w, index_cell);
+				if(U.isBlank(object)) {
+					U.writeMsg("MISSING INFORMATION : Object API Name cannot be empty in column B when you declare new object using 'X' in column A" + w.currentSheet.getSheetName(), Color.RED, true);
 					
 				}
 			} else {
-				String rt = PRUtil.getCell(w, index_cell);
+				String rt = U.getCell(w, index_cell);
 				
-				if(!PRUtil.isBlank(rt)) {
+				if(!U.isBlank(rt)) {
 					recordTypes.add(rt);
 				} else {
 					return Type.NEXT_STEP;//Go next step
@@ -136,7 +136,7 @@ public class Step_LayoutAssignment extends Step {
 	}
 
 	private Type runPOSITIONATE(PRWorkbook w) {
-		String beginning = PRUtil.getCell(w, 0);
+		String beginning = U.getCell(w, 0);
 		
 		if(beginning.equalsIgnoreCase("x")) {
 			this.STEP += 1;

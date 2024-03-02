@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import utils.PRUtil;
+import utils.U;
 import utils.ZipDirectory;
 import workbook.PRWorkbook;
 
@@ -139,7 +139,7 @@ public class UserInterface {
 				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
 				LocalDateTime now = LocalDateTime.now();  
 				debugInfos2.setText("");
-				PRUtil.writeMsg("BEGIN - " + dtf.format(now) + " for " + ConfigManager.selected.Name, Color.BLUE, false);
+				U.writeMsg("BEGIN - " + dtf.format(now) + " for " + ConfigManager.selected.Name, Color.BLUE, false);
 				
 				
 				
@@ -153,7 +153,7 @@ public class UserInterface {
 				}
 				
 				if(input == 0) {
-					PRUtil.exit = false;
+					U.exit = false;
 					
 					System.setProperty("line.separator", "\n");
 					try {
@@ -161,7 +161,7 @@ public class UserInterface {
 						
 						w.read();
 						
-						if(PRUtil.exit == true) {
+						if(U.exit == true) {
 							w.end();
 							return;
 						}
@@ -178,10 +178,10 @@ public class UserInterface {
 						dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
 						now = LocalDateTime.now();  
 						
-						PRUtil.writeMsg("END - " + dtf.format(now) + " for " + ConfigManager.selected.Name, Color.BLUE, false);
+						U.writeMsg("END - " + dtf.format(now) + " for " + ConfigManager.selected.Name, Color.BLUE, false);
 					} catch(Exception e1) {
 						String stacktrace = ExceptionUtils.getStackTrace(e1);
-						PRUtil.writeMsg(stacktrace, Color.RED, true);
+						U.writeMsg(stacktrace, Color.RED, true);
 					}
 				}
 				

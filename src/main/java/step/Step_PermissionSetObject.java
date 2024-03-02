@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import org.w3c.dom.Node;
 
 import file.XML_PermissionSet;
-import utils.PRUtil;
+import utils.U;
 import workbook.PRWorkbook;
 
-public class Step_PM extends Step {
+public class Step_PermissionSetObject extends Step {
 	String object;
 	
 	@Override
@@ -39,8 +39,8 @@ public class Step_PM extends Step {
 	}
 
 	private Type runOBJ_PERM(PRWorkbook w) {
-		//PRUtil.debug(w, "ENTER READ OBJ PERM", false);
-		String t0 = PRUtil.getCell(w, 0);
+		//U.debug(w, "ENTER READ OBJ PERM", false);
+		String t0 = U.getCell(w, 0);
 		
 		if(t0.equalsIgnoreCase("Object Permissions")) {
 			Integer numberOfColumnHidden = 0;
@@ -48,13 +48,12 @@ public class Step_PM extends Step {
 				Integer tabIndex = i - index_start - numberOfColumnHidden;
 				boolean isColumnHidden = w.currentSheet.isColumnHidden(i);
 				if(isColumnHidden == false) {
-					String currentId = IDS.get(tabIndex);
-					String v = PRUtil.getCell(w, i);
+					String fullFileName = IDS.get(tabIndex);
+					String v = U.getCell(w, i);
 					
-					if(!PRUtil.isBlank(v)) {
-						//PRUtil.debug(w, currentId, false);
-						XML_PermissionSet f = (XML_PermissionSet) w.getCorrectCorrectFile(XML_PermissionSet.class, currentId);
-						f.label = header_labels.get(tabIndex);
+					if(!U.isBlank(v)) {
+						//U.debug(w, currentId, false);
+						XML_PermissionSet f = (XML_PermissionSet) w.getCorrectCorrectFile(XML_PermissionSet.class, fullFileName);
 						
 						Node objPerm = f.file.createElement("objectPermissions");
 						
@@ -88,9 +87,9 @@ public class Step_PM extends Step {
 	}
 
 	private Type runWAIT_FIELDS(PRWorkbook w) {
-		//PRUtil.debug(w, "ENTER READ WAIT FIELD", false);
-		String t0 = PRUtil.getCell(w, 0);
-		String t1 = PRUtil.getCell(w, 1);
+		//U.debug(w, "ENTER READ WAIT FIELD", false);
+		String t0 = U.getCell(w, 0);
+		String t1 = U.getCell(w, 1);
 		
 		if(t0.equalsIgnoreCase("Field") && t1.equalsIgnoreCase("Field API Name")) {
 			return Type.NEXT_STEP;
@@ -111,10 +110,10 @@ public class Step_PM extends Step {
 	}
 
 	private Type runPOSITION(PRWorkbook w) {
-		object = PRUtil.getCell(w, 0);
+		object = U.getCell(w, 0);
 		
-		if(PRUtil.isBlank(object)) {
-			PRUtil.writeMsg("Object API Name should be found in cell A2 " + w.currentSheet.getSheetName(), Color.RED, true);
+		if(U.isBlank(object)) {
+			U.writeMsg("Object API Name should be found in cell A2 " + w.currentSheet.getSheetName(), Color.RED, true);
 			
 		}
 		
@@ -126,13 +125,13 @@ public class Step_PM extends Step {
 
 	private Type runREAD(PRWorkbook w) {
 		
-		String field = PRUtil.getCell(w, 0);
-		String strField = PRUtil.getCell(w, 1);
-		String strType = PRUtil.getCell(w, 2);
+		String field = U.getCell(w, 0);
+		String strField = U.getCell(w, 1);
+		String strType = U.getCell(w, 2);
 		
-		//PRUtil.debug(w, "ENTER READ " + field, false);
+		//U.debug(w, "ENTER READ " + field, false);
 		if(field.equalsIgnoreCase("Related Data (Objects & Columns)")) {
-			//PRUtil.debug(w, "should stop", false);
+			//U.debug(w, "should stop", false);
 			return Type.STOP;
 		}
 		
@@ -149,12 +148,12 @@ public class Step_PM extends Step {
 				
 				boolean isColumnHidden = w.currentSheet.isColumnHidden(i);
 				if(isColumnHidden == false) {	
-					String currentId = IDS.get(tabIndex);
+					String FullFileName = IDS.get(tabIndex);
 					
-					String v = PRUtil.getCell(w, i);
-					if(!PRUtil.isBlank(v)) {
-						XML_PermissionSet f = (XML_PermissionSet) w.getCorrectCorrectFile(XML_PermissionSet.class, currentId);
-						f.label = header_labels.get(tabIndex);
+					String v = U.getCell(w, i);
+					if(!U.isBlank(v)) {
+						XML_PermissionSet f = (XML_PermissionSet) w.getCorrectCorrectFile(XML_PermissionSet.class, FullFileName);
+						
 						
 						Node fieldPerm = f.file.createElement("fieldPermissions");
 						
@@ -192,26 +191,16 @@ public class Step_PM extends Step {
 		
 		for(int i=index_start; i<=index_end; i++) {
 			boolean isColumnHidden = w.currentSheet.isColumnHidden(i);
-			String header = PRUtil.getCell(w, i);
+			
+			String apiName = U.getCell(w, i);
 			if(isColumnHidden == false) {
 				
-				String[] IDS_info = header.split("\n");
-				String api_name = null;
-				String label = null;
-				if(IDS_info.length == 1) {
-					api_name = header;
-					label = header.replaceAll("_", " ");
-				} else {
-					api_name = IDS_info[0];
-					label = IDS_info[1];
-				}
 				
-				IDS.add(api_name + ".permissionset");
-				headers.add(api_name);
-				header_labels.add(label);
-				w.fpackage.p_pm.add(header);
+				IDS.add(apiName + ".permissionset");
+				headers.add(apiName);
+				w.fpackage.p_pm.add(apiName);
 			} else {
-				PRUtil.writeMsg("HIDDEN PERMISSION SET " + header + " "  + w.currentSheet.getSheetName(), Color.ORANGE, false);
+				U.writeMsg("HIDDEN PERMISSION SET " + apiName + " "  + w.currentSheet.getSheetName(), Color.ORANGE, false);
 				
 			}
 		}
@@ -219,19 +208,7 @@ public class Step_PM extends Step {
 
 	@Override
 	public boolean isCorrectSheet(PRWorkbook w, String sheetName) {
-		boolean readSheet = true;
-		for(String s : w.c.SHEETS_TO_IGNORE) {
-			if(s.equalsIgnoreCase(sheetName)) {
-				readSheet = false;
-			}
-		}
-		boolean isSpecificSheet = (w.c.SHEET_PS.equalsIgnoreCase(sheetName) ||
-			w.c.SHEET_LAYOUT_ASSIGNMENT.equalsIgnoreCase(sheetName) ||
-			w.c.SHEET_RECORD_TYPE_ASSIGNMENT.equalsIgnoreCase(sheetName) ||
-			w.c.SHEET_LISTVIEW.equalsIgnoreCase(sheetName) ||
-			w.c.SHEET_SHARING_RULES.equalsIgnoreCase(sheetName));
-		
-		return readSheet && !isSpecificSheet;
+		return !U.isSpecialSheet(w, sheetName);
 	}
 
 	

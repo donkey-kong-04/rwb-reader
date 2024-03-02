@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 
-import utils.PRUtil;
+import utils.U;
 import workbook.PRWorkbook;
 
 /*
@@ -33,7 +33,7 @@ public abstract class Step {
 	 * 		Cell index = Data of the header previously read
 	 */
 	ArrayList<String> headers = new ArrayList<String>();
-	ArrayList<String> header_labels = new ArrayList<String>();
+	
 	
 	protected String[] STEPS;
 	protected Map<String, Method> STEPS2;
@@ -54,7 +54,7 @@ public abstract class Step {
 	}
 	
 	public Type run(PRWorkbook w) {
-		if(PRUtil.exit == true) {
+		if(U.exit == true) {
 			return Type.STOP;
 		}
 		
@@ -78,7 +78,7 @@ public abstract class Step {
 	
 	public Type runStep2(PRWorkbook w) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if(STEP > (STEPS.length - 1) ) {
-			PRUtil.writeMsg("ALGORITHM ERROR : Asking for a STEP that is not configured" + w.currentSheet.getSheetName(), Color.RED, true);
+			U.writeMsg("ALGORITHM ERROR : Asking for a STEP that is not configured" + w.currentSheet.getSheetName(), Color.RED, true);
 			
 		}
 		
@@ -118,13 +118,13 @@ public abstract class Step {
 					this.index_start = i;
 					
 				} else if(this.index_start != -1) {
-					if(!PRUtil.isBlank(content)) {
+					if(!U.isBlank(content)) {
 						this.index_end = i-1;
 						keepGoing = false;
 					}
 				}
 			} else if(CellType.BLANK != c.getCellType()){
-				PRUtil.writeMsg("WARNING Wrong cell type " + i + ", content is ignored: " + c.getCellType() + w.currentSheet.getSheetName(), Color.BLACK, false);
+				U.writeMsg("WARNING Wrong cell type " + i + ", content is ignored: " + c.getCellType() + w.currentSheet.getSheetName(), Color.BLACK, false);
 				
 			}
 		}
@@ -157,7 +157,7 @@ public abstract class Step {
 	
 	protected void doesStepExist(PRWorkbook w) {
 		if(STEP > (STEPS.length - 1) ) {
-			PRUtil.writeMsg("ALGORITHM ERROR : Step does not exist" + w.currentSheet.getSheetName(), Color.RED, true);
+			U.writeMsg("ALGORITHM ERROR : Step does not exist" + w.currentSheet.getSheetName(), Color.RED, true);
 			
 		}
 	}
@@ -167,18 +167,18 @@ public abstract class Step {
 	 */
 	protected void reviewEndingIndex(PRWorkbook w) {
 		for(int i=index_start; i<=index_end; i++) {
-			String header = PRUtil.getCell(w, i);
+			String header = U.getCell(w, i);
 			
 			//At least one or we consider the file in an incorrect format
-			if(PRUtil.isBlank(header) && i==index_start) {
+			if(U.isBlank(header) && i==index_start) {
 				index_end = index_start - 1;
-				//PRUtil.writeMsg("Markup is present inside the sheet, but no associated member" + w.currentSheet.getSheetName(), Color.BLACK, false);
+				//U.writeMsg("Markup is present inside the sheet, but no associated member" + w.currentSheet.getSheetName(), Color.BLACK, false);
 				
 			} 
 			//End earlier the loop
-			else if(PRUtil.isBlank(header)) {
+			else if(U.isBlank(header)) {
 				index_end = i - 1;
-				//PRUtil.writeMsg("INFO Markup ends earlier. Total members in the sheet = " + (index_end - index_start + 1) + w.currentSheet.getSheetName(), Color.BLACK, false);
+				//U.writeMsg("INFO Markup ends earlier. Total members in the sheet = " + (index_end - index_start + 1) + w.currentSheet.getSheetName(), Color.BLACK, false);
 				
 			} 
 		}

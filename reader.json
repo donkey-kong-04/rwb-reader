@@ -1,21 +1,20 @@
 [
 	{
 		"name": "CORE PS",
-		"file": "C:\\Users\\Martin Chalot\\Documents\\Travail\\Pernod Ricard\\Rollout\\PS\\RWB.xlsx",
-		"folder":"C:\\Users\\Martin Chalot\\Documents\\Travail\\Pernod Ricard\\Rollout\\PS\\",
+		"file": "C:\Users\\Martin Chalot\\Downloads\\Canada\\RWB.xlsx",
+		"folder":"C:\Users\\Martin Chalot\\Downloads\\Canada\\",
 		"full_debug" : false,
-		"SHEET_APEX":"Apex Components",
-		"SHEET_TAB_VISIBILITY":"Tab Visibility",
+		
 		"SHEET_LAYOUT_ASSIGNMENT":"Page Layout assignment",
 		"SHEET_RECORD_TYPE_ASSIGNMENT":"Record Type Assignment",
 		"DEPLOY_RECORD_TYPE_ASSIGNMENT": true,
 		"SHEET_LISTVIEW":"List Views",
 		"SHEET_SHARING_RULES": "Sharing Rules",
 		"SHEET_PROFILE": "Profiles",
-		"SHEET_PERMISSIONSET": "Permission Sets",
-		"SHEETS_TO_IGNORE":"List of actions,Offline objects,Standard Related List,Role Hierarchy,Revision History,Groups,Variable,Metadata"
-		"PROFILES_TO_IGNORE":"EUR System Admin,EUR EE On Trade User,EUR EE Off Trade User",
-		"KEEP_PROFILES_PERMISSIONS":"EUR System Admin",
+		"SHEET_PS": "Permission Sets",
+		"SHEETS_TO_IGNORE":""
+		"PROFILES_TO_IGNORE":"",
+		"KEEP_PROFILES_PERMISSIONS":"",
 		"selected": true
 	}
 ]

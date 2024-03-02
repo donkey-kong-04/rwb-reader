@@ -8,7 +8,7 @@ import org.w3c.dom.Node;
 
 import file.XML_Profile;
 import step.Step.Type;
-import utils.PRUtil;
+import utils.U;
 import workbook.PRWorkbook;
 
 public class Step_ProfileOther extends Step {
@@ -24,7 +24,7 @@ public class Step_ProfileOther extends Step {
 		for(int i=index_start; i<=index_end; i++) {
 			boolean isColumnHidden = w.currentSheet.isColumnHidden(i);
 			
-			String header = PRUtil.getCell(w, i);
+			String header = U.getCell(w, i);
 			if(isColumnHidden == false) {	
 				String filename = header + ".profile";
 				IDS.add(filename);
@@ -33,7 +33,7 @@ public class Step_ProfileOther extends Step {
 			
 				w.fpackage.p_profiles.add(header);
 			} else {
-				PRUtil.writeMsg("HIDDEN PROFILE " + header + " - "  + w.currentSheet.getSheetName(), Color.ORANGE, false);
+				U.writeMsg("HIDDEN PROFILE " + header + " - "  + w.currentSheet.getSheetName(), Color.ORANGE, false);
 				
 			}
 		}
@@ -69,49 +69,61 @@ public class Step_ProfileOther extends Step {
 	}
 	
 	private Type run_read(PRWorkbook w) {
-		String type = PRUtil.getCell(w, 0).trim();
-		String apiname = PRUtil.getCell(w, 1).trim() ;
+		String type = U.getCell(w, 0).trim();
+		String apiname = U.getCell(w, 1).trim() ;
 		
 		String[] typeAllowed = {"userPermissions", 
 				"tabSettings", 
 				"applicationVisibilities", 
 				"apexClass", 
 				"apexPage",
-				"userLicense"
+				"userLicense",
+				"custom"
 			};
 		
+		 
 		if(type.trim().equals("")) {
 			return Type.STOP;
 		} else {
 			boolean found = false;
 	        for (String str : typeAllowed) {
-	            if (str.equals(type.trim())) {
+	            if (str.equals(type)) {
 	                found = true;
 	                break;
 	            }
 	        }
 
 	        if (!found) {
-	        	PRUtil.writeMsg("Type not recognized '" + type + "' " + w.currentSheet.getSheetName(), Color.RED, true);
+	        	U.writeMsg("Type not recognized '" + type + "' " + w.currentSheet.getSheetName(), Color.RED, true);
 	        }
 	        for(int i=index_start; i<=index_end; i++) {
 				int tabIndex = i - index_start;
 				
 				boolean isColumnHidden = w.currentSheet.isColumnHidden(i);
 				if(isColumnHidden == false) {
-					String currentId = IDS.get(tabIndex);
+					String apiName = headers.get(tabIndex);
+					String fullFileName = IDS.get(tabIndex);
 					
-					XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, currentId);
+					XML_Profile f = (XML_Profile) w.getCorrectCorrectFile(XML_Profile.class, fullFileName);
+					w.fpackage.p_profiles.add(apiName);
 					//System.out.println(index_start + " " + index_end);
 					String value = w.currentRow.getCell(i).getStringCellValue().trim();
-					if(type.equals("userLicense")) {
-						Node platform = f.file.createElement("userLicense");
-						platform.appendChild(f.file.createTextNode(value));
-						f.userLicense = platform;
 					
-					} else if(type.equals("userPermissions")) {
-						
-						if(PRUtil.isBlank(value) == false) {
+					if(U.isBlank(value) == false) {//Do something only if we have explicit value
+						if(type.equals("custom")) {
+							
+							Node custom = f.file.createElement("custom");
+							custom.appendChild(f.file.createTextNode(value));
+							f.custom = custom;
+						} else if(type.equals("userLicense")) {
+							Node userLicense = f.file.createElement("userLicense");
+							userLicense.appendChild(f.file.createTextNode(value));
+							
+							f.userLicense = userLicense;
+							
+						} else if(type.equals("userPermissions")) {
+							
+							
 							Node up = f.file.createElement("userPermissions");
 							Node
 								enabled = f.file.createElement("enabled"),
@@ -119,9 +131,10 @@ public class Step_ProfileOther extends Step {
 							
 							up.appendChild(enabled).appendChild(f.file.createTextNode(value));
 							up.appendChild(name).appendChild(f.file.createTextNode(apiname));
-						}
-					} else if(type.equals("tabSettings")) {
-						if(PRUtil.isBlank(value) == false) {
+							
+							f.userPermissions.add(up);
+						} else if(type.equals("tabSettings")) {
+							
 							Node tabSettings = f.file.createElement("tabSettings");
 							Node 
 								tab = f.file.createElement("tab"),
@@ -131,9 +144,9 @@ public class Step_ProfileOther extends Step {
 							tabSettings.appendChild(visibility).appendChild(f.file.createTextNode(value.trim()));
 							
 							f.tabSettings.add(tabSettings);
-						}
-					} else if(type.equals("applicationVisibilities")) {
-						if(PRUtil.isBlank(value) == false) {
+							
+						} else if(type.equals("applicationVisibilities")) {
+							
 							Node applicationVisibilities = f.file.createElement("applicationVisibilities");
 							
 							Node application = f.file.createElement("application"),
@@ -144,10 +157,10 @@ public class Step_ProfileOther extends Step {
 							applicationVisibilities.appendChild(ndefault).appendChild(f.file.createTextNode("false"));
 							applicationVisibilities.appendChild(visible).appendChild(f.file.createTextNode(value));
 							
-							f.appPerms.add(applicationVisibilities);
-						}
-					} else if(type.equals("apexClass")) {
-						if(PRUtil.isBlank(value) == false) {
+							f.applicationVisibilities.add(applicationVisibilities);
+							
+						} else if(type.equals("apexClass")) {
+							
 							Node apexPerm = f.file.createElement("classAccesses");
 							
 							Node 
@@ -158,9 +171,9 @@ public class Step_ProfileOther extends Step {
 							apexPerm.appendChild(enabled).appendChild(f.file.createTextNode(value));
 							
 							f.apexPerms.add(apexPerm);
-						}
-					} else if(type.equals("apexPage")) {
-						if(PRUtil.isBlank(value) == false) {
+							
+						} else if(type.equals("apexPage")) {
+							
 							Node vfPerm = f.file.createElement("pageAccesses");
 							
 							Node 
@@ -172,13 +185,13 @@ public class Step_ProfileOther extends Step {
 							
 							
 							f.vfPerms.add(vfPerm);
+							
 						}
 					}
-					
 				}
 	        }
 		}
-		return null;
+		return Type.STAY_IN_SAME_STEP;
 	}
 
 	private Type run_index(PRWorkbook w) {
