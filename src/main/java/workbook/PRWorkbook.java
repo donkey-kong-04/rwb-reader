@@ -89,43 +89,22 @@ public class PRWorkbook {
 				
 				steps = new ArrayList<Step>();
 				
-				steps.add(new Step_Profile());//NEED TO BE FIRST !!!
-				
-				if(c.DEPLOY_APEX == true) {
-					
-					steps.add(new Step_ApexComponents());
-				}
-
-				if(c.DEPLOY_TAB_VISIBILITY == true) {
-					steps.add(new Step_TabVisibility());
-				}
-				
+				steps.add(new Step_ProfileOther());
+				steps.add(new Step_PermissionSetOther());
+				steps.add(new Step_Profile());//NEED TO BE FIRST !!! - not sure why
 				steps.add(new Step_Layout());
 				steps.add(new Step_RecordType());
 				steps.add(new Step_PM());
-				
-				steps.add(new Step_ProfileLicense());
-				
-				if(c.DEPLOY_LAYOUT_ASSIGNMENT == true) {
-					steps.add(new Step_LayoutAssignment());
-				}
-				
-				
-				if(c.DEPLOY_RECORD_TYPE_ASSIGNMENT == true) {
-					steps.add(new Step_RecordTypeAssignment());
-				}
-				
-				
+				steps.add(new Step_ProfileOther());
+				steps.add(new Step_PermissionSetOther());
+				steps.add(new Step_LayoutAssignment());
+				steps.add(new Step_RecordTypeAssignment());
 				
 				/* Not properly tested
-				if(c.DEPLOY_LISTVIEW == true) {
-					steps.add(new Step_ListView());
-				}*/
+				steps.add(new Step_ListView());
+				steps.add(new Step_SharingRule());
+				*/
 				
-				/* Not properly tested
-				if(c.DEPLOY_SHARING_RULES == true) {
-					steps.add(new Step_SharingRule());
-				}*/
 				
 				readRows(sheet);
 				

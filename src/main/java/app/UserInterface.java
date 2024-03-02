@@ -41,8 +41,8 @@ public class UserInterface {
 	public static JFrame frame;
 	private JTextField filepath;
 	private JTextField folderpath;
-	private JTextField apex;
-	private JTextField tabvisibility;
+	private JTextField profile;
+	private JTextField permissionset;
 	private JTextField layoutassign;
 	private JTextField rtassign;
 	private JTextField listview;
@@ -353,21 +353,21 @@ public class UserInterface {
 		sheetApex.setBounds(10, 399, 142, 31);
 		config_panel.add(sheetApex);
 		
-		apex = new JTextField();
-		apex.setEditable(false);
-		apex.setColumns(10);
-		apex.setBounds(211, 399, 420, 31);
-		config_panel.add(apex);
+		profile = new JTextField();
+		profile.setEditable(false);
+		profile.setColumns(10);
+		profile.setBounds(211, 399, 420, 31);
+		config_panel.add(profile);
 		
 		JLabel lblTabVisibilitySheets = new JLabel("Tab Visibility sheet's name");
 		lblTabVisibilitySheets.setBounds(10, 441, 142, 31);
 		config_panel.add(lblTabVisibilitySheets);
 		
-		tabvisibility = new JTextField();
-		tabvisibility.setEditable(false);
-		tabvisibility.setColumns(10);
-		tabvisibility.setBounds(211, 441, 420, 31);
-		config_panel.add(tabvisibility);
+		permissionset = new JTextField();
+		permissionset.setEditable(false);
+		permissionset.setColumns(10);
+		permissionset.setBounds(211, 441, 420, 31);
+		config_panel.add(permissionset);
 		
 		JLabel layoutassignment = new JLabel("Layout Assignment sheet's name");
 		layoutassignment.setBounds(10, 314, 173, 31);
@@ -468,9 +468,9 @@ public class UserInterface {
 		profilesToIgnore.setText(String.join(",", c.PROFILES_TO_IGNORE));
 		sheetsToIgnore.setText(String.join(",", c.SHEETS_TO_IGNORE));
 		folderpath.setText(c.package_folder);
-		apex.setText(c.SHEET_APEX);
+		profile.setText(c.SHEET_PROFILE);
 		listview.setText(c.SHEET_LISTVIEW);
-		tabvisibility.setText(c.SHEET_TAB_VISIBILITY);
+		permissionset.setText(c.SHEET_PS);
 		
 		ConfigManager.selected = c;
 		

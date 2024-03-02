@@ -14,7 +14,7 @@ import utils.PRUtil;
 public class XML_Profile extends XML_File {
 	
 	public ArrayList<Node> layoutPerms = new ArrayList<Node>();
-	public String license;
+	public Node userLicense;
 	public XML_Profile(String filename) {
 		super("Profile", filename, "unpackaged\\profiles\\");
 		
@@ -139,12 +139,8 @@ public class XML_Profile extends XML_File {
 		for(int i=0; i<rtvPerms.size(); i++) {
 			this.root.appendChild(rtvPerms.get(i));
 		}
-		/*
-		if(!PRUtil.isBlank(this.license)) {
-			Node platform = file.createElement("userLicense");
-			platform.appendChild(file.createTextNode(this.license));
-			this.root.appendChild(platform);
-		}*/
+		
+		this.root.appendChild(userLicense);
 	}
 	
 	private static void addPermissionToCopadoFile(Set<String> components, String type, String component, String SEP, ArrayList<String> jsonList) {

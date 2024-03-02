@@ -225,8 +225,7 @@ public class Step_PM extends Step {
 				readSheet = false;
 			}
 		}
-		boolean isSpecificSheet = (w.c.SHEET_APEX.equalsIgnoreCase(sheetName) ||
-			w.c.SHEET_TAB_VISIBILITY.equalsIgnoreCase(sheetName) ||
+		boolean isSpecificSheet = (w.c.SHEET_PS.equalsIgnoreCase(sheetName) ||
 			w.c.SHEET_LAYOUT_ASSIGNMENT.equalsIgnoreCase(sheetName) ||
 			w.c.SHEET_RECORD_TYPE_ASSIGNMENT.equalsIgnoreCase(sheetName) ||
 			w.c.SHEET_LISTVIEW.equalsIgnoreCase(sheetName) ||
