@@ -17,6 +17,7 @@ public class Step_PermissionSetObject extends Step {
 		return new String[] {"INDEX", "POSITION", "READ_OBJ_PERM", "POSITION_AFTER_FIELDS", "READ"};
 	}
 
+	
 	@Override
 	public Type runStep(PRWorkbook w) {
 		this.doesStepExist(w);

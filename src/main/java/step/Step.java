@@ -192,6 +192,7 @@ public abstract class Step {
 	protected ArrayList<ArrayList<String>> parse(PRWorkbook w, String shareTo) {
 		ArrayList<ArrayList<String>> parsedResult = new ArrayList<ArrayList<String>>();
 		
+		
 		for(String line : shareTo.split("\n")) {
 			System.out.println(line);
 			Pattern p = Pattern.compile("([^\\[\\]]+)\\[([^\\[\\]]+)]");

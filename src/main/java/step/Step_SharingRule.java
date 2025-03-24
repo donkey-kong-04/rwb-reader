@@ -115,6 +115,7 @@ public class Step_SharingRule extends Step {
 			
 			f.n_sharingCriteriaRules.add(sharingCriteriaRule);
 			
+			
 		}
 		
 		return Type.STAY_IN_SAME_STEP;

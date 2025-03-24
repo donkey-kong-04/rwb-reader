@@ -38,6 +38,7 @@ public class Debug {
 		debugs.add(d);
 	}
 	
+	
 	public static void print(JTextPane textPane, Debug d) {
 		
 		appendToPane(UserInterface.debugInfos2,"======== " + d.subject + " : \n", d.isFatal? Color.RED : Color.BLUE, Color.WHITE);

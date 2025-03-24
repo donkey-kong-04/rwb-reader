@@ -22,7 +22,6 @@ public class Step_ProfileObject extends Step {
 	}
 	
 	
-	
 	@Override
 	public Type runStep(PRWorkbook w) {
 		
