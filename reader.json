@@ -1,0 +1,23 @@
+
+[
+    {
+        "name": "Canada",
+        "file": "/Users/martinchalot/Downloads/RWB CORE.xlsx",
+        "folder":"/Users/martinchalot/Desktop/Pernod Ricard/Rollout/",
+        "full_debug" : false,
+        "SHEET_LAYOUT_ASSIGNMENT":"Page Layout assignment",
+        "SHEET_RECORD_TYPE_ASSIGNMENT":"Record Type Assignment",
+        
+        "READ_LIST_VIEW": true,
+        "SHEET_LISTVIEW":"List Views",
+        
+        "READ_SHARING_RULES": true,
+        "SHEET_SHARING_RULES": "Sharing Rules",
+        "SHEET_PROFILE": "Profiles",
+        "SHEET_PS": "Permission Sets",
+        "SHEETS_TO_IGNORE":""
+        "PROFILES_TO_IGNORE":"",
+        "KEEP_PROFILES_PERMISSIONS":"",
+        "selected": true
+    }
+]
