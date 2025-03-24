@@ -1,2 +1,19 @@
 /target/
 reader.json
+
+# Eclipse specific files
+.project
+.classpath
+.settings/
+
+# Build output
+bin/
+build/
+
+# Other common ignores
+*.log
+*.tmp
+*.swp
+
+# macOS-specific
+.DS_Store
