@@ -119,6 +119,7 @@ public class Step_SharingRule extends Step {
 		
 		return Type.STAY_IN_SAME_STEP;
 	}
+	
 
 	@Override
 	public void debugStepNotPassed(PRWorkbook w) {
