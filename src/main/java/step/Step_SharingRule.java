@@ -74,17 +74,18 @@ public class Step_SharingRule extends Step {
 			label.appendChild(f.file.createTextNode(sharingRuleName));
 			sharingCriteriaRule.appendChild(label);
 			
-			Node shareTo = f.file.createElement("shareTo");
 			ArrayList<ArrayList<String>> shareToParsed = this.parse(w, sharingTo);
 			if(shareToParsed.size() != 1) {
 				U.writeMsg("sharedTo should have only one element" + w.currentSheet.getSheetName(), Color.RED, true);
 				
 			}
 			ArrayList<String> stp = shareToParsed.get(0);
+			
 			Node sharedTo = f.file.createElement("sharedTo");
 			
 			sharedTo.appendChild(f.file.createElement(stp.get(0))).appendChild(f.file.createTextNode(stp.get(1)));
-			sharingCriteriaRule.appendChild(shareTo);
+		
+			sharingCriteriaRule.appendChild(sharedTo);
 			
 			
 			

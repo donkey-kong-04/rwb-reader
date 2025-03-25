@@ -26,7 +26,8 @@ public class App {
 		
 		if(!lock()) {
 			JOptionPane.showConfirmDialog(null, "You already have one reader opened", "Error", JOptionPane.PLAIN_MESSAGE);
-			throw new InternalError("Multiple instance detected");
+			//Better if not on Mac program stays open and you need to manually close it it's annoying
+			System.exit(0);
 		}
 		
 		run();

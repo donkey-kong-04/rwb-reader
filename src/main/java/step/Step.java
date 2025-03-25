@@ -194,12 +194,12 @@ public abstract class Step {
 		
 		
 		for(String line : shareTo.split("\n")) {
-			System.out.println(line);
+			
 			Pattern p = Pattern.compile("([^\\[\\]]+)\\[([^\\[\\]]+)]");
 			Matcher m = p.matcher(line);
 			
 			if(m.matches()) {
-				System.out.println("Maaaatch");
+				
 				ArrayList<String> arrayLine = new ArrayList<String>();
 				arrayLine.add(m.group(1));
 				for(String el : m.group(2).split(",")) {
@@ -209,8 +209,7 @@ public abstract class Step {
 				parsedResult.add(arrayLine);
 			}
 		}
-		
-		System.out.println(parsedResult);
+
 		
 		return parsedResult;
 	}
