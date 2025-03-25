@@ -58,6 +58,8 @@ public class Step_SharingRule extends Step {
 		String accessType = U.getCell(w, 6);
 		
 		if(!U.isBlank(objectApiName) && !U.isBlank(sharingRuleApiName) && !U.isBlank(sharingCriteria) && !U.isBlank(sharingTo)) {
+			w.fpackage.p_sharingcriteriarules.add(objectApiName + "." + sharingRuleApiName);
+			
 			XML_SharingRules f = (XML_SharingRules) w.getCorrectCorrectFile(XML_SharingRules.class, objectApiName + ".sharingRules");
 			
 			Node sharingCriteriaRule = f.file.createElement("sharingCriteriaRules");

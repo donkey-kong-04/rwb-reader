@@ -17,6 +17,7 @@ public class XML_Package extends XML_File {
 	public Set<String> p_application;
 	public Set<String> p_pm;
 	public Set<String> p_listviews;
+	public Set<String> p_sharingcriteriarules;
 	
 	public XML_Package(String filename) {
 		super("Package", filename, "unpackaged/");
@@ -28,29 +29,35 @@ public class XML_Package extends XML_File {
 		p_application = new TreeSet<String>();
 		p_pm = new TreeSet<String>();
 		p_listviews = new TreeSet<String>();
+		p_sharingcriteriarules = new TreeSet<String>();
 	}
 
 	@Override
 	public void buildFile() {
 		Node version = this.file.createElement("version");
 		
-		this.root.appendChild(version).appendChild(this.file.createTextNode("58.0"));
-		if(p_application.size() > 0)
+		this.root.appendChild(version).appendChild(this.file.createTextNode("62.0"));
+		if(p_application.size() > 0) {
 			this.root.appendChild(buildType("CustomApplication", p_application));
-		if(p_layouts.size() > 0)
+		}
+		if(p_layouts.size() > 0) {
 			this.root.appendChild(buildType("Layout", p_layouts));
-		if(p_listviews.size() > 0)
+		}
+		if(p_listviews.size() > 0) {
 			this.root.appendChild(buildType("ListView", p_listviews));
-		if(p_pm.size() > 0)
+		}
+		if(p_pm.size() > 0) {
 			this.root.appendChild(buildType("PermissionSet", p_pm));
+		}
 		if(p_profiles.size() > 0) {
-			
 			this.root.appendChild(buildType("Profile", p_profiles));
 		}
-		if(p_recordTypes.size() > 0)
+		if(p_recordTypes.size() > 0) {
 			this.root.appendChild(buildType("RecordType", p_recordTypes));
-		
-		
+		}
+		if(p_sharingcriteriarules.size() > 0) {
+			this.root.appendChild(buildType("SharingCriteriaRules", p_sharingcriteriarules));
+		}
 		
 	}
 	
