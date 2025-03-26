@@ -17,7 +17,7 @@ public class XML_Package extends XML_File {
 	public Set<String> p_application;
 	public Set<String> p_pm;
 	public Set<String> p_listviews;
-	public Set<String> p_sharingcriteriarules;
+	public Set<String> p_sharingrules;
 	
 	public XML_Package(String filename) {
 		super("Package", filename, "unpackaged/");
@@ -29,7 +29,7 @@ public class XML_Package extends XML_File {
 		p_application = new TreeSet<String>();
 		p_pm = new TreeSet<String>();
 		p_listviews = new TreeSet<String>();
-		p_sharingcriteriarules = new TreeSet<String>();
+		p_sharingrules = new TreeSet<String>();
 	}
 
 	@Override
@@ -55,8 +55,8 @@ public class XML_Package extends XML_File {
 		if(p_recordTypes.size() > 0) {
 			this.root.appendChild(buildType("RecordType", p_recordTypes));
 		}
-		if(p_sharingcriteriarules.size() > 0) {
-			this.root.appendChild(buildType("SharingCriteriaRules", p_sharingcriteriarules));
+		if(p_sharingrules.size() > 0) {
+			this.root.appendChild(buildType("SharingRules", p_sharingrules));
 		}
 		
 	}
