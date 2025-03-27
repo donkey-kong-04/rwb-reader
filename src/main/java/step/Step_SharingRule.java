@@ -72,6 +72,16 @@ public class Step_SharingRule extends Step {
 			access.appendChild(f.file.createTextNode(accessType));
 			sharingCriteriaRule.appendChild(access);
 			
+			//Specificity of standard object, hard-coded to follow the permission of sharing rule overall
+			if(objectApiName.equalsIgnoreCase("account")) {
+				Node accountSetting = f.file.createElement("accountSettings");
+				
+				accountSetting.appendChild(f.file.createElement("caseAccessLevel")).appendChild(f.file.createTextNode("None"));
+				accountSetting.appendChild(f.file.createElement("contactAccessLevel")).appendChild(f.file.createTextNode(accessType));
+				accountSetting.appendChild(f.file.createElement("opportunityAccessLevel")).appendChild(f.file.createTextNode("None"));
+				sharingCriteriaRule.appendChild(accountSetting);
+			}
+			
 			Node label = f.file.createElement("label");
 			label.appendChild(f.file.createTextNode(sharingRuleName));
 			sharingCriteriaRule.appendChild(label);
