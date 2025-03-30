@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
@@ -17,7 +18,8 @@ import javax.swing.text.StyledDocument;
 
 import org.apache.poi.ss.usermodel.Cell;
 
-import app.ConfigManager;
+import app.App;
+import app.Config;
 import app.UserInterface;
 import workbook.PRWorkbook;
 
@@ -35,6 +37,10 @@ public class U {
 		
 	}
 	
+	public static void fatal_message(String message) {
+		JOptionPane.showConfirmDialog(null, message, "Error", JOptionPane.PLAIN_MESSAGE);
+		System.exit(0);
+	}
 	
 	
 	/*
@@ -110,7 +116,7 @@ public class U {
 	public static boolean doNotDeploy(String name, String why) {
 		boolean doNotDeploy = false;
 		
-		if(ConfigManager.selected.PROFILES_TO_IGNORE.contains(name.toLowerCase()) == true) {
+		if(Config.selected.PROFILES_TO_IGNORE.contains(name.toLowerCase()) == true) {
 			doNotDeploy = true;
 			U.writeMsg("DO NOT DEPLOY - " + name + "(" + why + ")", Color.ORANGE, false);
 		}

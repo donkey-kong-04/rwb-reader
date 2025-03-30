@@ -19,7 +19,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbookFactory;
 import org.w3c.dom.Node;
 
 import app.Config;
-import app.ConfigManager;
 import file.XML_Application;
 import file.XML_File;
 import file.XML_Layout;
@@ -60,7 +59,7 @@ public class PRWorkbook {
 		
 		//Loading properties file
 		//c = Config.loadConfig();
-		c = ConfigManager.selected;
+		c = Config.selected;
 		
 		
 		Allfiles = new ArrayList<XML_File>();

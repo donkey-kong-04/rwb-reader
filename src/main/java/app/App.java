@@ -7,10 +7,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import org.json.simple.parser.ParseException;
 
@@ -21,15 +25,11 @@ import utils.U;
 
 public class App {
 	
-	
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		if(!lock()) {
-			JOptionPane.showConfirmDialog(null, "You already have one reader opened", "Error", JOptionPane.PLAIN_MESSAGE);
-			//Better if not on Mac program stays open and you need to manually close it it's annoying
-			System.exit(0);
+			U.fatal_message("You already have one reader opened");
 		}
-		
 		run();
 		
 	}
@@ -39,18 +39,14 @@ public class App {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 					
-					try {
-						new ConfigManager();
-						UserInterface window = new UserInterface();
-						window.frame.setVisible(true);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
+				try {
+					UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+					Config.selected = new Config();
+					UserInterface window = new UserInterface();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					U.fatal_message("Unexpected error: " + e.toString());
+				}	
 			}
 		});
 	}

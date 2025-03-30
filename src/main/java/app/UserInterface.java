@@ -7,11 +7,12 @@ import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Point;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.SwingUtilities;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -24,13 +25,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JScrollPane;
@@ -38,7 +37,9 @@ import javax.swing.JCheckBox;
 import javax.swing.ScrollPaneConstants;
 
 public class UserInterface {
-
+	
+	private int height = 738;
+	private int width = 871;
 	public static JFrame frame;
 	private JTextField filepath;
 	private JTextField folderpath;
@@ -66,71 +67,50 @@ public class UserInterface {
 	}
 	
 	public static void reloadFullPage() {
-		ConfigManager.configs = new HashMap<String, Config>();
-		ConfigManager.selected = null;
+		
+		Config.selected = null;
 		
 		frame.setVisible(false);
 		frame.dispose();
 		App.run();
 	}
+	
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
 		
+		
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.getContentPane().setBackground(new Color(255, 255, 255));
-		frame.setBounds(100, 100, 871, 738);
+		
+		frame.setSize(new Dimension(width, height));
+		frame.setLocation(new Point(100, 100));
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
-		int i=0;
-		
-		for(String key : ConfigManager.configs.keySet()) {
-		
-			Config c = ConfigManager.configs.get(key);
-			JButton btnNewButton = new JButton(c.Name);
-			btnNewButton.addActionListener(new ActionListener() {
-				
-				public void actionPerformed(ActionEvent e) {
-					JButton button = (JButton) e.getSource();
-					selected.setBackground(Color.WHITE);
-					
-					button.setBackground(Color.ORANGE);
-					selected = button;
-					loadConfig(button.getText());
-				}
-			});
-			btnNewButton.setBounds(0, i, 104, 31);
-			if(c.selected) {
-				btnNewButton.setBackground(Color.ORANGE);
-				selected = btnNewButton;
-			} else {
-				btnNewButton.setBackground(Color.WHITE);
-			}
-			frame.getContentPane().add(btnNewButton);
-			i += 32;
-		}
+		frame.setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBackground(Color.ORANGE);
-		tabbedPane.setBounds(110, 0, 735, 698);
+		tabbedPane.setBounds(0, 0, width, height);
 		frame.getContentPane().add(tabbedPane);
 		
 		JPanel execution_panel2 = new JPanel();
 		tabbedPane.addTab("Execution", null, execution_panel2, null);
 		execution_panel2.setLayout(null);
 		
-		config_name = new JLabel("Config Name:" + ConfigManager.selected.Name);
-		config_name.setBounds(10, 2, 621, 26);
+		config_name = new JLabel("Config Name:" + Config.selected.Name);
+		config_name.setBounds(10, 2, width-20, 26);
 		execution_panel2.add(config_name);
 		
-		label_filepath = new JLabel("Filepath: " + ConfigManager.selected.filepath);
-		label_filepath.setBounds(10, 39, 621, 26);
+		label_filepath = new JLabel("Filepath: " + Config.selected.filepath);
+		label_filepath.setBounds(10, 39, width-20, 26);
 		execution_panel2.add(label_filepath);
 		
-		label_folder = new JLabel("Folder path: " + ConfigManager.selected.package_folder);
-		label_folder.setBounds(10, 76, 621, 18);
+		label_folder = new JLabel("Folder path: " + Config.selected.package_folder);
+		label_folder.setBounds(10, 76, width-20, 18);
 		execution_panel2.add(label_folder);
 		
 		JButton btnNewButton_2 = new JButton("Create Package");
@@ -140,11 +120,11 @@ public class UserInterface {
 				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
 				LocalDateTime now = LocalDateTime.now();  
 				debugInfos2.setText("");
-				U.writeMsg("BEGIN - " + dtf.format(now) + " for " + ConfigManager.selected.Name, Color.BLUE, false);
+				U.writeMsg("BEGIN - " + dtf.format(now) + " for " + Config.selected.Name, Color.BLUE, false);
 				
 				
 				
-				String unpackageFolderPath = ConfigManager.selected.package_folder + "unpackaged";
+				String unpackageFolderPath = Config.selected.package_folder + "unpackaged";
 				File file = new File(unpackageFolderPath);
 				
 				int input = 0;
@@ -174,12 +154,12 @@ public class UserInterface {
 						
 						ZipDirectory zd = new ZipDirectory();
 						
-						zd.zip(ConfigManager.selected.package_folder);
+						zd.zip(Config.selected.package_folder);
 				        
 						dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
 						now = LocalDateTime.now();  
 						
-						U.writeMsg("END - " + dtf.format(now) + " for " + ConfigManager.selected.Name, Color.BLUE, false);
+						U.writeMsg("END - " + dtf.format(now) + " for " + Config.selected.Name, Color.BLUE, false);
 					} catch(Exception e1) {
 						String stacktrace = ExceptionUtils.getStackTrace(e1);
 						U.writeMsg(stacktrace, Color.RED, true);
@@ -193,13 +173,13 @@ public class UserInterface {
 		execution_panel2.add(btnNewButton_2);
 		
 		JPanel debug_scroll_panel = new JPanel();
-		debug_scroll_panel.setBounds(10, 239, 705, 421);
+		debug_scroll_panel.setBounds(10, 239, width-20, 420);
 		execution_panel2.add(debug_scroll_panel);
 		debug_scroll_panel.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(0, 11, 695, 410);
+		scrollPane.setBounds(0, 10, width-20, 410);
 		debug_scroll_panel.add(scrollPane);
 		
 		debugInfos2 = new JTextPane();
@@ -212,7 +192,7 @@ public class UserInterface {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Desktop.getDesktop().open(new File(ConfigManager.selected.package_folder));
+					Desktop.getDesktop().open(new File(Config.selected.package_folder));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -242,8 +222,8 @@ public class UserInterface {
 		BTN_DELETE_PACKAGE.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				debugInfos2.setText("");
-				String unpackageFolderPath = ConfigManager.selected.package_folder + "unpackaged";
-				String zipFilePath = ConfigManager.selected.package_folder + "unpackaged.zip";
+				String unpackageFolderPath = Config.selected.package_folder + "unpackaged";
+				String zipFilePath = Config.selected.package_folder + "unpackaged.zip";
 				ArrayList<File> fileToDelete = new ArrayList<File>();
 				
 				
@@ -284,7 +264,7 @@ public class UserInterface {
 		BTN_DELETE_PACKAGE.setBounds(139, 105, 136, 43);
 		execution_panel2.add(BTN_DELETE_PACKAGE);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Please make sure your workbook is closed before creating/deleting a package, it can make the app crash.");
+		JCheckBox chckbxNewCheckBox = new JCheckBox("Please make sure your workbook is closed before creating/deleting a package. \nIt can make the app crash.");
 		
 		chckbxNewCheckBox.setForeground(Color.BLACK);
 		chckbxNewCheckBox.setEnabled(false);
@@ -309,7 +289,7 @@ public class UserInterface {
 		BTN_RELOAD_CONFIG_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Desktop.getDesktop().open(new File(ConfigManager.selected.filepath));
+					Desktop.getDesktop().open(new File(Config.selected.filepath));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -450,11 +430,11 @@ public class UserInterface {
 		name.setBounds(78, 0, 553, 31);
 		config_panel.add(name);
 		
-		loadConfig(ConfigManager.selected.Name);
+		loadConfig(Config.selected.Name);
 	}
 	
 	public void loadConfig(String buttonLabel) {
-		Config c = ConfigManager.configs.get(buttonLabel);
+		Config c = Config.selected;
 		
 		config_name.setText("Config Name: " + c.Name);
 		label_filepath.setText("Filepath: " + c.filepath);
@@ -472,9 +452,6 @@ public class UserInterface {
 		profile.setText(c.SHEET_PROFILE);
 		listview.setText(c.SHEET_LISTVIEW);
 		permissionset.setText(c.SHEET_PS);
-		
-		ConfigManager.selected = c;
-		
-		
+				
 	}
 }
