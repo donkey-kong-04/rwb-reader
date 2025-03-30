@@ -11,7 +11,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import org.apache.commons.io.FileUtils;
@@ -23,7 +22,6 @@ import workbook.PRWorkbook;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
@@ -41,6 +39,8 @@ public class UserInterface {
 	private int height = 738;
 	private int width = 871;
 	public static JFrame frame;
+	
+	/*
 	private JTextField filepath;
 	private JTextField folderpath;
 	private JTextField profile;
@@ -53,12 +53,14 @@ public class UserInterface {
 	private JTextField name;
 	private JTextArea profilesToIgnore;
 	private JTextArea sheetsToIgnore;
+	*/
+	
 	private JLabel label_filepath;
 	private JLabel label_folder;
 	private JLabel config_name;
 	public static JTextPane debugInfos2;
 	
-	private JButton selected;
+	//private JButton selected;
 	/**
 	 * Create the application.
 	 */
@@ -306,6 +308,7 @@ public class UserInterface {
 		
 		
 		
+		/* Removing display of the setup, make no sense, they can press "Edit config" if they wish to see the details
 		JPanel config_panel = new JPanel();
 		tabbedPane.addTab("Config", null, config_panel, null);
 		config_panel.setLayout(null);
@@ -429,6 +432,7 @@ public class UserInterface {
 		name.setColumns(10);
 		name.setBounds(78, 0, 553, 31);
 		config_panel.add(name);
+		*/
 		
 		loadConfig(Config.selected.Name);
 	}
@@ -440,6 +444,7 @@ public class UserInterface {
 		label_filepath.setText("Filepath: " + c.filepath);
 		label_folder.setText("Folder: " + c.package_folder);
 		
+		/*
 		filepath.setText(c.filepath);
 		doNotRemovePermission.setText(String.join(",", c.KEEP_PROFILES_PERMISSIONS));
 		name.setText(c.Name);
@@ -452,6 +457,7 @@ public class UserInterface {
 		profile.setText(c.SHEET_PROFILE);
 		listview.setText(c.SHEET_LISTVIEW);
 		permissionset.setText(c.SHEET_PS);
+		*/
 				
 	}
 }
