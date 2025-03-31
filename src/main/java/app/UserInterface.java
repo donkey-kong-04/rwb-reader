@@ -36,7 +36,7 @@ import javax.swing.ScrollPaneConstants;
 
 public class UserInterface {
 	
-	private int height = 738;
+	private int height = 620;
 	private int width = 871;
 	public static JFrame frame;
 	
@@ -164,6 +164,7 @@ public class UserInterface {
 						U.writeMsg("END - " + dtf.format(now) + " for " + Config.selected.Name, Color.BLUE, false);
 					} catch(Exception e1) {
 						String stacktrace = ExceptionUtils.getStackTrace(e1);
+						U.writeMsg("REMINDER - On Windows OS you cannot have the workbook opened when creating the package.", Color.BLUE, true);
 						U.writeMsg(stacktrace, Color.RED, true);
 					}
 				}
@@ -175,13 +176,13 @@ public class UserInterface {
 		execution_panel2.add(btnNewButton_2);
 		
 		JPanel debug_scroll_panel = new JPanel();
-		debug_scroll_panel.setBounds(10, 239, width-20, 420);
+		debug_scroll_panel.setBounds(10, 239, width-20, 300);
 		execution_panel2.add(debug_scroll_panel);
 		debug_scroll_panel.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setBounds(0, 10, width-20, 410);
+		scrollPane.setBounds(0, 10, width-20, 300);
 		debug_scroll_panel.add(scrollPane);
 		
 		debugInfos2 = new JTextPane();
@@ -254,6 +255,7 @@ public class UserInterface {
 							zip.delete();
 							debugInfos2.setText("Package deleted");
 						} catch(Exception ex) {
+							debugInfos2.setText("Files/Folders could not be deleted:\n" + ex.getMessage());
 							ex.printStackTrace();
 						}
 					}
