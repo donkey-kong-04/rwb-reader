@@ -202,7 +202,8 @@ public abstract class Step {
 				
 				ArrayList<String> arrayLine = new ArrayList<String>();
 				arrayLine.add(m.group(1));
-				for(String el : m.group(2).split(",")) {
+				//Switching from , to ; as the comma is being used by salesforce to make OR operator in 1 filter
+				for(String el : m.group(2).split(";")) {
 					arrayLine.add(el);
 				}
 				

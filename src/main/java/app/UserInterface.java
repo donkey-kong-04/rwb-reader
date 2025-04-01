@@ -3,6 +3,8 @@ package app;
 
 
 import javax.swing.JFrame;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 import java.awt.Color;
@@ -23,11 +25,13 @@ import workbook.PRWorkbook;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JScrollPane;
@@ -85,6 +89,8 @@ public class UserInterface {
 		
 		
 		frame = new JFrame();
+		       
+        
 		frame.setResizable(false);
 		frame.getContentPane().setBackground(new Color(255, 255, 255));
 		
